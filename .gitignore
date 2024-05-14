@@ -1,3 +1,6 @@
+# Visual Studio
+.vs/
+
 # Prerequisites
 *.d
 
@@ -26,7 +29,36 @@
 *.a
 *.lib
 
-# Executables
+# Build artifacts
 *.exe
-*.out
-*.app
+*.dll
+*.pdb
+*.ilk
+*.aps
+*.ipch
+*.obj
+*.exp
+*.sdf
+*.opensdf
+*.user
+*.suo
+*.ncb
+*.log
+*.tlog
+*.lastbuildstate
+[Bb]in/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Oo]bj/
+
+# Ignore SFML build artifacts
+bin/
+lib/
+dependencies/
+
+# Others
+src/GravitySimulation_v2/x64/
+src/GravitySimulation_v2/GravitySimulation_v2/x64/
+src/GravitySimulation_v2/.vs/
