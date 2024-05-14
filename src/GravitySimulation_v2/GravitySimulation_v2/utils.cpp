@@ -65,7 +65,7 @@ vector<Particle> generate_particles(float min_x, float max_x, float min_y, float
 
         sf::Color particleColor(sf::Color::Blue);
 
-        particles.push_back(Particle(initialPosition, initialVelocity, particleColor, radius));
+        particles.push_back(Particle(initialPosition, initialVelocity, particleColor, radius, mass));
     }
 
     return particles;
