@@ -4,7 +4,6 @@
 #include "settings.h"
 #include "particle.h"
 #include "utils.h"
-#include "collision_grid.h"
 
 using namespace std;
 
