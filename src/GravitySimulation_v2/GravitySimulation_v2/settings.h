@@ -14,4 +14,7 @@ const int n = 30;
 // max force to expect per particle (for coloring purposes only)
 const float max_forces = 0.01f;
 
+// bounce back from edges of screen
+const bool has_borders = false;
+
 #endif

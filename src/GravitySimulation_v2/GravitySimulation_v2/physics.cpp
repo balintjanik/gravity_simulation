@@ -34,9 +34,13 @@ void updatePositions(vector<Particle> &particles, float timestep)
         sf::Color updated_color = mapForcesToColor(all_force);
         p1.color = updated_color;
 
+        if (has_borders) {
+            if (p1.position.x > width || p1.position.x < 0) p1.velocity.x = -p1.velocity.x;
+            if (p1.position.y > height || p1.position.y < 0) p1.velocity.y = -p1.velocity.y;
+        }
+
         p1.position = p1.position + p1.velocity;
 
-        cout << "Current all_force of particle " << i << " is: " << all_force << " and velocity is: " << p1.velocity.x << "," << p1.velocity.y <<
-            " and position is: " << p1.position.x << "," << p1.position.y << endl;
+        // cout << "Current all_force of particle " << i << " is: " << all_force << " and velocity is: " << p1.velocity.x << "," << p1.velocity.y << " and position is: " << p1.position.x << "," << p1.position.y << endl;
     }
 }
