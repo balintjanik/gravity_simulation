@@ -47,7 +47,7 @@ float generateRandomFloat(float min_value, float max_value)
     return dist(gen);
 }
 
-vector<Particle> generateParticles(float min_x, float max_x, float min_y, float max_y)
+vector<Particle> generate_particles(float min_x, float max_x, float min_y, float max_y)
 {
     vector<Particle> particles;
     float x, y;
@@ -55,17 +55,17 @@ vector<Particle> generateParticles(float min_x, float max_x, float min_y, float 
 
     for (int i = 0; i < n; i++)
     {
-        x = generateRandomFloat(0, 800);
-        y = generateRandomFloat(0, 600);
+        x = generateRandomFloat(width/3, 2*width/3);
+        y = generateRandomFloat(height/3, 2*height/3);
         sf::Vector2f initialPosition(x, y);
 
-        vx = generateRandomFloat(-0.3f, 0.3f);
-        vy = generateRandomFloat(-0.3f, 0.3f);
+        vx = generateRandomFloat(-0.0f, 0.0f);
+        vy = generateRandomFloat(-0.0f, 0.0f);
         sf::Vector2f initialVelocity(vx, vy);
 
         sf::Color particleColor(sf::Color::Blue);
 
-        particles.push_back(Particle(initialPosition, initialVelocity, particleColor, 2));
+        particles.push_back(Particle(initialPosition, initialVelocity, particleColor, radius));
     }
 
     return particles;

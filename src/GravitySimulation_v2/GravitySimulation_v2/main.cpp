@@ -12,7 +12,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(width, height), "Gravitational Force Simulation");
 
     // Init particles
-    std::vector<Particle> particles = generateParticles(0, width, 0, height);
+    std::vector<Particle> particles = generate_particles(0, width, 0, height);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -22,7 +22,7 @@ int main()
         }
 
         // Update positions
-        updatePositions(particles, timestep);
+        update_positions(particles, timestep);
 
         // Draw particles
         window.clear();
