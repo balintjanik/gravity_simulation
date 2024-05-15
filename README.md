@@ -9,4 +9,19 @@ Currently the program calculates the gravitational forces affecting the particle
 More on how to run this program will be shared soon.
 
 ## Samples
-Some snapshots will be uploaded once the project is done.
+Some snapshots will be uploaded once the project is finished.
+
+Current progress:
+<img src="data/sample_v2.0.1_cropped.gif" alt="sample gif of simulation">
+As it can be seen, the collision handling is infinitely more accurate in this simulation compared to my previous work in Processing. Now the formation of planets has become possible, however, the centrifugal forces are tearing apart the larger planets.
+
+## Progress
+
+### 2024.05.15.
+ - The option of trails for particles is added, to achieve better visuals.
+
+### 2024.05.14. - branch v2.0
+ - The base project is set up, particles can be rendered.
+ - The gravitational forces are implemented, and the particles are colored accordingly.
+ - The option of particles bouncing off screen borders is added.
+ - Collisions are implemented. First, overlaps are handled, and then collided particles "bounce off" of each other (conservation of momentum) with a small dampening to achieve planet formation.
