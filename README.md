@@ -16,9 +16,21 @@ Current progress:
 <img src="data/sample_v2.0.1_1_cropped.gif" alt="sample gif of simulation" width="900px">
 <img src="data/sample_v2.0.1_2_cropped.gif" alt="sample gif of simulation" width="900px">
 
-As it can be seen, the collision handling is infinitely more accurate in this simulation compared to my previous work in Processing. Now the formation of planets has become possible, however, the centrifugal forces are tearing apart the larger planets. This problem is unsolved for now.
+As it can be seen, the collision handling is infinitely more accurate in this simulation compared to my previous work in Processing.
+
+<img src="data/sample_v2.1.0_1_planet_cropped.gif" alt="sample gif of simulation planet formation">
+
+Now the formation of planets has become possible, and the implemented angular velocity dampings prevent them from tearing apart due to centrifugal forces.
 
 ## Progress
+
+### 2024.05.15. - branch v2.1.0
+ - Added damping to angular velocities for close particles
+ - Added overall velocity damping for close particles
+ - These modifications do not allow the centrifugal forces to tear apart planets so easily
+ - Planet formation is possible now!
+
+<img src="data/sample_v2.1.0_1_planet_cropped.gif" alt="sample gif of simulation planet formation">
 
 ### 2024.05.15. - branch v2.0.1
  - The option of trails for particles is added, to achieve better visuals
