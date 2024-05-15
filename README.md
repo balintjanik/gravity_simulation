@@ -28,7 +28,7 @@ If a planet is too dense it randomly shoots out some particles, resulting in sol
  - These modifications do not allow the centrifugal forces to tear apart planets so easily
  - Planet formation is possible now!
 
-Now the formation of planets has become possible, and the implemented angular velocity dampings prevent them from tearing apart due to centrifugal forces.
+Now the formation of planets has become possible, and the implemented angular velocity dampings prevent them from being torn apart by centrifugal forces.
 
 <img src="data/sample_v2.1.0_1_planet_cropped.gif" alt="sample gif of simulation planet formation">
 
