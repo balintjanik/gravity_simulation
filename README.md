@@ -18,13 +18,18 @@ As it can be seen, the collision handling is infinitely more accurate in this si
 
 ## Progress
 
-### 2024.05.15.
- - The option of trails for particles is added, to achieve better visuals.
- - Small amount of damping added.
- - Organised code and variable names.
+### 2024.05.15. - branch v2.0.1
+ - The option of trails for particles is added, to achieve better visuals
+ - Small amount of damping added
+ - Organised code and variable names
+ - Setup types can be specified (fullscreen or circular)
+ - Initial speeds can be specified (random, angular, or no speed)
+
+<img src="data/sample_v2.0.1_circular_1.png" alt="sample image of simulation circular setup" width="500px">
+<img src="data/sample_v2.0.1_circular_2.png" alt="sample image of simulation circular setup" width="500px">
 
 ### 2024.05.14. - branch v2.0
- - The base project is set up, particles can be rendered.
- - The gravitational forces are implemented, and the particles are colored accordingly.
- - The option of particles bouncing off screen borders is added.
- - Collisions are implemented. First, overlaps are handled, and then collided particles "bounce off" of each other (conservation of momentum) with a small dampening to achieve planet formation.
+ - The base project is set up, particles can be rendered
+ - The gravitational forces are implemented, and the particles are colored accordingly
+ - The option of particles bouncing off screen borders is added
+ - Collisions are implemented. First, overlaps are handled, and then collided particles "bounce off" of each other (conservation of momentum) with a small dampening to achieve planet formation
