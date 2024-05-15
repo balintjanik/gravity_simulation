@@ -4,29 +4,33 @@
 #include <SFML/Graphics.hpp>
 
 // width and height of screen
-const int width = 1200;
-const int height = 800;
+const int WIDTH = 1920;
+const int HEIGHT = 1080;
 
 // timestep (speed of animation)
-const float timestep = 0.05f;
+const float TIMESTEP = 0.1f;
 
 // number of particles
-const int n = 200;
+const int N = 500;
 
 // properties of particles
-const int radius = 2;
-const float mass = 1;
+const int RADIUS = 2;
+const float MASS = 1;
 
 // max force to expect per particle (for coloring purposes only)
-const float max_forces = 0.9f;
+const float MAX_FORCES = 0.9f;
 
 // bounce back from edges of screen
-const bool has_borders = true;
+const bool HAS_BORDERS = true;
 
 // trail settings
-const bool has_trail = true;
-const int trail_size = 50;
-const float trail_radius = 1;
-const sf::Color trail_color = sf::Color(40,40,40);
+const bool HAS_TRAIL = false;
+const int TRAIL_SIZE = 50;
+const float TRAIL_RADIUS = 1;
+const sf::Color TRAIL_COLOR = sf::Color(40,40,40);
+
+// small damping to avoid uncontrollable velocities
+const float DAMPING_COEFF = 0.1f;
+
 
 #endif

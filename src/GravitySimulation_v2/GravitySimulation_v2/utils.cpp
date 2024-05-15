@@ -30,7 +30,7 @@ sf::Color HSVtoRGB(float H, float S, float V)
 
 sf::Color mapForcesToColor(float all_forces)
 {
-    float normalized_forces = all_forces / max_forces;
+    float normalized_forces = all_forces / MAX_FORCES;
     float hue = (1.0f - normalized_forces) * 0.65f;
     float saturation = 1.0f;
     float value = 1.0f;
@@ -53,19 +53,19 @@ vector<Particle> generate_particles(float min_x, float max_x, float min_y, float
     float x, y;
     float vx, vy;
 
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < N - 1; i++)
     {
-        x = generateRandomFloat(width/3, 2*width/3);
-        y = generateRandomFloat(height/3, 2*height/3);
+        x = generateRandomFloat(0, WIDTH);
+        y = generateRandomFloat(0, HEIGHT);
         sf::Vector2f initialPosition(x, y);
 
-        vx = generateRandomFloat(-0.0f, 0.0f);
-        vy = generateRandomFloat(-0.0f, 0.0f);
+        vx = generateRandomFloat(-1.0f, 1.0f);
+        vy = generateRandomFloat(-1.0f, 1.0f);
         sf::Vector2f initialVelocity(vx, vy);
 
         sf::Color particleColor(sf::Color::Blue);
 
-        particles.push_back(Particle(initialPosition, initialVelocity, particleColor, radius, mass));
+        particles.push_back(Particle(initialPosition, initialVelocity, particleColor, RADIUS, MASS));
     }
 
     return particles;

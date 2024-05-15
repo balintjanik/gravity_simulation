@@ -9,10 +9,10 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(width, height), "Gravitational Force Simulation");
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Gravitational Force Simulation");
 
     // Init particles
-    std::vector<Particle> particles = generate_particles(0, width, 0, height);
+    std::vector<Particle> particles = generate_particles(0, WIDTH, 0, HEIGHT);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -28,15 +28,15 @@ int main()
         window.clear();
 
         // Draw trails first to avoid trails covering particles
-        if (has_trail)
+        if (HAS_TRAIL)
         {
             for (auto& p : particles)
             {
-                sf::Color current_trail_color = trail_color;
+                sf::Color current_trail_color = TRAIL_COLOR;
                 for (int i = 0; i < p.trail.size(); i++)
                 {
-                    sf::CircleShape circle(trail_radius);
-                    current_trail_color.a = ((255 * i) / trail_size);
+                    sf::CircleShape circle(TRAIL_RADIUS);
+                    current_trail_color.a = ((255 * i) / TRAIL_SIZE);
                     circle.setFillColor(current_trail_color);
                     circle.setPosition(p.trail[i].x, p.trail[i].y);
                     window.draw(circle);
