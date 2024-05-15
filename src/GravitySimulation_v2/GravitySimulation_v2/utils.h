@@ -5,11 +5,15 @@
 #include <vector>
 #include "particle.h"
 
-sf::Color HSVtoRGB(float H, float S, float V);
+sf::Color hsv_to_rgb(float H, float S, float V);
 
-sf::Color mapForcesToColor(float all_forces);
+sf::Color map_forces_to_color(float all_forces);
 
-float generateRandomFloat(float min_value, float max_value);
+float generate_random_float(float min_value, float max_value);
+
+float v2f_distance(sf::Vector2f v1, sf::Vector2f v2);
+
+float map_value(float value, float min_input, float max_input, float min_output, float max_output);
 
 std::vector<Particle> generate_particles(float min_x, float max_x, float min_y, float max_y);
 

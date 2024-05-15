@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include <SFML/Graphics.hpp>
+#include "setup_type.h"
 
 // width and height of screen
 const int WIDTH = 1920;
@@ -10,8 +11,12 @@ const int HEIGHT = 1080;
 // timestep (speed of animation)
 const float TIMESTEP = 0.1f;
 
+// setup type
+const PlacementType PLACEMENT_TYPE = PlacementType::Circular;
+const SpeedType SPEED_TYPE = SpeedType::AngularSpeed;
+
 // number of particles
-const int N = 500;
+const int N = 800;
 
 // properties of particles
 const int RADIUS = 2;
@@ -24,9 +29,9 @@ const float MAX_FORCES = 0.9f;
 const bool HAS_BORDERS = true;
 
 // trail settings
-const bool HAS_TRAIL = false;
+const bool HAS_TRAIL = true;
 const int TRAIL_SIZE = 50;
-const float TRAIL_RADIUS = 1;
+const float TRAIL_RADIUS = 0.5f;
 const sf::Color TRAIL_COLOR = sf::Color(40,40,40);
 
 // small damping to avoid uncontrollable velocities
