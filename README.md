@@ -12,13 +12,16 @@ More on how to run this program will be shared soon.
 Some snapshots will be uploaded once the project is finished.
 
 Current progress:
-<img src="data/sample_v2.0.1_cropped.gif" alt="sample gif of simulation">
-As it can be seen, the collision handling is infinitely more accurate in this simulation compared to my previous work in Processing. Now the formation of planets has become possible, however, the centrifugal forces are tearing apart the larger planets.
+<img src="data/sample_v2.0.1_1_cropped.gif" alt="sample gif of simulation">
+<img src="data/sample_v2.0.1_2_cropped.gif" alt="sample gif of simulation">
+As it can be seen, the collision handling is infinitely more accurate in this simulation compared to my previous work in Processing. Now the formation of planets has become possible, however, the centrifugal forces are tearing apart the larger planets. This problem is unsolved for now.
 
 ## Progress
 
 ### 2024.05.15.
  - The option of trails for particles is added, to achieve better visuals.
+ - Small amount of damping added.
+ - Organised code and variable names.
 
 ### 2024.05.14. - branch v2.0
  - The base project is set up, particles can be rendered.
