@@ -22,6 +22,11 @@ void update_gravity(vector<Particle>& particles)
             Particle& p_2 = particles[j];
             float angle = atan2(p_1.position.y - p_2.position.y, p_1.position.x - p_2.position.x);
             float distance = v2f_distance(p_1.position, p_2.position);
+
+            // Dampen angular velocity for close particles
+            float min_distance = p_1.radius + p_2.radius + 1;
+            if (distance < min_distance + DAMPING_DIST)
+                angle = angle * (1 - DAMPING_COEFF);
             
             // Calculate gravitational force
             float g = 1;
@@ -90,6 +95,11 @@ void update_collisions(std::vector<Particle>& particles)
                 p_2.velocity.x -= impulse * normal_x * p_1.mass;
                 p_2.velocity.y -= impulse * normal_y * p_1.mass;
             }
+            // Dampen velocity of close particles to avoid too fast spinning of planets
+            else if (distance < min_distance + DAMPING_DIST)
+            {
+                p_1.velocity *= (1 - DAMPING_COEFF);
+            }
         }
     }
 }
@@ -120,6 +130,6 @@ void update_positions(vector<Particle> &particles)
     // Calculate new positions
     for (auto& p : particles)
     {
-        p.position += p.velocity * TIMESTEP * (1 - DAMPING_COEFF);
+        p.position += p.velocity * TIMESTEP;
     }
 }

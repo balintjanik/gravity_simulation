@@ -4,38 +4,40 @@
 #include <SFML/Graphics.hpp>
 #include "setup_type.h"
 
-// width and height of screen
+// Width and height of screen
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
 
-// timestep (speed of animation)
-const float TIMESTEP = 0.1f;
+// Timestep (speed of animation)
+const float TIMESTEP = 0.01f;
 
-// setup type
+// Setup type
 const PlacementType PLACEMENT_TYPE = PlacementType::Circular;
 const SpeedType SPEED_TYPE = SpeedType::AngularSpeed;
 
-// number of particles
-const int N = 800;
+// Number of particles
+const int N = 500;
 
-// properties of particles
+// Properties of particles
 const int RADIUS = 2;
 const float MASS = 1;
 
-// max force to expect per particle (for coloring purposes only)
-const float MAX_FORCES = 0.9f;
+// Max force to expect per particle (for coloring purposes only)
+const float MAX_FORCES = 1.0f;
 
-// bounce back from edges of screen
+// Bounce back from edges of screen
 const bool HAS_BORDERS = true;
 
-// trail settings
-const bool HAS_TRAIL = true;
+// Trail settings
+const bool HAS_TRAIL = false;
 const int TRAIL_SIZE = 50;
 const float TRAIL_RADIUS = 0.5f;
 const sf::Color TRAIL_COLOR = sf::Color(40,40,40);
 
-// small damping to avoid uncontrollable velocities
-const float DAMPING_COEFF = 0.1f;
+// Small damping to avoid uncontrollable velocities (first dampens the angular velocity, then the final calculated velocity again)
+// THESE SETTINGS ARE CAREFULLY SET AND NOT ADVISED TO BE CHANGED
+const float DAMPING_COEFF = MASS * TIMESTEP / 4;
+const float DAMPING_DIST = 2.0f;
 
 
 #endif

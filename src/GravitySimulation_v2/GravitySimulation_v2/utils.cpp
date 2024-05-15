@@ -31,7 +31,7 @@ sf::Color hsv_to_rgb(float H, float S, float V)
 
 sf::Color map_forces_to_color(float all_forces)
 {
-    float normalized_forces = all_forces / MAX_FORCES;
+    float normalized_forces = min(all_forces / MAX_FORCES, 1.0f);
     float hue = (1.0f - normalized_forces) * 0.65f;
     float saturation = 1.0f;
     float value = 1.0f;
