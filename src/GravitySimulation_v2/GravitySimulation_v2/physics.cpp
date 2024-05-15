@@ -64,7 +64,7 @@ void update_collisions(std::vector<Particle>& particles)
             float dx = p_2.position.x - p_1.position.x;
             float dy = p_2.position.y - p_1.position.y;
             float distance = v2f_distance(p_1.position, p_2.position);
-            float min_distance = p_1.radius + p_2.radius + 1;
+            float min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
 
             // Check collision
             if (distance < min_distance)
