@@ -69,31 +69,37 @@ void update_collisions(std::vector<Particle>& particles)
             // Check collision
             if (distance < min_distance)
             {
-                float displacement_x = (dx / distance) * (min_distance - distance) / 2.0f;
-                float displacement_y = (dy / distance) * (min_distance - distance) / 2.0f;
+                if (HAS_OVERLAPCHECK)
+                {
+                    float displacement_x = (dx / distance) * (min_distance - distance) / 2.0f;
+                    float displacement_y = (dy / distance) * (min_distance - distance) / 2.0f;
 
-                // Update position directly to avoid overlaps
-                p_1.position.x -= displacement_x;
-                p_1.position.y -= displacement_y;
-                p_2.position.x += displacement_x;
-                p_2.position.y += displacement_y;
+                    // Update position directly to avoid overlaps
+                    p_1.position.x -= displacement_x;
+                    p_1.position.y -= displacement_y;
+                    p_2.position.x += displacement_x;
+                    p_2.position.y += displacement_y;
+                }
 
-                // Calculate relative velocity
-                float relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
-                float relative_velocity_y = p_2.velocity.y - p_1.velocity.y;
+                if (HAS_BOUNCEOFF)
+                {
+                    // Calculate relative velocity
+                    float relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
+                    float relative_velocity_y = p_2.velocity.y - p_1.velocity.y;
 
-                // Calculate normal vector
-                float normal_x = dx / distance;
-                float normal_y = dy / distance;
+                    // Calculate normal vector
+                    float normal_x = dx / distance;
+                    float normal_y = dy / distance;
 
-                // Calculate impulse (change in velocity)
-                float impulse = 1.0f * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
+                    // Calculate impulse (change in velocity)
+                    float impulse = 1.0f * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
 
-                // Update velocities based on impulse (conservation of momentum)
-                p_1.velocity.x += impulse * normal_x * p_2.mass;
-                p_1.velocity.y += impulse * normal_y * p_2.mass;
-                p_2.velocity.x -= impulse * normal_x * p_1.mass;
-                p_2.velocity.y -= impulse * normal_y * p_1.mass;
+                    // Update velocities based on impulse (conservation of momentum)
+                    p_1.velocity.x += impulse * normal_x * p_2.mass;
+                    p_1.velocity.y += impulse * normal_y * p_2.mass;
+                    p_2.velocity.x -= impulse * normal_x * p_1.mass;
+                    p_2.velocity.y -= impulse * normal_y * p_1.mass;
+                }
             }
             // Dampen velocity of close particles to avoid too fast spinning of planets
             else if (distance < min_distance + DAMPING_DIST)

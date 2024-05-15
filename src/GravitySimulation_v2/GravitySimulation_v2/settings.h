@@ -13,7 +13,7 @@ const float TIMESTEP = 0.005f;
 
 // Setup type
 const PlacementType PLACEMENT_TYPE = PlacementType::Fullscreen;
-const SpeedType SPEED_TYPE = SpeedType::Central;
+const SpeedType SPEED_TYPE = SpeedType::Zero;
 
 // Number of particles
 const int N = 500;
@@ -26,7 +26,7 @@ const float MASS = 1;
 const float MAX_FORCES = 3.0f;
 
 // Bounce back from edges of screen
-const bool HAS_BORDERS = false;
+const bool HAS_BORDERS = true;
 
 // Trail settings
 const bool HAS_TRAIL = false;
@@ -34,8 +34,10 @@ const int TRAIL_SIZE = 50;
 const float TRAIL_RADIUS = 0.5f;
 const sf::Color TRAIL_COLOR = sf::Color(40,40,40);
 
-// Amount of space left between particles
-const float COLLISION_THRESHOLD = 0.5f;
+// Collision settings (to fully turn off collision set both to false)
+const bool HAS_OVERLAPCHECK = true; // Turns on/off overlap avoidance
+const bool HAS_BOUNCEOFF = true; // Turns on/off bounce off when collide (conservation of momentum)
+const float COLLISION_THRESHOLD = 0.5f; // Amount of space left between particles
 
 // Small damping to avoid uncontrollable velocities (first dampens the angular velocity, then the final calculated velocity again)
 // THESE SETTINGS ARE CAREFULLY SET AND NOT ADVISED TO BE CHANGED
