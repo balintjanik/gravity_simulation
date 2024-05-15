@@ -27,8 +27,8 @@ As it can be seen, the collision handling is infinitely more accurate in this si
  - Setup types can be specified (fullscreen or circular)
  - Initial speeds can be specified (random, angular, or no speed)
 
-<img src="data/sample_v2.0.1_circular_1.png" alt="sample image of simulation circular setup" width="500px">
-<img src="data/sample_v2.0.1_circular_2.png" alt="sample image of simulation circular setup" width="500px">
+<img src="data/sample_v2.0.1_circular_1.png" alt="sample image of simulation circular setup" width="350px">
+<img src="data/sample_v2.0.1_circular_2.png" alt="sample image of simulation circular setup" width="350px">
 
 ### 2024.05.14. - branch v2.0
  - The base project is set up, particles can be rendered
