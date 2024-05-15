@@ -22,11 +22,29 @@ int main()
         }
 
         // Update positions
-        update_positions(particles, timestep);
+        update_positions(particles);
 
-        // Draw particles
+        // Display
         window.clear();
 
+        // Draw trails first to avoid trails covering particles
+        if (has_trail)
+        {
+            for (auto& p : particles)
+            {
+                sf::Color current_trail_color = trail_color;
+                for (int i = 0; i < p.trail.size(); i++)
+                {
+                    sf::CircleShape circle(trail_radius);
+                    current_trail_color.a = ((255 * i) / trail_size);
+                    circle.setFillColor(current_trail_color);
+                    circle.setPosition(p.trail[i].x, p.trail[i].y);
+                    window.draw(circle);
+                }
+            }
+        }
+
+        // Draw particles
         for (auto& p : particles)
         {
             sf::CircleShape circle(p.radius);

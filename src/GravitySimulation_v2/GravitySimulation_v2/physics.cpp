@@ -94,14 +94,29 @@ void update_collisions(std::vector<Particle>& particles)
     }
 }
 
-void update_positions(vector<Particle> &particles, float timestep)
+void update_trails(vector<Particle>& particles)
+{
+    for (auto& p : particles)
+    {
+        if (p.trail.size() > trail_size)
+            p.trail.pop_front();
+        sf::Vector2f old_position(p.position.x, p.position.y);
+        p.trail.push_back(old_position);
+    }
+}
+
+void update_positions(vector<Particle> &particles)
 {
     // Calculate collisions
     update_collisions(particles);
 
     // Calculate gravitational forces
     update_gravity(particles);
-    
+
+    // Update trails
+    if (has_trail)
+        update_trails(particles);
+
     // Calculate new positions
     for (auto& p : particles)
     {
