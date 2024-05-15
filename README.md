@@ -12,8 +12,10 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
-### 2024.05.15 - current v2.1.1
+### 2024.05.15 - branch v2.1.1
  - Added collision threshold setting
+ - Added collision (overlap and conservation of momentum) switches
+ - Added central speed setup
  - Played with settings
 
 If a planet is too dense it randomly shoots out some particles, resulting in solar flare-like behaviour
