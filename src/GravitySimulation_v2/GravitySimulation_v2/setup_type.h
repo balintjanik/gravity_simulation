@@ -14,9 +14,10 @@ const float PI = 3.1415926535897932384626433832795028841971693993751058209749445
 
 enum class SpeedType
 {
-    RandSpeed,
-    AngularSpeed,
-    NoSpeed
+    Random,
+    Angular,
+    Zero,
+    Central
 };
 
 #endif

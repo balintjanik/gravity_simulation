@@ -12,8 +12,8 @@ const int HEIGHT = 1080;
 const float TIMESTEP = 0.005f;
 
 // Setup type
-const PlacementType PLACEMENT_TYPE = PlacementType::Circular;
-const SpeedType SPEED_TYPE = SpeedType::AngularSpeed;
+const PlacementType PLACEMENT_TYPE = PlacementType::Fullscreen;
+const SpeedType SPEED_TYPE = SpeedType::Central;
 
 // Number of particles
 const int N = 500;
@@ -26,7 +26,7 @@ const float MASS = 1;
 const float MAX_FORCES = 3.0f;
 
 // Bounce back from edges of screen
-const bool HAS_BORDERS = true;
+const bool HAS_BORDERS = false;
 
 // Trail settings
 const bool HAS_TRAIL = false;

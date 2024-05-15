@@ -68,6 +68,7 @@ vector<Particle> generate_particles(float min_x, float max_x, float min_y, float
     float vx, vy;
     float r, theta;
     float ang_to_cent, angle, distance, speed, rand_x, rand_y;
+    sf::Vector2f direction;
 
     for (int i = 0; i < N - 1; i++)
     {
@@ -90,11 +91,11 @@ vector<Particle> generate_particles(float min_x, float max_x, float min_y, float
         // set velocity
         switch (SPEED_TYPE)
         {
-            case SpeedType::RandSpeed:
+            case SpeedType::Random:
                 vx = generate_random_float(-1.0f, 1.0f);
                 vy = generate_random_float(-1.0f, 1.0f);
                 break;
-            case SpeedType::AngularSpeed:
+            case SpeedType::Angular:
                 ang_to_cent = atan2(y - HEIGHT / 2, x - WIDTH / 2);
                 angle = ang_to_cent + 90;
                 distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(WIDTH / 2, HEIGHT / 2));
@@ -104,7 +105,12 @@ vector<Particle> generate_particles(float min_x, float max_x, float min_y, float
                 vx = speed * cos(angle) * rand_x;
                 vy = speed * sin(angle) * rand_y;
                 break;
-            default: // NoSpeed is default
+            case SpeedType::Central:
+                direction = sf::Vector2f(WIDTH / 2 - x, HEIGHT / 2 - y);
+                vx = direction.x;
+                vy = direction.y;
+                break;
+            default: // Zero is default
                 vx = 0.0f;
                 vy = 0.0f;
                 break;
