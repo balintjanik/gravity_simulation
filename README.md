@@ -15,24 +15,24 @@ Some snapshots will be uploaded once the project is finished.
 As it can be seen, the collision handling is infinitely more accurate in this simulation compared to my previous work in Processing.
 <div style="display: flex; margin-bottom: 3vh;">
     <div style="max-width: 45%; margin-right: 5%;">
-        (v2.0.1)
+        <p>(v2.0.1)</p>
         <img src="data/sample_v2.0.1_1_cropped.gif" alt="sample gif of simulation">
     </div>
     <div style="max-width: 45%; margin-right: 5%;">
-        (v2.0.1)
+        <p>(v2.0.1)</p>
         <img src="data/sample_v2.0.1_2_cropped.gif" alt="sample gif of simulation">
     </div>
 </div>
 
 <div style="display: flex;">
     <div style="max-width: 45%; margin-right: 5%;">
-        Now the formation of planets has become possible, and the implemented angular velocity dampings prevent them from tearing apart due to centrifugal forces.
-        (v2.1.0)
+        <p>Now the formation of planets has become possible, and the implemented angular velocity dampings prevent them from tearing apart due to centrifugal forces.
+        (v2.1.0)</p>
         <img src="data/sample_v2.1.0_1_planet_cropped.gif" alt="sample gif of simulation planet formation" >
     </div>
     <div style="max-width: 45%;">
-        If a planet is too dense it randomly shoots out some particles, resulting in solar flare-like behaviour
-        (v2.1.1)
+        <p>If a planet is too dense it randomly shoots out some particles, resulting in solar flare-like behaviour
+        (v2.1.1)</p>
         <img src="data/sample_v2.1.1_1_solarflare_cropped.gif" alt="sample gif of simulation solar flare">
     </div>
 </div>
