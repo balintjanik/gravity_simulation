@@ -12,7 +12,7 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
-### 2024.05.15 - branch v2.1.1
+### 2024.05.15 - Release v2.1.1
  - Added collision threshold setting
  - Added collision (overlap and conservation of momentum) switches
  - Added central speed setup
@@ -22,7 +22,7 @@ If a planet is too dense it randomly shoots out some particles, resulting in sol
 
 <img src="data/sample_v2.1.1_1_solarflare_cropped.gif" alt="sample gif of simulation solar flare">
 
-### 2024.05.15. - branch v2.1.0
+### 2024.05.15. - v2.1.0 (no release, changes can be found in v2.1.1)
  - Added damping to angular velocities for close particles
  - Added overall velocity damping for close particles
  - These modifications do not allow the centrifugal forces to tear apart planets so easily
@@ -32,7 +32,7 @@ Now the formation of planets has become possible, and the implemented angular ve
 
 <img src="data/sample_v2.1.0_1_planet_cropped.gif" alt="sample gif of simulation planet formation">
 
-### 2024.05.15. - branch v2.0.1
+### 2024.05.15. - Release v2.0.1
  - The option of trails for particles is added, to achieve better visuals
  - Small amount of damping added
  - Organised code and variable names
@@ -44,7 +44,7 @@ Now the formation of planets has become possible, and the implemented angular ve
     <img src="data/sample_v2.0.1_circular_2.png" alt="sample image of simulation circular setup" style="width: 45%;">
 </div>
 
-### 2024.05.14. - branch v2.0
+### 2024.05.14. - Release v2.0.0
  - The base project is set up, particles can be rendered
  - The gravitational forces are implemented, and the particles are colored accordingly
  - The option of particles bouncing off screen borders is added
