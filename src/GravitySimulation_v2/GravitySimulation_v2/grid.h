@@ -50,9 +50,11 @@ public:
         int old_cell_index = get_cell_index(particle.old_position.x, particle.old_position.y);
         int new_cell_index = get_cell_index(particle.position.x, particle.position.y);
 
-        if (old_cell_index != new_cell_index && old_cell_index < cells.size() && new_cell_index < cells.size()) {
-            cells[old_cell_index].particle_indices.erase(particle.id);
-            cells[new_cell_index].particle_indices.insert(particle.id);
+        if (old_cell_index != new_cell_index) {
+            if (old_cell_index < cells.size())
+                cells[old_cell_index].particle_indices.erase(particle.id);
+            if (new_cell_index < cells.size())
+                cells[new_cell_index].particle_indices.insert(particle.id);
         }
     }
 

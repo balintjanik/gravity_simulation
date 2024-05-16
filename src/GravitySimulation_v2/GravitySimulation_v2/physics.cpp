@@ -41,12 +41,6 @@ void update_gravity(vector<Particle>& particles)
         // Update color based on amount of gravitational force
         sf::Color updated_color = map_forces_to_color(all_force);
         p_1.color = updated_color;
-
-        // Bounce back from borders if enabled
-        if (HAS_BORDERS) {
-            if (p_1.position.x > WIDTH || p_1.position.x < 0) p_1.velocity.x = -p_1.velocity.x;
-            if (p_1.position.y > HEIGHT || p_1.position.y < 0) p_1.velocity.y = -p_1.velocity.y;
-        }
     }
 }
 
@@ -153,6 +147,16 @@ void update_trails(vector<Particle>& particles)
     }
 }
 
+void check_borders(vector<Particle>& particles)
+{
+    for (auto& p : particles)
+    {
+        // Bounce back from borders if enabled
+        if (p.position.x > WIDTH || p.position.x < 0) p.velocity.x = -p.velocity.x;
+        if (p.position.y > HEIGHT || p.position.y < 0) p.velocity.y = -p.velocity.y;
+    }
+}
+
 void update_positions(vector<Particle> &particles, Grid& collision_grid)
 {
     // Calculate collisions
@@ -164,6 +168,11 @@ void update_positions(vector<Particle> &particles, Grid& collision_grid)
     // Update trails
     if (HAS_TRAIL)
         update_trails(particles);
+
+    // Check borders
+    if (HAS_BORDERS) {
+        check_borders(particles);
+    }
 
     // Calculate new positions
     for (auto& p : particles)
