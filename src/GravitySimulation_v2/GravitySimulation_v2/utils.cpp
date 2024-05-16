@@ -6,6 +6,7 @@
 #include "settings.h"
 #include "particle.h"
 #include "setup_type.h"
+#include "grid.h"
 
 using namespace std;
 
@@ -121,7 +122,30 @@ vector<Particle> generate_particles(float min_x, float max_x, float min_y, float
         sf::Color particleColor(sf::Color::Blue);
 
         particles.push_back(Particle(initialPosition, initialVelocity, particleColor, RADIUS, MASS));
+        id_counter++;
     }
 
     return particles;
+}
+
+void init_collision_grid(vector<Particle>& particles, Grid& collision_grid)
+{
+    for (auto& p : particles)
+    {
+        collision_grid.add_particle(p);
+    }
+}
+
+int get_idx_by_id(vector<Particle>& particles, int id)
+{
+    int i = 0;
+    while (i < N && particles[i].id != id)
+    {
+        i++;
+    }
+    if (i < N)
+    {
+        return i;
+    }
+    return -1;
 }

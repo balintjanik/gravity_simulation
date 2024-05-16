@@ -1,9 +1,9 @@
-#include <iostream>
 #include <vector>
 
 #include "settings.h"
 #include "particle.h"
 #include "utils.h"
+#include "grid.h"
 
 using namespace std;
 
@@ -22,15 +22,15 @@ void update_gravity(vector<Particle>& particles)
             Particle& p_2 = particles[j];
             float angle = atan2(p_1.position.y - p_2.position.y, p_1.position.x - p_2.position.x);
             float distance = v2f_distance(p_1.position, p_2.position);
-
-            // Dampen angular velocity for close particles
-            float min_distance = p_1.radius + p_2.radius + 1;
-            if (distance < min_distance + DAMPING_DIST)
-                angle = angle * (1 - DAMPING_COEFF);
             
             // Calculate gravitational force
             float g = 1;
             float force = (g * p_1.mass * p_2.mass) / pow(distance, 2);
+
+            // Dampen angular velocity for close particles
+            float min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
+            if (distance < min_distance + DAMPING_DIST)
+                angle = angle * (1 - DAMPING_COEFF);
 
             // Update velocity
             p_1.velocity.x -= force * cos(angle);
@@ -50,15 +50,28 @@ void update_gravity(vector<Particle>& particles)
     }
 }
 
-void update_collisions(std::vector<Particle>& particles)
+void check_cells_collision(vector<Particle>& particles, Cell& cell_1, Cell& cell_2)
 {
-    for (int i = 0; i < N; i++)
-    {
-        Particle& p_1 = particles[i];
+    int idx_1, idx_2;
 
-        for (int j = i + 1; j < N; j++)
+    for (auto it1 = cell_1.particle_indices.begin(); it1 != cell_1.particle_indices.end(); ++it1)
+    {
+        idx_1 = get_idx_by_id(particles, *it1);
+        if (idx_1 < 0)
+            continue;
+
+        Particle& p_1 = particles[idx_1];
+
+        for (auto it2 = cell_2.particle_indices.begin(); it2 != cell_2.particle_indices.end(); ++it2)
         {
-            Particle& p_2 = particles[j];
+            idx_2 = get_idx_by_id(particles, *it2);
+            if (idx_2 < 0)
+                continue;
+
+            Particle& p_2 = particles[idx_2];
+
+            if (p_1.id == p_2.id)
+                continue;
 
             // Calculate distances
             float dx = p_2.position.x - p_1.position.x;
@@ -102,9 +115,28 @@ void update_collisions(std::vector<Particle>& particles)
                 }
             }
             // Dampen velocity of close particles to avoid too fast spinning of planets
-            else if (distance < min_distance + DAMPING_DIST)
+            else if (distance < min_distance + DAMPING_DIST && p_1.id < p_2.id)
             {
                 p_1.velocity *= (1 - DAMPING_COEFF);
+            }
+        }
+    }
+}
+
+void update_collisions(vector<Particle>& particles, Grid& collision_grid)
+{
+    for (int x = 1; x < collision_grid.width - 1; x++)
+    {
+        for (int y = 1; y < collision_grid.height - 1; y++)
+        {
+            auto& current_cell = collision_grid.get(x, y);
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    auto& other_cell = collision_grid.get(x + dx, y + dy);
+                    check_cells_collision(particles, current_cell, other_cell);
+                }
             }
         }
     }
@@ -121,10 +153,10 @@ void update_trails(vector<Particle>& particles)
     }
 }
 
-void update_positions(vector<Particle> &particles)
+void update_positions(vector<Particle> &particles, Grid& collision_grid)
 {
     // Calculate collisions
-    update_collisions(particles);
+    update_collisions(particles, collision_grid);
 
     // Calculate gravitational forces
     update_gravity(particles);
@@ -136,6 +168,9 @@ void update_positions(vector<Particle> &particles)
     // Calculate new positions
     for (auto& p : particles)
     {
+        p.old_position = p.position;
         p.position += p.velocity * TIMESTEP;
+
+        collision_grid.update_particle_cell(p);
     }
 }

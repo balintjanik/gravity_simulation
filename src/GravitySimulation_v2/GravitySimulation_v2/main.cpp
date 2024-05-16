@@ -6,6 +6,7 @@
 #include "settings.h"
 #include "utils.h"
 #include "physics.h"
+#include "grid.h"
 
 int main()
 {
@@ -13,6 +14,8 @@ int main()
 
     // Init particles
     std::vector<Particle> particles = generate_particles(0, WIDTH, 0, HEIGHT);
+    Grid collision_grid(COLLISION_CELL_SIZE);
+    init_collision_grid(particles, collision_grid);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -22,7 +25,7 @@ int main()
         }
 
         // Update positions
-        update_positions(particles);
+        update_positions(particles, collision_grid);
 
         // Display
         window.clear();

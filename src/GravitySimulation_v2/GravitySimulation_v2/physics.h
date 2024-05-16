@@ -3,12 +3,15 @@
 
 #include <vector>
 #include "particle.h"
+#include "grid.h"
 
-void update_positions(std::vector<Particle>& particles);
+void update_positions(std::vector<Particle>& particles, Grid& collision_grid);
 
 void update_gravity(std::vector<Particle>& particles);
 
-void update_collisions(std::vector<Particle>& particles);
+void check_cells_collision(std::vector<Particle>& particles, Cell& cell_1, Cell& cell_2);
+
+void update_collisions(std::vector<Particle>& particles, Grid& collision_grid);
 
 void update_trails(std::vector<Particle>& particles);
 #endif
