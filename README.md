@@ -12,7 +12,7 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
-### 2024.05.17 - v2.2.0
+### 2024.05.17 - Release v2.2.0
  - Added static grid based spatial partitioning optimization to collision handling
  - Added grid visualization settings
 
