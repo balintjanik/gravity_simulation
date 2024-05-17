@@ -142,8 +142,7 @@ void update_trails(vector<Particle>& particles)
     {
         if (p.trail.size() > TRAIL_SIZE)
             p.trail.pop_front();
-        sf::Vector2f old_position(p.position.x, p.position.y);
-        p.trail.push_back(old_position);
+        p.trail.push_back(p.position);
     }
 }
 
@@ -159,6 +158,12 @@ void check_borders(vector<Particle>& particles)
 
 void update_positions(vector<Particle> &particles, Grid& collision_grid)
 {
+    // Save old positions
+    for (auto& p : particles)
+    {
+        p.old_position = p.position;
+    }
+
     // Calculate collisions
     update_collisions(particles, collision_grid);
 
@@ -177,9 +182,7 @@ void update_positions(vector<Particle> &particles, Grid& collision_grid)
     // Calculate new positions
     for (auto& p : particles)
     {
-        p.old_position = p.position;
         p.position += p.velocity * TIMESTEP;
-
         collision_grid.update_particle_cell(p);
     }
 }

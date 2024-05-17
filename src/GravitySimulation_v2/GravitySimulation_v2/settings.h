@@ -44,8 +44,10 @@ const float COLLISION_THRESHOLD = 0.5f; // Amount of space left between particle
 const float DAMPING_COEFF = MASS * TIMESTEP / 10;
 const float DAMPING_DIST = 2.0f;
 
-// for collision optimization
-static int id_counter = 0;
+// Collision optimization settings
+const bool VISUALIZE_SPATIAL_GRID = false; // draw grid
+const bool VISUALIZE_PARTICLE_CELL = false; // color particle based on position in optimization grid (instead of the forces acting on it)
+static int id_counter = 0; // DO NOT MODIFY
 const int COLLISION_CELL_SIZE = 50; // WARNING: this const must be a divisor of both WIDTH and HEIGHT otherwise program crashes
 
 #endif
