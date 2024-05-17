@@ -34,14 +34,16 @@ public:
     void add_particle(const Particle& particle)
     {
         int cell_index = get_cell_index(particle.position.x, particle.position.y);
-        cells[cell_index].particle_indices.insert(particle.id);
+        if (cell_index < cells.size())
+            cells[cell_index].particle_indices.insert(particle.id);
     }
 
     // Remove particle from grid cell
     void remove_particle(const Particle& particle)
     {
         int cell_index = get_cell_index(particle.position.x, particle.position.y);
-        cells[cell_index].particle_indices.erase(particle.id);
+        if (cell_index < cells.size())
+            cells[cell_index].particle_indices.erase(particle.id);
     }
 
     // Update particle cell (move from old to new cell if necessary)
