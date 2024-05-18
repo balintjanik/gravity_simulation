@@ -1,9 +1,6 @@
 #include <vector>
 
-#include "settings.h"
-#include "particle.h"
-#include "utils.h"
-#include "grid.h"
+#include "physics.h"
 
 using namespace std;
 

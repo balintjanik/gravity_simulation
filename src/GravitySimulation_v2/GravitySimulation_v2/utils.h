@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <SFML/Graphics.hpp>
+#include <random>
 #include <vector>
 #include "particle.h"
 #include "grid.h"

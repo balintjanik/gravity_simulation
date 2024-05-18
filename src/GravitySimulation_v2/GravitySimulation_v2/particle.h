@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <deque>
+#include "settings.h"
 
 struct Particle {
     sf::Vector2f position;

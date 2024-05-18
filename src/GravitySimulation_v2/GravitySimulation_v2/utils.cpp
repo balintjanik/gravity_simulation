@@ -1,12 +1,4 @@
-#include <SFML/Graphics.hpp>
-
-#include <random>
-#include <vector>
-
-#include "settings.h"
-#include "particle.h"
-#include "setup_type.h"
-#include "grid.h"
+#include "utils.h"
 
 using namespace std;
 
@@ -42,9 +34,9 @@ sf::Color map_forces_to_color(float all_forces)
 
 float generate_random_float(float min_value, float max_value)
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> dist(min_value, max_value);
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_real_distribution<float> dist(min_value, max_value);
 
     return dist(gen);
 }

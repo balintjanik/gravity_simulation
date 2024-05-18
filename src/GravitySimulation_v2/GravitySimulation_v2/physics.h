@@ -1,9 +1,13 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
+#include <SFML/Graphics.hpp>
+
 #include <vector>
+
 #include "particle.h"
 #include "grid.h"
+#include "utils.h"
 
 void update_positions(std::vector<Particle>& particles, Grid& collision_grid);
 
