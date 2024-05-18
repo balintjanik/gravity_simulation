@@ -8,6 +8,7 @@
 #include "particle.h"
 #include "grid.h"
 #include "utils.h"
+#include "double_vector_ops.h"
 
 void update_positions(std::vector<Particle>& particles, Grid& collision_grid);
 

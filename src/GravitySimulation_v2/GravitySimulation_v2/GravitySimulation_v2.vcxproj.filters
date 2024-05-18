@@ -27,6 +27,9 @@
     <ClCompile Include="grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="double_vector_ops.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -46,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="grid.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="double_vector_ops.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

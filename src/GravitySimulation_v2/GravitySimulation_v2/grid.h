@@ -1,19 +1,23 @@
 #ifndef GRID_H
 #define GRID_H
 
+#include <SFML/Graphics.hpp>
 #include <unordered_set>
 #include "settings.h"
 #include "particle.h"
 
 struct Cell {
     std::unordered_set<int> particle_indices;
+
+    double total_mass = 0.0f;
+    sf::Vector2f center_of_mass = { 0.0f, 0.0f };
 };
 
 class Grid {
 public:
     int width, height;
 
-    Grid(float cell_size)
+    Grid(double cell_size)
         : width(WIDTH / cell_size), height(HEIGHT / cell_size), cell_size(cell_size) {
         cells.resize((WIDTH / cell_size) * (HEIGHT / cell_size));
     }
@@ -24,7 +28,7 @@ public:
     }
 
     // Get cell index based on position
-    int get_cell_index(float x, float y) const;
+    int get_cell_index(double x, double y) const;
 
     // Add particle to grid cell
     void add_particle(const Particle& particle);

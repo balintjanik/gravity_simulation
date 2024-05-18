@@ -9,7 +9,7 @@ void update_gravity(vector<Particle>& particles)
     for (int i = 0; i < N; i++)
     {
         Particle& p_1 = particles[i];
-        float all_force = 0.0f;
+        double all_force = 0.0f;
 
         for (int j = 0; j < N; j++)
         {
@@ -17,15 +17,15 @@ void update_gravity(vector<Particle>& particles)
 
             // Calculate distance and angle
             Particle& p_2 = particles[j];
-            float angle = atan2(p_1.position.y - p_2.position.y, p_1.position.x - p_2.position.x);
-            float distance = v2f_distance(p_1.position, p_2.position);
+            double angle = atan2(p_1.position.y - p_2.position.y, p_1.position.x - p_2.position.x);
+            double distance = v2f_distance(p_1.position, p_2.position);
             
             // Calculate gravitational force
-            float g = 1;
-            float force = (g * p_1.mass * p_2.mass) / pow(distance, 2);
+            double g = 1;
+            double force = (g * p_1.mass * p_2.mass) / pow(distance, 2);
 
             // Dampen angular velocity for close particles
-            float min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
+            double min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
             if (distance < min_distance + DAMPING_DIST)
                 angle = angle * (1 - DAMPING_COEFF);
 
@@ -65,18 +65,18 @@ void check_cells_collision(vector<Particle>& particles, Cell& cell_1, Cell& cell
                 continue;
 
             // Calculate distances
-            float dx = p_2.position.x - p_1.position.x;
-            float dy = p_2.position.y - p_1.position.y;
-            float distance = v2f_distance(p_1.position, p_2.position);
-            float min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
+            double dx = p_2.position.x - p_1.position.x;
+            double dy = p_2.position.y - p_1.position.y;
+            double distance = v2f_distance(p_1.position, p_2.position);
+            double min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
 
             // Check collision
             if (distance < min_distance)
             {
                 if (HAS_OVERLAPCHECK)
                 {
-                    float displacement_x = (dx / distance) * (min_distance - distance) / 2.0f;
-                    float displacement_y = (dy / distance) * (min_distance - distance) / 2.0f;
+                    double displacement_x = (dx / distance) * (min_distance - distance) / 2.0f;
+                    double displacement_y = (dy / distance) * (min_distance - distance) / 2.0f;
 
                     // Update position directly to avoid overlaps
                     p_1.position.x -= displacement_x;
@@ -88,15 +88,15 @@ void check_cells_collision(vector<Particle>& particles, Cell& cell_1, Cell& cell
                 if (HAS_BOUNCEOFF)
                 {
                     // Calculate relative velocity
-                    float relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
-                    float relative_velocity_y = p_2.velocity.y - p_1.velocity.y;
+                    double relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
+                    double relative_velocity_y = p_2.velocity.y - p_1.velocity.y;
 
                     // Calculate normal vector
-                    float normal_x = dx / distance;
-                    float normal_y = dy / distance;
+                    double normal_x = dx / distance;
+                    double normal_y = dy / distance;
 
                     // Calculate impulse (change in velocity)
-                    float impulse = 1.0f * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
+                    double impulse = 1.0f * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
 
                     // Update velocities based on impulse (conservation of momentum)
                     p_1.velocity.x += impulse * normal_x * p_2.mass;

@@ -1,6 +1,6 @@
 #include "grid.h"
 
-int Grid::get_cell_index(float x, float y) const
+int Grid::get_cell_index(double x, double y) const
 {
     int cell_x = std::floor(x / cell_size);
     int cell_y = std::floor(y / cell_size);
