@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void update_gravity()
+/*void update_gravity()
 {
     for (int i = 0; i < N; i++)
     {
@@ -39,6 +39,59 @@ void update_gravity()
         // Update color based on amount of gravitational force
         sf::Color updated_color = map_forces_to_color(all_force);
         p_1.color = updated_color;
+    }
+}*/
+
+void update_gravity(Grid& grid) {
+    for (auto& p_1 : particles) {
+        sf::Vector2f force = { 0.0f, 0.0f };
+        int p1_cell_index = grid.get_cell_index(p_1.position.x, p_1.position.y);
+        int p_1_x = std::floor(p_1.position.x / grid.cell_size);
+        int p_1_y = std::floor(p_1.position.y / grid.cell_size);
+
+        for (int x = 0; x < grid.width; x++) {
+            for (int y = 0; y < grid.height; y++) {
+                if (abs(p_1_x - x) <= 1 && abs(p_1_y - y) <= 1)
+                    continue;
+
+                const Cell& cell = grid.get(x,y);
+                if (cell.total_mass > 0.0f) {
+                    sf::Vector2f direction = cell.center_of_mass - p_1.position;
+                    double distance = sqrt(direction.x * direction.x + direction.y * direction.y);
+                    double g = 1;
+                    double force_magnitude = (g * p_1.mass * cell.total_mass) / (distance * distance);
+                    force += direction / distance * force_magnitude;
+                }
+            }
+        }
+
+        // Now calculate detailed interactions with neighboring cells
+        for (int dx = -1; dx <= 1; ++dx) {
+            for (int dy = -1; dy <= 1; ++dy) {
+                
+                if (p_1_x + dx < 0 || p_1_x + dx >= grid.width
+                    || p_1_y + dy < 0 || p_1_y + dy >= grid.height)
+                    continue;
+
+                const Cell& cell = grid.get(p_1_x + dx, p_1_y + dy);
+                for (int particle_id : cell.particle_indices) {
+                    if (particle_id == p_1.id) continue;
+
+                    int idx = get_idx_by_id(particle_id);
+                    if (idx < 0)
+                        continue;
+
+                    const Particle& p2 = particles[idx];
+                    sf::Vector2f direction = p2.position - p_1.position;
+                    double distance = sqrt(direction.x * direction.x + direction.y * direction.y);
+                    double g = 1;
+                    double force_magnitude = (g * p_1.mass * p2.mass) / (distance * distance);
+                    force += direction / distance * force_magnitude;
+                }
+            }
+        }
+
+        p_1.velocity += force;
     }
 }
 
@@ -166,7 +219,7 @@ void update_positions(Grid& collision_grid)
     update_collisions(collision_grid);
 
     // Calculate gravitational forces
-    update_gravity();
+    update_gravity(collision_grid);
 
     // Update trails
     if (HAS_TRAIL)

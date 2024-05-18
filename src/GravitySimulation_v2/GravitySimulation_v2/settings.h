@@ -12,11 +12,11 @@ const int HEIGHT = 1100;
 const double TIMESTEP = 0.005;
 
 // Setup type
-const PlacementType PLACEMENT_TYPE = PlacementType::Circular;
+const PlacementType PLACEMENT_TYPE = PlacementType::Fullscreen;
 const SpeedType SPEED_TYPE = SpeedType::Angular;
 
 // Number of particles
-const int N = 500;
+const int N = 2000;
 
 // Properties of particles
 const int RADIUS = 1;

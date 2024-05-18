@@ -20,6 +20,7 @@ public:
 class Grid {
 public:
     int width, height;
+    double cell_size;
 
     Grid(double cell_size)
         : width(WIDTH / cell_size), height(HEIGHT / cell_size), cell_size(cell_size) {
@@ -44,8 +45,6 @@ public:
     void update_particle_cell(Particle& particle);
 
 private:
-    float cell_size;
-
     std::vector<Cell> cells;
 
     void update_cell_mass_and_com(int cell_index);

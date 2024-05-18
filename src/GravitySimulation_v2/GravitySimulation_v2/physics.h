@@ -11,7 +11,7 @@
 
 void update_positions(Grid& collision_grid);
 
-void update_gravity();
+void update_gravity(Grid& grid);
 
 void check_cells_collision(Cell& cell_1, Cell& cell_2);
 
