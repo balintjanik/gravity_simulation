@@ -112,7 +112,7 @@ int main()
                         else
                             circle.setFillColor(p.color);
 
-                        circle.setPosition(p.position.x, p.position.y);
+                        circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
                         window.draw(circle);
                     }
                 }

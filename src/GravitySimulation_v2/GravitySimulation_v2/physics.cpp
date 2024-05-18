@@ -83,17 +83,17 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
 {
     int idx_1, idx_2;
 
-    for (auto it1 = cell_1.particle_indices.begin(); it1 != cell_1.particle_indices.end(); ++it1)
+    for (int ids_1 : cell_1.particle_indices)
     {
-        idx_1 = get_idx_by_id(*it1);
+        idx_1 = get_idx_by_id(ids_1);
         if (idx_1 < 0)
             continue;
 
         Particle& p_1 = particles[idx_1];
 
-        for (auto it2 = cell_2.particle_indices.begin(); it2 != cell_2.particle_indices.end(); ++it2)
+        for (int ids_2 : cell_2.particle_indices)
         {
-            idx_2 = get_idx_by_id(*it2);
+            idx_2 = get_idx_by_id(ids_2);
             if (idx_2 < 0)
                 continue;
 
@@ -154,15 +154,19 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
 
 void update_collisions(Grid& collision_grid)
 {
-    for (int x = 1; x < collision_grid.width - 1; x++)
+    for (int x = 0; x < collision_grid.width; x++)
     {
-        for (int y = 1; y < collision_grid.height - 1; y++)
+        for (int y = 0; y < collision_grid.height; y++)
         {
             auto& current_cell = collision_grid.get(x, y);
             for (int dx = -1; dx <= 1; dx++)
             {
                 for (int dy = -1; dy <= 1; dy++)
                 {
+                    if (x + dx < 0 || x + dx >= collision_grid.width
+                        || y + dy < 0 || y + dy >= collision_grid.height)
+                        continue;
+
                     auto& other_cell = collision_grid.get(x + dx, y + dy);
                     check_cells_collision(current_cell, other_cell);
                 }
@@ -217,7 +221,7 @@ void update_positions(Grid& collision_grid)
                 p.position.x = p.radius;
                 p.velocity.x = -p.velocity.x;
             }
-            if (p.position.y + p.radius>= HEIGHT)
+            if (p.position.y + p.radius >= HEIGHT)
             {
                 p.position.y = HEIGHT - p.radius;
                 p.velocity.y = -p.velocity.y;
