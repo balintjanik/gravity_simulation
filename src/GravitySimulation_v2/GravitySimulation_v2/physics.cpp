@@ -181,16 +181,6 @@ void update_trails()
     }
 }
 
-void check_borders()
-{
-    for (auto& p : particles)
-    {
-        // Bounce back from borders if enabled
-        if (p.position.x > WIDTH || p.position.x < 0) p.velocity.x = -p.velocity.x;
-        if (p.position.y > HEIGHT || p.position.y < 0) p.velocity.y = -p.velocity.y;
-    }
-}
-
 void update_positions(Grid& collision_grid)
 {
     // Save old positions
@@ -209,15 +199,37 @@ void update_positions(Grid& collision_grid)
     if (HAS_TRAIL)
         update_trails();
 
-    // Check borders
-    if (HAS_BORDERS) {
-        check_borders();
-    }
-
     // Calculate new positions
     for (auto& p : particles)
     {
         p.position += p.velocity * TIMESTEP;
+
+        // Bounce back from borders if enabled
+        if (HAS_BORDERS)
+        {
+            if (p.position.x + p.radius >= WIDTH)
+            {
+                p.position.x = WIDTH - p.radius;
+                p.velocity.x = -p.velocity.x;
+            }
+            else if (p.position.x - p.radius < 0)
+            {
+                p.position.x = p.radius;
+                p.velocity.x = -p.velocity.x;
+            }
+            if (p.position.y + p.radius>= HEIGHT)
+            {
+                p.position.y = HEIGHT - p.radius;
+                p.velocity.y = -p.velocity.y;
+            }
+            else if (p.position.y - p.radius < 0)
+            {
+                p.position.y = p.radius;
+                p.velocity.y = -p.velocity.y;
+            }
+        }
+
+        // Reassign to new cell in optimization grid if necessary
         collision_grid.update_particle_cell(p);
     }
 }

@@ -14,7 +14,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Gravitational Force Simulation");
 
     // Init particles
-    particles = generate_particles(0, WIDTH, 0, HEIGHT);
+    particles = generate_particles(SPAWN_MARGIN, WIDTH - SPAWN_MARGIN, SPAWN_MARGIN, HEIGHT - SPAWN_MARGIN);
     Grid collision_grid(COLLISION_CELL_SIZE);
     init_collision_grid(collision_grid);
 
@@ -56,7 +56,10 @@ int main()
             {
                 sf::CircleShape circle(p.radius);
                 circle.setFillColor(p.color);
-                circle.setPosition(p.position.x, p.position.y);
+
+                // setPosition sets the coordinates of top left corner
+                circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
+
                 window.draw(circle);
             }
         }
