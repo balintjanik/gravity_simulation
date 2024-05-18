@@ -12,12 +12,12 @@ const int HEIGHT = 900;
 const double TIMESTEP = 0.05;
 
 // Setup type
-const PlacementType PLACEMENT_TYPE = PlacementType::Fullscreen;
+const PlacementType PLACEMENT_TYPE = PlacementType::Circular;
 const SpeedType SPEED_TYPE = SpeedType::Angular;
 const int SPAWN_MARGIN = 50; // avoids spawning particles at edge of screen
 
 // Number of particles
-const int N = 1000;
+const int N = 700;
 
 // Properties of particles
 const int RADIUS = 2;
@@ -39,6 +39,7 @@ const sf::Color TRAIL_COLOR = sf::Color(40,40,40);
 const bool HAS_OVERLAPCHECK = true; // Turns on/off overlap avoidance
 const bool HAS_BOUNCEOFF = true; // Turns on/off bounce off when collide (conservation of momentum)
 const double COLLISION_THRESHOLD = 0.5f; // Amount of space left between particles
+const int COLLISION_ITERATIONS = 3; // Amount of collision handles per frame (higher is more accurate handling but more expensive)
 
 // Small damping to avoid uncontrollable velocities (first dampens the angular velocity, then the final calculated velocity again)
 // THESE SETTINGS ARE CAREFULLY SET AND NOT ADVISED TO BE CHANGED

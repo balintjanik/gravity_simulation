@@ -146,7 +146,7 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
             // Dampen velocity of close particles to avoid too fast spinning of planets
             else if (distance < min_distance + DAMPING_DIST && p_1.id < p_2.id)
             {
-                p_1.velocity *= (1 - DAMPING_COEFF);
+                p_1.velocity *= (1 - DAMPING_COEFF/ pow(COLLISION_ITERATIONS, 2));
             }
         }
     }
@@ -194,7 +194,11 @@ void update_positions(Grid& collision_grid)
     }
 
     // Calculate collisions
-    update_collisions(collision_grid);
+    for (int i = 0; i < COLLISION_ITERATIONS; i++)
+    {
+        update_collisions(collision_grid);
+    }
+
 
     // Calculate gravitational forces
     update_gravity(collision_grid);
