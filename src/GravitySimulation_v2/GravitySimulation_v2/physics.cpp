@@ -1,10 +1,11 @@
 #include <vector>
 
+#include "globals.h"
 #include "physics.h"
 
 using namespace std;
 
-void update_gravity(vector<Particle>& particles)
+void update_gravity()
 {
     for (int i = 0; i < N; i++)
     {
@@ -41,13 +42,13 @@ void update_gravity(vector<Particle>& particles)
     }
 }
 
-void check_cells_collision(vector<Particle>& particles, Cell& cell_1, Cell& cell_2)
+void check_cells_collision(Cell& cell_1, Cell& cell_2)
 {
     int idx_1, idx_2;
 
     for (auto it1 = cell_1.particle_indices.begin(); it1 != cell_1.particle_indices.end(); ++it1)
     {
-        idx_1 = get_idx_by_id(particles, *it1);
+        idx_1 = get_idx_by_id(*it1);
         if (idx_1 < 0)
             continue;
 
@@ -55,7 +56,7 @@ void check_cells_collision(vector<Particle>& particles, Cell& cell_1, Cell& cell
 
         for (auto it2 = cell_2.particle_indices.begin(); it2 != cell_2.particle_indices.end(); ++it2)
         {
-            idx_2 = get_idx_by_id(particles, *it2);
+            idx_2 = get_idx_by_id(*it2);
             if (idx_2 < 0)
                 continue;
 
@@ -114,7 +115,7 @@ void check_cells_collision(vector<Particle>& particles, Cell& cell_1, Cell& cell
     }
 }
 
-void update_collisions(vector<Particle>& particles, Grid& collision_grid)
+void update_collisions(Grid& collision_grid)
 {
     for (int x = 1; x < collision_grid.width - 1; x++)
     {
@@ -126,14 +127,14 @@ void update_collisions(vector<Particle>& particles, Grid& collision_grid)
                 for (int dy = -1; dy <= 1; dy++)
                 {
                     auto& other_cell = collision_grid.get(x + dx, y + dy);
-                    check_cells_collision(particles, current_cell, other_cell);
+                    check_cells_collision(current_cell, other_cell);
                 }
             }
         }
     }
 }
 
-void update_trails(vector<Particle>& particles)
+void update_trails()
 {
     for (auto& p : particles)
     {
@@ -143,7 +144,7 @@ void update_trails(vector<Particle>& particles)
     }
 }
 
-void check_borders(vector<Particle>& particles)
+void check_borders()
 {
     for (auto& p : particles)
     {
@@ -153,7 +154,7 @@ void check_borders(vector<Particle>& particles)
     }
 }
 
-void update_positions(vector<Particle> &particles, Grid& collision_grid)
+void update_positions(Grid& collision_grid)
 {
     // Save old positions
     for (auto& p : particles)
@@ -162,18 +163,18 @@ void update_positions(vector<Particle> &particles, Grid& collision_grid)
     }
 
     // Calculate collisions
-    update_collisions(particles, collision_grid);
+    update_collisions(collision_grid);
 
     // Calculate gravitational forces
-    update_gravity(particles);
+    update_gravity();
 
     // Update trails
     if (HAS_TRAIL)
-        update_trails(particles);
+        update_trails();
 
     // Check borders
     if (HAS_BORDERS) {
-        check_borders(particles);
+        check_borders();
     }
 
     // Calculate new positions

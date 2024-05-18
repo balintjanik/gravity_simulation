@@ -4,8 +4,10 @@
 #include <SFML/Graphics.hpp>
 #include <random>
 #include <vector>
+#include "globals.h"
 #include "particle.h"
-#include "grid.h"
+
+class Grid;
 
 sf::Color hsv_to_rgb(double H, double S, double V);
 
@@ -19,8 +21,8 @@ double map_value(double value, double min_input, double max_input, double min_ou
 
 std::vector<Particle> generate_particles(double min_x, double max_x, double min_y, double max_y);
 
-void init_collision_grid(std::vector<Particle>& particles, Grid& collision_grid);
+void init_collision_grid(Grid& collision_grid);
 
-int get_idx_by_id(std::vector<Particle>& particles, int id);
+int get_idx_by_id(int id);
 
 #endif

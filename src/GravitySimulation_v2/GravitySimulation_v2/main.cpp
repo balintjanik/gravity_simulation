@@ -3,6 +3,7 @@
 #include <vector>
 #include <random>
 
+#include "globals.h"
 #include "settings.h"
 #include "utils.h"
 #include "physics.h"
@@ -13,9 +14,9 @@ int main()
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Gravitational Force Simulation");
 
     // Init particles
-    std::vector<Particle> particles = generate_particles(0, WIDTH, 0, HEIGHT);
+    particles = generate_particles(0, WIDTH, 0, HEIGHT);
     Grid collision_grid(COLLISION_CELL_SIZE);
-    init_collision_grid(particles, collision_grid);
+    init_collision_grid(collision_grid);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -25,7 +26,7 @@ int main()
         }
 
         // Update positions
-        update_positions(particles, collision_grid);
+        update_positions(collision_grid);
 
         // Display
         window.clear();
@@ -94,7 +95,7 @@ int main()
                     auto& current_cell = collision_grid.get(x, y);
                     for (auto it1 = current_cell.particle_indices.begin(); it1 != current_cell.particle_indices.end(); ++it1)
                     {
-                        idx = get_idx_by_id(particles, *it1);
+                        idx = get_idx_by_id(*it1);
                         if (idx < 0)
                             continue;
 

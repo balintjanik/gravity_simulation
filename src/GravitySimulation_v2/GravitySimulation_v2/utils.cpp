@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "grid.h"
 
 using namespace std;
 
@@ -120,7 +121,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
     return particles;
 }
 
-void init_collision_grid(vector<Particle>& particles, Grid& collision_grid)
+void init_collision_grid(Grid& collision_grid)
 {
     for (auto& p : particles)
     {
@@ -128,7 +129,7 @@ void init_collision_grid(vector<Particle>& particles, Grid& collision_grid)
     }
 }
 
-int get_idx_by_id(vector<Particle>& particles, int id)
+int get_idx_by_id(int id)
 {
     int i = 0;
     while (i < N && particles[i].id != id)

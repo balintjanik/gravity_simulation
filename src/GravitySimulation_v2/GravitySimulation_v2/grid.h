@@ -3,10 +3,14 @@
 
 #include <SFML/Graphics.hpp>
 #include <unordered_set>
+#include "globals.h"
+#include "utils.h"
+#include "double_vector_ops.h"
 #include "settings.h"
 #include "particle.h"
 
-struct Cell {
+class Cell {
+public:
     std::unordered_set<int> particle_indices;
 
     double total_mass = 0.0f;
@@ -43,6 +47,8 @@ private:
     float cell_size;
 
     std::vector<Cell> cells;
+
+    void update_cell_mass_and_com(int cell_index);
 };
 
 #endif
