@@ -76,8 +76,8 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 y = HEIGHT / 2 + r * sin(theta);
                 break;
             default: // FullScreen is default
-                x = generate_random_double(0, WIDTH);
-                y = generate_random_double(0, HEIGHT);
+                x = generate_random_double(min_x, max_x);
+                y = generate_random_double(min_y, max_y);
                 break;
         }
         sf::Vector2f initialPosition(x, y);

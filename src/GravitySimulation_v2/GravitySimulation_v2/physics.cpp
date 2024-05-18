@@ -5,47 +5,9 @@
 
 using namespace std;
 
-/*void update_gravity()
-{
-    for (int i = 0; i < N; i++)
-    {
-        Particle& p_1 = particles[i];
-        double all_force = 0.0f;
-
-        for (int j = 0; j < N; j++)
-        {
-            if (i == j) continue;
-
-            // Calculate distance and angle
-            Particle& p_2 = particles[j];
-            double angle = atan2(p_1.position.y - p_2.position.y, p_1.position.x - p_2.position.x);
-            double distance = v2f_distance(p_1.position, p_2.position);
-            
-            // Calculate gravitational force
-            double g = 1;
-            double force = (g * p_1.mass * p_2.mass) / pow(distance, 2);
-
-            // Dampen angular velocity for close particles
-            double min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
-            if (distance < min_distance + DAMPING_DIST)
-                angle = angle * (1 - DAMPING_COEFF);
-
-            // Update velocity
-            p_1.velocity.x -= force * cos(angle);
-            p_1.velocity.y -= force * sin(angle);
-            all_force += force;
-        }
-
-        // Update color based on amount of gravitational force
-        sf::Color updated_color = map_forces_to_color(all_force);
-        p_1.color = updated_color;
-    }
-}*/
-
 void update_gravity(Grid& grid) {
     for (auto& p_1 : particles) {
-        sf::Vector2f force = { 0.0f, 0.0f };
-        int p1_cell_index = grid.get_cell_index(p_1.position.x, p_1.position.y);
+        double all_force = 0.0;
         int p_1_x = std::floor(p_1.position.x / grid.cell_size);
         int p_1_y = std::floor(p_1.position.y / grid.cell_size);
 
@@ -56,11 +18,18 @@ void update_gravity(Grid& grid) {
 
                 const Cell& cell = grid.get(x,y);
                 if (cell.total_mass > 0.0f) {
-                    sf::Vector2f direction = cell.center_of_mass - p_1.position;
-                    double distance = sqrt(direction.x * direction.x + direction.y * direction.y);
+                    // Calculate distance and angle
+                    double angle = atan2(p_1.position.y - cell.center_of_mass.y, p_1.position.x - cell.center_of_mass.x);
+                    double distance = v2f_distance(p_1.position, cell.center_of_mass);
+
+                    // Calculate gravitational force
                     double g = 1;
-                    double force_magnitude = (g * p_1.mass * cell.total_mass) / (distance * distance);
-                    force += direction / distance * force_magnitude;
+                    double force = (g * p_1.mass * cell.total_mass) / pow(distance, 2);
+
+                    // Update velocity
+                    p_1.velocity.x -= force * cos(angle);
+                    p_1.velocity.y -= force * sin(angle);
+                    all_force += force;
                 }
             }
         }
@@ -81,17 +50,32 @@ void update_gravity(Grid& grid) {
                     if (idx < 0)
                         continue;
 
-                    const Particle& p2 = particles[idx];
-                    sf::Vector2f direction = p2.position - p_1.position;
-                    double distance = sqrt(direction.x * direction.x + direction.y * direction.y);
+                    const Particle& p_2 = particles[idx];
+
+                    // Calculate distance and angle
+                    double angle = atan2(p_1.position.y - p_2.position.y, p_1.position.x - p_2.position.x);
+                    double distance = v2f_distance(p_1.position, p_2.position);
+
+                    // Calculate gravitational force
                     double g = 1;
-                    double force_magnitude = (g * p_1.mass * p2.mass) / (distance * distance);
-                    force += direction / distance * force_magnitude;
+                    double force = (g * p_1.mass * p_2.mass) / pow(distance, 2);
+
+                    // Dampen angular velocity for close particles
+                    double min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
+                    if (distance < min_distance + DAMPING_DIST)
+                        angle = angle * (1 - DAMPING_COEFF);
+
+                    // Update velocity
+                    p_1.velocity.x -= force * cos(angle);
+                    p_1.velocity.y -= force * sin(angle);
+                    all_force += force;
                 }
             }
         }
 
-        p_1.velocity += force;
+        // Update color based on amount of gravitational force
+        sf::Color updated_color = map_forces_to_color(all_force);
+        p_1.color = updated_color;
     }
 }
 
