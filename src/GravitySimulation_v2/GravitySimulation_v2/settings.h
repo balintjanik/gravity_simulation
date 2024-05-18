@@ -5,22 +5,22 @@
 #include "setup_type.h"
 
 // Width and height of screen
-const int WIDTH = 1920;
-const int HEIGHT = 1080;
+const int WIDTH = 1900;
+const int HEIGHT = 1100;
 
 // Timestep (speed of animation)
 const float TIMESTEP = 0.005f;
 
 // Setup type
-const PlacementType PLACEMENT_TYPE = PlacementType::Fullscreen;
-const SpeedType SPEED_TYPE = SpeedType::Zero;
+const PlacementType PLACEMENT_TYPE = PlacementType::Circular;
+const SpeedType SPEED_TYPE = SpeedType::Angular;
 
 // Number of particles
 const int N = 500;
 
 // Properties of particles
 const int RADIUS = 1;
-const float MASS = 1;
+const float MASS = 2;
 
 // Max force to expect per particle (for coloring purposes only)
 const float MAX_FORCES = 3.0f;
@@ -41,7 +41,13 @@ const float COLLISION_THRESHOLD = 0.5f; // Amount of space left between particle
 
 // Small damping to avoid uncontrollable velocities (first dampens the angular velocity, then the final calculated velocity again)
 // THESE SETTINGS ARE CAREFULLY SET AND NOT ADVISED TO BE CHANGED
-const float DAMPING_COEFF = MASS * TIMESTEP / 4;
+const float DAMPING_COEFF = MASS * TIMESTEP / 10;
 const float DAMPING_DIST = 2.0f;
+
+// Collision optimization settings
+const bool VISUALIZE_SPATIAL_GRID = false; // draw grid
+const bool VISUALIZE_PARTICLE_CELL = false; // color particle based on position in optimization grid (instead of the forces acting on it)
+static int id_counter = 0; // DO NOT MODIFY
+const int COLLISION_CELL_SIZE = 50; // WARNING: this const must be a divisor of both WIDTH and HEIGHT otherwise program crashes
 
 #endif

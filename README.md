@@ -12,6 +12,18 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
+### 2024.05.17 - Release v2.2.0
+ - Added static grid based spatial partitioning optimization to collision handling
+ - Added grid visualization settings
+
+**Note:** grid is not always visible in these samples due to compression
+
+<img src="data/sample_v2.2.0_1_gridvisuals_cropped.gif">
+
+Here you can see 3000 particles rendered with collision handling in real time (gravity is turned off here, as that is not optimized yet, and significantly increases computational times)
+
+<img src="data/sample_v2.2.0_2_collision_cropped_2.gif" alt="sample gif of simulation collision">
+
 ### 2024.05.15 - Release v2.1.1
  - Added collision threshold setting
  - Added collision (overlap and conservation of momentum) switches

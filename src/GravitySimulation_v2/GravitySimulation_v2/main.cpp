@@ -6,6 +6,7 @@
 #include "settings.h"
 #include "utils.h"
 #include "physics.h"
+#include "grid.h"
 
 int main()
 {
@@ -13,6 +14,8 @@ int main()
 
     // Init particles
     std::vector<Particle> particles = generate_particles(0, WIDTH, 0, HEIGHT);
+    Grid collision_grid(COLLISION_CELL_SIZE);
+    init_collision_grid(particles, collision_grid);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -22,7 +25,7 @@ int main()
         }
 
         // Update positions
-        update_positions(particles);
+        update_positions(particles, collision_grid);
 
         // Display
         window.clear();
@@ -45,13 +48,73 @@ int main()
         }
 
         // Draw particles
-        for (auto& p : particles)
+        // If not set otherwise, draw them the most effective way
+        if (!(VISUALIZE_SPATIAL_GRID || VISUALIZE_PARTICLE_CELL))
         {
-            sf::CircleShape circle(p.radius);
-            circle.setFillColor(p.color);
-            circle.setPosition(p.position.x, p.position.y);
-            window.draw(circle);
+            for (auto& p : particles)
+            {
+                sf::CircleShape circle(p.radius);
+                circle.setFillColor(p.color);
+                circle.setPosition(p.position.x, p.position.y);
+                window.draw(circle);
+            }
         }
+        // If set, draw grid and color particles accordingly
+        else
+        {
+            // Draw grid
+            if (VISUALIZE_SPATIAL_GRID)
+            {
+                for (int x = 0; x < collision_grid.width; x++)
+                {
+                    for (int y = 0; y < collision_grid.height; y++)
+                    {
+                        sf::Vector2f c_size(COLLISION_CELL_SIZE, COLLISION_CELL_SIZE);
+                        sf::RectangleShape cell(c_size);
+                        cell.setFillColor(sf::Color::Transparent);
+                        cell.setOutlineColor(sf::Color(20, 20, 20));
+                        cell.setOutlineThickness(0.5f);
+                        cell.setPosition(x * COLLISION_CELL_SIZE, y * COLLISION_CELL_SIZE);
+                        window.draw(cell);
+                    }
+                }
+            }
+
+            // Draw particles of cells
+            int idx;
+            for (int x = 0; x < collision_grid.width; x++)
+            {
+                for (int y = 0; y < collision_grid.height; y++)
+                {
+                    // Calculate color based on grid position
+                    sf::Color col = sf::Color::Green;
+                    if ((y % 2 == 0 && x % 2 == 1) || (y % 2 == 1 && x % 2 == 0))
+                        col = sf::Color::Magenta;
+
+                    auto& current_cell = collision_grid.get(x, y);
+                    for (auto it1 = current_cell.particle_indices.begin(); it1 != current_cell.particle_indices.end(); ++it1)
+                    {
+                        idx = get_idx_by_id(particles, *it1);
+                        if (idx < 0)
+                            continue;
+
+                        Particle& p = particles[idx];
+
+                        sf::CircleShape circle(p.radius);
+
+                        // Set color based on custom settings
+                        if (VISUALIZE_PARTICLE_CELL)
+                            circle.setFillColor(col);
+                        else
+                            circle.setFillColor(p.color);
+
+                        circle.setPosition(p.position.x, p.position.y);
+                        window.draw(circle);
+                    }
+                }
+            }
+        }
+        
         window.display();
     }
 
