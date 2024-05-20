@@ -20,12 +20,15 @@ Some snapshots will be uploaded once the project is finished.
  - Added collision iteration option for higher accuracy collision handling
  - Fixed lack of collision handling at screen edges
  - Fixed particle not rendering at correct position bug
+ - Added cell mass visualization
 
 Now a stable and fast real-time simulation with 700-1000 particles is possible with both collisions and gravity enabled, however the static grid is not optimising enough when all particles are merged into one "planet". Sample of 1000 particles in real-time:
 
-<img src="data/sample_v2.3.0_1_cropped.gif">
+<img src="data/sample_v2.3.0_1_cropped.gif" alt="sample gif of simulation 1000 particles">
 
-**Note:** small lag is only due to recording compression
+<img src="data/sample_v2.3.0_2_cellmass_visualization_cropped_2.gif" alt="sample gif of simulation cell mass visualization">
+
+**Note:** small lag and noise is only due to recording compression
 
 
 ### 2024.05.17 - Release v2.2.0
@@ -34,7 +37,7 @@ Now a stable and fast real-time simulation with 700-1000 particles is possible w
 
 **Note:** grid is not always visible in these samples due to compression
 
-<img src="data/sample_v2.2.0_1_gridvisuals_cropped.gif">
+<img src="data/sample_v2.2.0_1_gridvisuals_cropped.gif" alt="sample gif of simulation grid visualisation">
 
 Here you can see 3000 particles rendered with collision handling in real time (gravity is turned off here, as that is not optimized yet, and significantly increases computational times)
 
