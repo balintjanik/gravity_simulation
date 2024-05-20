@@ -5,8 +5,8 @@
 #include "setup_type.h"
 
 // Width and height of screen
-const int WIDTH = 1800;
-const int HEIGHT = 900;
+const int WIDTH = 1900;
+const int HEIGHT = 1000;
 
 // Timestep (speed of animation)
 const double TIMESTEP = 0.1;
@@ -49,6 +49,7 @@ const double DAMPING_DIST = 2.0f;
 // Collision optimization settings
 const bool VISUALIZE_SPATIAL_GRID = false; // draw grid
 const bool VISUALIZE_PARTICLE_CELL = false; // color particle based on position in optimization grid (instead of the forces acting on it)
+const bool VISUALIZE_CELL_MASS = false; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 static int id_counter = 0; // DO NOT MODIFY
 const int COLLISION_CELL_SIZE = 20; // WARNING: this const must be a divisor of both WIDTH and HEIGHT otherwise program crashes
 

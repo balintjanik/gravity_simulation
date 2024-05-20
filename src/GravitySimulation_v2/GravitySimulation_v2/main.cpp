@@ -75,7 +75,15 @@ int main()
                     {
                         sf::Vector2f c_size(COLLISION_CELL_SIZE, COLLISION_CELL_SIZE);
                         sf::RectangleShape cell(c_size);
-                        cell.setFillColor(sf::Color::Transparent);
+
+                        sf::Color fill_col = sf::Color::Transparent;
+                        if (VISUALIZE_CELL_MASS)
+                        {
+                            fill_col = map_forces_to_color(collision_grid.get(x, y).total_mass/COLLISION_CELL_SIZE);
+                            fill_col.a = 140;
+                        }
+                        cell.setFillColor(fill_col);
+                        
                         cell.setOutlineColor(sf::Color(20, 20, 20));
                         cell.setOutlineThickness(0.5f);
                         cell.setPosition(x * COLLISION_CELL_SIZE, y * COLLISION_CELL_SIZE);
