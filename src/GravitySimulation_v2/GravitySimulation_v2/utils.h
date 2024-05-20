@@ -2,24 +2,27 @@
 #define UTILS_H
 
 #include <SFML/Graphics.hpp>
+#include <random>
 #include <vector>
+#include "globals.h"
 #include "particle.h"
-#include "grid.h"
 
-sf::Color hsv_to_rgb(float H, float S, float V);
+class Grid;
 
-sf::Color map_forces_to_color(float all_forces);
+sf::Color hsv_to_rgb(double H, double S, double V);
 
-float generate_random_float(float min_value, float max_value);
+sf::Color map_forces_to_color(double all_forces);
 
-float v2f_distance(sf::Vector2f v1, sf::Vector2f v2);
+double generate_random_double(double min_value, double max_value);
 
-float map_value(float value, float min_input, float max_input, float min_output, float max_output);
+double v2f_distance(sf::Vector2f v1, sf::Vector2f v2);
 
-std::vector<Particle> generate_particles(float min_x, float max_x, float min_y, float max_y);
+double map_value(double value, double min_input, double max_input, double min_output, double max_output);
 
-void init_collision_grid(std::vector<Particle>& particles, Grid& collision_grid);
+std::vector<Particle> generate_particles(double min_x, double max_x, double min_y, double max_y);
 
-int get_idx_by_id(std::vector<Particle>& particles, int id);
+void init_collision_grid(Grid& collision_grid);
+
+int get_idx_by_id(int id);
 
 #endif

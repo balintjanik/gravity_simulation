@@ -1,18 +1,28 @@
 #ifndef GRID_H
 #define GRID_H
 
+#include <SFML/Graphics.hpp>
 #include <unordered_set>
+#include "globals.h"
+#include "utils.h"
+#include "double_vector_ops.h"
+#include "settings.h"
 #include "particle.h"
 
-struct Cell {
+class Cell {
+public:
     std::unordered_set<int> particle_indices;
+
+    double total_mass = 0.0f;
+    sf::Vector2f center_of_mass = { 0.0f, 0.0f };
 };
 
 class Grid {
 public:
     int width, height;
+    double cell_size;
 
-    Grid(float cell_size)
+    Grid(double cell_size)
         : width(WIDTH / cell_size), height(HEIGHT / cell_size), cell_size(cell_size) {
         cells.resize((WIDTH / cell_size) * (HEIGHT / cell_size));
     }
@@ -23,47 +33,21 @@ public:
     }
 
     // Get cell index based on position
-    int get_cell_index(float x, float y) const
-    {
-        int cell_x = std::floor(x / cell_size);
-        int cell_y = std::floor(y / cell_size);
-        return cell_y * width + cell_x;
-    }
+    int get_cell_index(double x, double y) const;
 
     // Add particle to grid cell
-    void add_particle(const Particle& particle)
-    {
-        int cell_index = get_cell_index(particle.position.x, particle.position.y);
-        if (cell_index < cells.size())
-            cells[cell_index].particle_indices.insert(particle.id);
-    }
+    void add_particle(const Particle& particle);
 
     // Remove particle from grid cell
-    void remove_particle(const Particle& particle)
-    {
-        int cell_index = get_cell_index(particle.position.x, particle.position.y);
-        if (cell_index < cells.size())
-            cells[cell_index].particle_indices.erase(particle.id);
-    }
+    void remove_particle(const Particle& particle);
 
     // Update particle cell (move from old to new cell if necessary)
-    void update_particle_cell(Particle& particle)
-    {
-        int old_cell_index = get_cell_index(particle.old_position.x, particle.old_position.y);
-        int new_cell_index = get_cell_index(particle.position.x, particle.position.y);
-
-        if (old_cell_index != new_cell_index) {
-            if (old_cell_index < cells.size())
-                cells[old_cell_index].particle_indices.erase(particle.id);
-            if (new_cell_index < cells.size())
-                cells[new_cell_index].particle_indices.insert(particle.id);
-        }
-    }
+    void update_particle_cell(Particle& particle);
 
 private:
-    float cell_size;
-
     std::vector<Cell> cells;
+
+    void update_cell_mass_and_com(int cell_index);
 };
 
 #endif

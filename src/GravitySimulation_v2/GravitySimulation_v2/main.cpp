@@ -3,6 +3,7 @@
 #include <vector>
 #include <random>
 
+#include "globals.h"
 #include "settings.h"
 #include "utils.h"
 #include "physics.h"
@@ -13,9 +14,9 @@ int main()
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Gravitational Force Simulation");
 
     // Init particles
-    std::vector<Particle> particles = generate_particles(0, WIDTH, 0, HEIGHT);
+    particles = generate_particles(SPAWN_MARGIN, WIDTH - SPAWN_MARGIN, SPAWN_MARGIN, HEIGHT - SPAWN_MARGIN);
     Grid collision_grid(COLLISION_CELL_SIZE);
-    init_collision_grid(particles, collision_grid);
+    init_collision_grid(collision_grid);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -25,7 +26,7 @@ int main()
         }
 
         // Update positions
-        update_positions(particles, collision_grid);
+        update_positions(collision_grid);
 
         // Display
         window.clear();
@@ -55,7 +56,10 @@ int main()
             {
                 sf::CircleShape circle(p.radius);
                 circle.setFillColor(p.color);
-                circle.setPosition(p.position.x, p.position.y);
+
+                // setPosition sets the coordinates of top left corner
+                circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
+
                 window.draw(circle);
             }
         }
@@ -71,7 +75,15 @@ int main()
                     {
                         sf::Vector2f c_size(COLLISION_CELL_SIZE, COLLISION_CELL_SIZE);
                         sf::RectangleShape cell(c_size);
-                        cell.setFillColor(sf::Color::Transparent);
+
+                        sf::Color fill_col = sf::Color::Transparent;
+                        if (VISUALIZE_CELL_MASS)
+                        {
+                            fill_col = map_forces_to_color(collision_grid.get(x, y).total_mass/COLLISION_CELL_SIZE);
+                            fill_col.a = 140;
+                        }
+                        cell.setFillColor(fill_col);
+                        
                         cell.setOutlineColor(sf::Color(20, 20, 20));
                         cell.setOutlineThickness(0.5f);
                         cell.setPosition(x * COLLISION_CELL_SIZE, y * COLLISION_CELL_SIZE);
@@ -94,7 +106,7 @@ int main()
                     auto& current_cell = collision_grid.get(x, y);
                     for (auto it1 = current_cell.particle_indices.begin(); it1 != current_cell.particle_indices.end(); ++it1)
                     {
-                        idx = get_idx_by_id(particles, *it1);
+                        idx = get_idx_by_id(*it1);
                         if (idx < 0)
                             continue;
 
@@ -108,7 +120,7 @@ int main()
                         else
                             circle.setFillColor(p.color);
 
-                        circle.setPosition(p.position.x, p.position.y);
+                        circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
                         window.draw(circle);
                     }
                 }

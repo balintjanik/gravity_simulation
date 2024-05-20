@@ -2,7 +2,7 @@
 
 A particle system simulating gravitational forces made with C++ and SFML. Earlier, I had a Processing project simulating gravitational forces, which can be seen [here](https://github.com/balintjanik/gravity_simulation). Even though that project was fine, I decided to make the same simulation with C++ and SFML. In this project I am planning to make a much more accurate and computationally less effective simulation. Both the calculation of gravitational forces and the collisions are going to be optimized with spatial partitioning (grid).
 
-Currently the program calculates the gravitational forces affecting the particles and collisions (avoid overlap and conservation of momentum) and updates the display based on it. Calculation optimizations are not yet implemented. A small damping force is applied on angular velocity when particles are close, to avoid planets tearing apart due to too high centrifugal force.
+Currently the program calculates the gravitational forces affecting the particles and collisions (avoid overlap and conservation of momentum) and updates the display based on it. Both collisions and gravitational forces are optimized with a static grid based space partitioning approach, which works well for evenly distributed particles, but does not optimise enough in cases of large numbers of particles being concentrated in one place (maybe a quadtree approach would work better, whcih I might implement in the future). A small damping force is applied on angular velocity when particles are close, to avoid planets tearing apart due to too high centrifugal force.
 
 ## Use
 More on how to run this program will be shared soon.
@@ -12,13 +12,32 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
+### 2024.05.19 - Release v2.3.0
+ - Reorganised header files
+ - Switched to doubles from floats
+ - Added global particles
+ - Added static grid based spatial partitioning optimization to calculation of gravitational forces
+ - Added collision iteration option for higher accuracy collision handling
+ - Fixed lack of collision handling at screen edges
+ - Fixed particle not rendering at correct position bug
+ - Added cell mass visualization
+
+Now a stable and fast real-time simulation with 700-1000 particles is possible with both collisions and gravity enabled, however the static grid is not optimising enough when all particles are merged into one "planet". Sample of 1000 particles in real-time:
+
+<img src="data/sample_v2.3.0_1_cropped.gif" alt="sample gif of simulation 1000 particles">
+
+<img src="data/sample_v2.3.0_2_cellmass_visualization_cropped_2.gif" alt="sample gif of simulation cell mass visualization">
+
+**Note:** small lag and noise is only due to recording compression
+
+
 ### 2024.05.17 - Release v2.2.0
  - Added static grid based spatial partitioning optimization to collision handling
  - Added grid visualization settings
 
 **Note:** grid is not always visible in these samples due to compression
 
-<img src="data/sample_v2.2.0_1_gridvisuals_cropped.gif">
+<img src="data/sample_v2.2.0_1_gridvisuals_cropped.gif" alt="sample gif of simulation grid visualisation">
 
 Here you can see 3000 particles rendered with collision handling in real time (gravity is turned off here, as that is not optimized yet, and significantly increases computational times)
 
