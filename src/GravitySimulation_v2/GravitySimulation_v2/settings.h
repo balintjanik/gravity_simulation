@@ -9,7 +9,7 @@ const int WIDTH = 1800;
 const int HEIGHT = 900;
 
 // Timestep (speed of animation)
-const double TIMESTEP = 0.05;
+const double TIMESTEP = 0.1;
 
 // Setup type
 const PlacementType PLACEMENT_TYPE = PlacementType::Circular;
@@ -17,7 +17,7 @@ const SpeedType SPEED_TYPE = SpeedType::Angular;
 const int SPAWN_MARGIN = 50; // avoids spawning particles at edge of screen
 
 // Number of particles
-const int N = 700;
+const int N = 1000;
 
 // Properties of particles
 const int RADIUS = 2;

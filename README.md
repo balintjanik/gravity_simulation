@@ -21,7 +21,11 @@ Some snapshots will be uploaded once the project is finished.
  - Fixed lack of collision handling at screen edges
  - Fixed particle not rendering at correct position bug
 
-Now a stable and fast real-time simulation with 700-1000 particles is possible with both collisions and gravity enabled, however the static grid is not optimising enough when all particles are merged into one "planet".
+Now a stable and fast real-time simulation with 700-1000 particles is possible with both collisions and gravity enabled, however the static grid is not optimising enough when all particles are merged into one "planet". Sample of 1000 particles in real-time:
+
+<img src="data/sample_v2.3.0_1_cropped.gif">
+
+**Note:** small lag is only due to recording compression
 
 
 ### 2024.05.17 - Release v2.2.0
