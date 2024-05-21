@@ -24,6 +24,9 @@
     <ClCompile Include="physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
