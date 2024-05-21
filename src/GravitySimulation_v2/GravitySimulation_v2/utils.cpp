@@ -86,16 +86,16 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
         switch (SPEED_TYPE)
         {
             case SpeedType::Random:
-                vx = generate_random_double(-1.0f, 1.0f);
-                vy = generate_random_double(-1.0f, 1.0f);
+                vx = generate_random_double(-1.0, 1.0);
+                vy = generate_random_double(-1.0, 1.0);
                 break;
             case SpeedType::Angular:
                 ang_to_cent = atan2(y - HEIGHT / 2, x - WIDTH / 2);
                 angle = ang_to_cent + 90;
                 distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(WIDTH / 2, HEIGHT / 2));
-                speed = map_value(distance, 0.0f, R, 0.0f, MASS*10.0f);
-                rand_x = generate_random_double(0.7f, 2.0f);
-                rand_y = generate_random_double(0.7f, 2.0f);
+                speed = map_value(distance, 0.0, R, 0.0, MASS*10.0);
+                rand_x = generate_random_double(0.7, 2.0);
+                rand_y = generate_random_double(0.7, 2.0);
                 vx = speed * cos(angle) * rand_x;
                 vy = speed * sin(angle) * rand_y;
                 break;
@@ -105,8 +105,8 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 vy = direction.y;
                 break;
             default: // Zero is default
-                vx = 0.0f;
-                vy = 0.0f;
+                vx = 0.0;
+                vy = 0.0;
                 break;
         }
         sf::Vector2f initialVelocity(vx, vy);

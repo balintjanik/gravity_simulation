@@ -24,7 +24,7 @@ const int RADIUS = 2;
 const double MASS = 2;
 
 // Max force to expect per particle (for coloring purposes only)
-const double MAX_FORCES = 3.0f;
+const double MAX_FORCES = 3.0;
 
 // Bounce back from edges of screen
 const bool HAS_BORDERS = true;
@@ -32,19 +32,19 @@ const bool HAS_BORDERS = true;
 // Trail settings
 const bool HAS_TRAIL = false;
 const int TRAIL_SIZE = 50;
-const double TRAIL_RADIUS = 0.5f;
+const double TRAIL_RADIUS = 0.5;
 const sf::Color TRAIL_COLOR = sf::Color(40,40,40);
 
 // Collision settings (to fully turn off collision set both to false)
 const bool HAS_OVERLAPCHECK = true; // Turns on/off overlap avoidance
 const bool HAS_BOUNCEOFF = true; // Turns on/off bounce off when collide (conservation of momentum)
-const double COLLISION_THRESHOLD = 0.5f; // Amount of space left between particles
+const double COLLISION_THRESHOLD = 0.5; // Amount of space left between particles
 const int COLLISION_ITERATIONS = 3; // Amount of collision handles per frame (higher is more accurate handling but more expensive)
 
 // Small damping to avoid uncontrollable velocities (first dampens the angular velocity, then the final calculated velocity again)
 // THESE SETTINGS ARE CAREFULLY SET AND NOT ADVISED TO BE CHANGED
 const double DAMPING_COEFF = MASS * TIMESTEP / 10;
-const double DAMPING_DIST = 2.0f;
+const double DAMPING_DIST = 2.0;
 
 // Collision optimization settings
 const bool VISUALIZE_SPATIAL_GRID = false; // draw grid
