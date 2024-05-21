@@ -11,7 +11,14 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Gravitational Force Simulation");
+    sf::VideoMode screen = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window(screen, "Gravitational Force Simulation", sf::Style::Fullscreen);
+    WIDTH = screen.width;
+    HEIGHT = screen.height;
+    if (WIDTH > HEIGHT)
+        R = 2 * HEIGHT / 5;
+    else
+        R = 2 * WIDTH / 5;
 
     // Init particles
     particles = generate_particles(SPAWN_MARGIN, WIDTH - SPAWN_MARGIN, SPAWN_MARGIN, HEIGHT - SPAWN_MARGIN);
@@ -42,7 +49,7 @@ int main()
                     sf::CircleShape circle(TRAIL_RADIUS);
                     current_trail_color.a = ((255 * i) / TRAIL_SIZE);
                     circle.setFillColor(current_trail_color);
-                    circle.setPosition(p.trail[i].x, p.trail[i].y);
+                    circle.setPosition(p.trail[i].x - TRAIL_RADIUS, p.trail[i].y - TRAIL_RADIUS);
                     window.draw(circle);
                 }
             }
@@ -132,7 +139,10 @@ int main()
                         sf::Vector2f com_pos = collision_grid.get(x, y).center_of_mass;
                         if (com_pos.x == 0 && com_pos.y == 0)
                         {
-                            com.setPosition(x * COLLISION_CELL_SIZE + COLLISION_CELL_SIZE / 2 - 5, y * COLLISION_CELL_SIZE + COLLISION_CELL_SIZE / 2 - 5);
+                            int to_center = COLLISION_CELL_SIZE / 2;
+                            int correct_overflow_x = collision_grid.overflow_x / 2;
+                            int correct_overflow_y = collision_grid.overflow_y / 2;
+                            com.setPosition(x * COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_x, y * COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_y);
                         }
                         else
                         {

@@ -4,9 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "setup_type.h"
 
-// Width and height of screen
-const int WIDTH = 1920;
-const int HEIGHT = 1080;
+// We will automatically set width and height when the app starts
+extern int WIDTH, HEIGHT;
 
 // Timestep (speed of animation)
 const double TIMESTEP = 0.1;
@@ -15,6 +14,7 @@ const double TIMESTEP = 0.1;
 const PlacementType PLACEMENT_TYPE = PlacementType::Circular;
 const SpeedType SPEED_TYPE = SpeedType::Angular;
 const int SPAWN_MARGIN = 50; // avoids spawning particles at edge of screen
+extern int R; // radius of circle in case of PlacementType::Circular (automatically set)
 
 // Number of particles
 const int N = 1000;
