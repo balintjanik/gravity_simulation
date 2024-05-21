@@ -12,7 +12,7 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
-### 2024.05.21 - v2.3.2 \[UNDER DEVELOPMENT\]
+### 2024.05.21 - Release v2.3.2
  - Fixed uneven damping forces
 
 ### 2024.05.21 - Release v2.3.1
