@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include <SFML/Graphics.hpp>
+#include "rect_button.h"
 #include "setup_type.h"
 
 // We will automatically set width and height when the app starts
@@ -55,4 +56,16 @@ const bool VISUALIZE_COM = true; // visualize center of mass of cells [ONLY WORK
 static int id_counter = 0; // DO NOT MODIFY
 const int COLLISION_CELL_SIZE = 20; // WARNING: this const must be a divisor of both WIDTH and HEIGHT otherwise program crashes
 
+
+// Button settings
+extern sf::Font FONT;
+extern float FONT_SIZE;
+const int MARGIN_TOP = 50;
+const int MARGIN_LEFT = 20;
+const int MARGIN_BOTTOM = 50;
+const int MARGIN_RIGHT = 20;
+const int MARGIN_BETWEEN = 10;
+
+// Exit button
+extern RectButton EXIT_BTN;
 #endif

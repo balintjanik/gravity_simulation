@@ -6,6 +6,8 @@
 
 #include "button.h"
 #include "rect_button.h"
+#include "settings.h"
+#include <iostream>
 
 ////////////////////////////////////////////////////////////
 ///
@@ -24,8 +26,8 @@ RectButton::RectButton(const sf::Vector2f size = sf::Vector2f(0, 0), const sf::V
     this->button.setFillColor(defaultColor);
 
     this->label = "Button "+ std::to_string(count);
-    this->setButtonLabel(25.f, label);
-    //this->setLabelColor();
+    this->setButtonLabel(FONT_SIZE, label);
+    // this->setLabelColor();
 }
 
 ////////////////////////////////////////////////////////////
@@ -41,7 +43,7 @@ RectButton::RectButton(sf::Font& font, const sf::Vector2f size = sf::Vector2f(0,
 
     this->buttonLabel.setFont(font);
     this->label = "Button "+ std::to_string(count);
-    this->setButtonLabel(25.f, label);
+    this->setButtonLabel(FONT_SIZE, label);
 }
 
 ////////////////////////////////////////////////////////////
@@ -57,7 +59,7 @@ RectButton::RectButton(sf::Font& font, bool autoSize = false, const sf::Vector2f
 
     this->buttonLabel.setFont(font);
     this->label = "Button "+ std::to_string(count);
-    this->setButtonLabel(25.f, label);
+    this->setButtonLabel(FONT_SIZE, label);
 }
 
 ////////////////////////////////////////////////////////////
@@ -127,12 +129,12 @@ void RectButton::getButtonStatus(sf::RenderWindow& window, sf::Event& event)
 void RectButton::draw(sf::RenderWindow& window)
 {
     window.draw(button);
-
+    
     if (isLabelVisible)
     {
         window.draw(buttonLabel);
     }
-
+    
 }
 
 ////////////////////////////////////////////////////////////
@@ -164,8 +166,8 @@ void RectButton::setButtonLabel(float charSize, std::string label)
         this->buttonLabel.setOrigin(this->labelRect.width/2.0f,
                                     this->labelRect.height/2.0f);
 
-        this->buttonLabel.setPosition(this->buttonPos.x+(this->buttonRect.width/2.0f),
-                                      this->buttonPos.y+(this->buttonRect.height/4.0f));
+        this->buttonLabel.setPosition(this->buttonPos.x + (this->buttonRect.width/2.0f),
+                                      this->buttonPos.y + (this->buttonRect.height/2.0f) - (FONT_SIZE / 4));
     }
 }
 

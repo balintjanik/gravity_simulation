@@ -149,11 +149,18 @@
     <ClInclude Include="grid.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="physics.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="setup_type.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="rect_button.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GravitySimulation_v2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Poppins-Bold.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -9,10 +9,8 @@
 #include "physics.h"
 #include "grid.h"
 
-int main()
+void init_display_vars(sf::VideoMode screen)
 {
-    sf::VideoMode screen = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(screen, "Gravitational Force Simulation", sf::Style::Fullscreen);
     WIDTH = screen.width;
     HEIGHT = screen.height;
     CANVAS_WIDTH = WIDTH - MENU_WIDTH;
@@ -20,6 +18,23 @@ int main()
         R = 2 * HEIGHT / 5;
     else
         R = 2 * CANVAS_WIDTH / 5;
+}
+
+void init_buttons()
+{
+    FONT.loadFromFile("Poppins-Bold.ttf");
+    FONT_SIZE = 30;
+    EXIT_BTN = RectButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, 60), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP));
+    EXIT_BTN.setButtonLabel(FONT_SIZE, "EXIT");
+}
+
+int main()
+{
+    sf::VideoMode screen = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window(screen, "Gravitational Force Simulation", sf::Style::Fullscreen);
+
+    init_display_vars(screen);
+    init_buttons();
 
     // Init particles
     particles = generate_particles(SPAWN_MARGIN, CANVAS_WIDTH - SPAWN_MARGIN, SPAWN_MARGIN, CANVAS_WIDTH - SPAWN_MARGIN);
@@ -30,6 +45,11 @@ int main()
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
+                window.close();
+
+            EXIT_BTN.getButtonStatus(window, event);
+
+            if (EXIT_BTN.isPressed)
                 window.close();
         }
 
@@ -154,6 +174,9 @@ int main()
                 }
             }
         }
+
+        // Draw buttons
+        EXIT_BTN.draw(window);
         
         window.display();
     }

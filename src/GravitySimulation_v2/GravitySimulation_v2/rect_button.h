@@ -28,8 +28,8 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////
 
-#ifndef RECTBUTTON_HPP_INCLUDED
-#define RECTBUTTON_HPP_INCLUDED
+#ifndef RECTBUTTON_H
+#define RECTBUTTON_H
 
 ////////////////////////////////////////////////////////////
 // HEADERS
@@ -37,6 +37,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "button.h"
 
 ////////////////////////////////////////////////////////////
 ///
@@ -70,4 +71,4 @@ class RectButton: public Button
     //end of private
 };
 
-#endif // RECTBUTTON_HPP_INCLUDED
+#endif // RECTBUTTON_H

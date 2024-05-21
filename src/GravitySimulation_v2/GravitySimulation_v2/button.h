@@ -28,8 +28,8 @@
 // SOFTWARE.
 ////////////////////////////////////////////////////////////
 
-#ifndef BUTTON_HPP_INCLUDED
-#define BUTTON_HPP_INCLUDED
+#ifndef BUTTON_H
+#define BUTTON_H
 
 ////////////////////////////////////////////////////////////
 // HEADERS
@@ -40,9 +40,9 @@
 
 ////////////////////////////////////////////////////////////
 
-const sf::Color defaultColor = sf::Color(255,255,255);
-const sf::Color defaultHover = sf::Color(191, 191, 191);
-const sf::Color defaultPress = sf::Color(153, 153, 153);
+const sf::Color defaultColor = sf::Color(0, 100, 200);
+const sf::Color defaultHover = sf::Color(0, 130, 250);
+const sf::Color defaultPress = sf::Color(0, 70, 140);
 const sf::Color disabled = sf::Color(60,60,60);
 
 struct ColorSet
@@ -105,9 +105,9 @@ class Button
         sf::FloatRect labelRect;
         std::string label;
         ColorSet buttonColorSet;
-        ColorSet labelColorSet = ColorSet(sf::Color::Black) ;
+        ColorSet labelColorSet = ColorSet(sf::Color::White) ;
 
     //end of protected
 };
 
-#endif // BUTTON_HPP_INCLUDED
+#endif // BUTTON_H
