@@ -24,7 +24,11 @@ void init_buttons()
 {
     FONT.loadFromFile("Poppins-Bold.ttf");
     FONT_SIZE = 30;
-    EXIT_BTN = RectButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, 60), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP));
+
+    ONOFF_BTN = RectButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP), true);
+    ONOFF_BTN.setButtonLabel(FONT_SIZE, "ONOFF");
+
+    EXIT_BTN = RectButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + BTN_HEIGHT + MARGIN_TOP));
     EXIT_BTN.setButtonLabel(FONT_SIZE, "EXIT");
 }
 
@@ -47,6 +51,7 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
+            ONOFF_BTN.getButtonStatus(window, event);
             EXIT_BTN.getButtonStatus(window, event);
 
             if (EXIT_BTN.isPressed)
@@ -176,6 +181,7 @@ int main()
         }
 
         // Draw buttons
+        ONOFF_BTN.draw(window);
         EXIT_BTN.draw(window);
         
         window.display();

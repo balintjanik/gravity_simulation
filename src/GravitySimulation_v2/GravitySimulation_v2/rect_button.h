@@ -49,9 +49,9 @@ class RectButton: public Button
 {
     public:
 
-        RectButton(                const sf::Vector2f size, const sf::Vector2f position);
-        RectButton(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position);
-        RectButton(sf::Font& font, bool autoSize,           const sf::Vector2f position);
+        RectButton(                const sf::Vector2f size, const sf::Vector2f position, bool isToggle = false);
+        RectButton(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position, bool isToggle = false);
+        RectButton(sf::Font& font, bool autoSize,           const sf::Vector2f position, bool isToggle = false);
 
         ~RectButton();
 

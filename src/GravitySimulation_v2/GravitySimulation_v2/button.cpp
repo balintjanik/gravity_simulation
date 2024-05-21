@@ -36,23 +36,25 @@
 ColorSet::ColorSet()
 {
     this->color = defaultColor;
+    this->chosen = defaultChosen;
     this->hover = defaultHover;
     this->press = defaultPress;
 }
 
 ColorSet::ColorSet(sf::Color color)
 {
-    init(color, color, color);
+    init(color, color, color, color);
 }
 
-ColorSet::ColorSet(sf::Color color, sf::Color hover, sf::Color press)
+ColorSet::ColorSet(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press)
 {
-    init(color, hover, press);
+    init(color, chosen, hover, press);
 }
 
-void ColorSet::init(sf::Color color, sf::Color hover, sf::Color press)
+void ColorSet::init(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press)
 {
     this->color = color;
+    this->chosen = chosen;
     this->hover = hover;
     this->press = press;
 }
@@ -64,25 +66,27 @@ void Button::setButtonFont(sf::Font& font)
 
 void Button::setButtonColor(sf::Color color)
 {
-    setButtonColor(color,color,color);
+    setButtonColor(color,color,color,color);
 }
 
-void Button::setButtonColor(sf::Color color, sf::Color hover, sf::Color press)
+void Button::setButtonColor(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press)
 {
     this->buttonColorSet.color = color;
+    this->buttonColorSet.chosen = color;
     this->buttonColorSet.hover = hover;
     this->buttonColorSet.press = press;
 }
 
 void Button::setLabelColor(sf::Color color)
 {
-    setLabelColor(color,color,color);
+    setLabelColor(color,color,color,color);
 }
 
 
-void Button::setLabelColor(sf::Color color, sf::Color hover, sf::Color press)
+void Button::setLabelColor(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press)
 {
     this->labelColorSet.color = color;
+    this->labelColorSet.chosen = chosen;
     this->labelColorSet.hover = hover;
     this->labelColorSet.press = press;
 }

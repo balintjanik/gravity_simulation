@@ -65,7 +65,9 @@ const int MARGIN_LEFT = 20;
 const int MARGIN_BOTTOM = 50;
 const int MARGIN_RIGHT = 20;
 const int MARGIN_BETWEEN = 10;
+const int BTN_HEIGHT = 60;
 
-// Exit button
+// Buttons
+extern RectButton ONOFF_BTN;
 extern RectButton EXIT_BTN;
 #endif

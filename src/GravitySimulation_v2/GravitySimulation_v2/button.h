@@ -41,7 +41,8 @@
 ////////////////////////////////////////////////////////////
 
 const sf::Color defaultColor = sf::Color(0, 100, 200);
-const sf::Color defaultHover = sf::Color(0, 130, 250);
+const sf::Color defaultChosen = sf::Color(0, 150, 245);
+const sf::Color defaultHover = sf::Color(0, 160, 255);
 const sf::Color defaultPress = sf::Color(0, 70, 140);
 const sf::Color disabled = sf::Color(60,60,60);
 
@@ -50,18 +51,19 @@ struct ColorSet
     public:
 
         sf::Color color;
+        sf::Color chosen;
         sf::Color hover;
         sf::Color press;
         
         ColorSet();
         ColorSet(sf::Color color);
-        ColorSet(sf::Color color, sf::Color hover, sf::Color press);
+        ColorSet(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
 
     //end of public
 
     private:
 
-        void init(sf::Color color, sf::Color hover, sf::Color press);
+        void init(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
 
     //end of private
 };
@@ -83,12 +85,13 @@ class Button
         virtual void setButtonLabel(float charsize) = 0;
         virtual void setButtonFont(sf::Font& font);
         void setButtonColor(sf::Color color);
-        void setButtonColor(sf::Color color, sf::Color hover, sf::Color press);
+        void setButtonColor(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
         void setLabelColor(sf::Color color);
-        void setLabelColor(sf::Color color, sf::Color hover, sf::Color press);
+        void setLabelColor(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
 
         bool isHover = false;
         bool isPressed = false;
+        bool isChosen = false;
         bool isActive = true;
         bool isLabelVisible = true;
         static unsigned int count;
@@ -96,7 +99,8 @@ class Button
     //end of public
 
     protected:
-
+        
+        bool isToggle = false;
         bool autoSize = false;
         sf::Text buttonLabel;
         sf::Vector2i mousePosWindow;

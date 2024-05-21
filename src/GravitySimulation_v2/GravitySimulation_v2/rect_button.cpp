@@ -16,7 +16,7 @@
 ////////////////////////////////////////////////////////////
 
 
-RectButton::RectButton(const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0))
+RectButton::RectButton(const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0), bool isToggle)
 {
     count++;
     this->button.setSize(size);
@@ -27,12 +27,13 @@ RectButton::RectButton(const sf::Vector2f size = sf::Vector2f(0, 0), const sf::V
 
     this->label = "Button "+ std::to_string(count);
     this->setButtonLabel(FONT_SIZE, label);
-    // this->setLabelColor();
+    
+    this->isToggle = isToggle;
 }
 
 ////////////////////////////////////////////////////////////
 
-RectButton::RectButton(sf::Font& font, const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0))
+RectButton::RectButton(sf::Font& font, const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0), bool isToggle)
 {
     count++;
     this->button.setSize(size);
@@ -44,11 +45,13 @@ RectButton::RectButton(sf::Font& font, const sf::Vector2f size = sf::Vector2f(0,
     this->buttonLabel.setFont(font);
     this->label = "Button "+ std::to_string(count);
     this->setButtonLabel(FONT_SIZE, label);
+
+    this->isToggle = isToggle;
 }
 
 ////////////////////////////////////////////////////////////
 
-RectButton::RectButton(sf::Font& font, bool autoSize = false, const sf::Vector2f position = sf::Vector2f(0, 0))
+RectButton::RectButton(sf::Font& font, bool autoSize = false, const sf::Vector2f position = sf::Vector2f(0, 0), bool isToggle)
 {
     count++;
     this-> autoSize = autoSize;
@@ -60,6 +63,8 @@ RectButton::RectButton(sf::Font& font, bool autoSize = false, const sf::Vector2f
     this->buttonLabel.setFont(font);
     this->label = "Button "+ std::to_string(count);
     this->setButtonLabel(FONT_SIZE, label);
+
+    this->isToggle = isToggle;
 }
 
 ////////////////////////////////////////////////////////////
@@ -83,16 +88,24 @@ void RectButton::getButtonStatus(sf::RenderWindow& window, sf::Event& event)
     {
         button.setFillColor(buttonColorSet.color);
         buttonLabel.setFillColor(labelColorSet.color);
-        if(button.getGlobalBounds().contains(this->mousePosView))
+        if (button.getGlobalBounds().contains(this->mousePosView))
         {
             this->isHover = true;
         }
 
-        if(button.getGlobalBounds().contains(this->mousePosView))
+        if (button.getGlobalBounds().contains(this->mousePosView))
         {
-            if(event.type == sf::Event::MouseButtonReleased)
+            if (event.type == sf::Event::MouseButtonReleased)
             {
                 this->isPressed = true;
+
+                if (isToggle)
+                {
+                    if (isChosen)
+                        isChosen = false;
+                    else
+                        isChosen = true;
+                }
             }
         }
 
@@ -101,6 +114,11 @@ void RectButton::getButtonStatus(sf::RenderWindow& window, sf::Event& event)
         {
             button.setFillColor(buttonColorSet.hover);
             buttonLabel.setFillColor(labelColorSet.hover);
+        }
+        else if (isChosen)
+        {
+            button.setFillColor(buttonColorSet.chosen);
+            buttonLabel.setFillColor(labelColorSet.chosen);
         }
         else
         {
