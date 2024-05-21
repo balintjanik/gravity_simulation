@@ -43,7 +43,7 @@ const int COLLISION_ITERATIONS = 3; // Amount of collision handles per frame (hi
 
 // Small damping to avoid uncontrollable velocities (first dampens the angular velocity, then the final calculated velocity again)
 // THESE SETTINGS ARE CAREFULLY SET AND NOT ADVISED TO BE CHANGED
-const double DAMPING_COEFF = MASS * TIMESTEP / 10;
+const double DAMPING_COEFF = MASS * TIMESTEP / 5;
 const double DAMPING_DIST = 2.0;
 
 // Collision optimization settings

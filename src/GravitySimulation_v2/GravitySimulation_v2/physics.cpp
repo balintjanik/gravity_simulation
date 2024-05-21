@@ -17,7 +17,7 @@ void update_gravity(Grid& grid) {
                     continue;
 
                 const Cell& cell = grid.get(x,y);
-                if (cell.total_mass > 0.0f) {
+                if (cell.total_mass > 0.0) {
                     // Calculate distance and angle
                     double angle = atan2(p_1.position.y - cell.center_of_mass.y, p_1.position.x - cell.center_of_mass.x);
                     double distance = v2f_distance(p_1.position, cell.center_of_mass);
@@ -59,11 +59,6 @@ void update_gravity(Grid& grid) {
                     // Calculate gravitational force
                     double g = 1;
                     double force = (g * p_1.mass * p_2.mass) / pow(distance, 2);
-
-                    // Dampen angular velocity for close particles
-                    double min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
-                    if (distance < min_distance + DAMPING_DIST)
-                        angle = angle * (1 - DAMPING_COEFF);
 
                     // Update velocity
                     p_1.velocity.x -= force * cos(angle);
@@ -113,8 +108,8 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
             {
                 if (HAS_OVERLAPCHECK)
                 {
-                    double displacement_x = (dx / distance) * (min_distance - distance) / 2.0f;
-                    double displacement_y = (dy / distance) * (min_distance - distance) / 2.0f;
+                    double displacement_x = (dx / distance) * (min_distance - distance) / 2.0;
+                    double displacement_y = (dy / distance) * (min_distance - distance) / 2.0;
 
                     // Update position directly to avoid overlaps
                     p_1.position.x -= displacement_x;
@@ -134,7 +129,7 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                     double normal_y = dy / distance;
 
                     // Calculate impulse (change in velocity)
-                    double impulse = 1.0f * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
+                    double impulse = 1.0 * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
 
                     // Update velocities based on impulse (conservation of momentum)
                     p_1.velocity.x += impulse * normal_x * p_2.mass;
@@ -146,7 +141,8 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
             // Dampen velocity of close particles to avoid too fast spinning of planets
             else if (distance < min_distance + DAMPING_DIST && p_1.id < p_2.id)
             {
-                p_1.velocity *= (1 - DAMPING_COEFF/ pow(COLLISION_ITERATIONS, 2));
+                p_1.velocity *= (1 - ((DAMPING_COEFF / 2) / pow(COLLISION_ITERATIONS, 2)));
+                p_2.velocity *= (1 - ((DAMPING_COEFF / 2) / pow(COLLISION_ITERATIONS, 2)));
             }
         }
     }

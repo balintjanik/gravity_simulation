@@ -93,7 +93,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 ang_to_cent = atan2(y - HEIGHT / 2, x - WIDTH / 2);
                 angle = ang_to_cent + 90;
                 distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(WIDTH / 2, HEIGHT / 2));
-                speed = map_value(distance, 0.0, R, 0.0, MASS*10.0);
+                speed = map_value(distance, 0.0, R, 0.0, MASS*8.0);
                 rand_x = generate_random_double(0.7, 2.0);
                 rand_y = generate_random_double(0.7, 2.0);
                 vx = speed * cos(angle) * rand_x;
