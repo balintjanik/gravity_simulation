@@ -72,7 +72,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
             case PlacementType::Circular:
                 r = R * sqrt(generate_random_double(0, 1));
                 theta = generate_random_double(0, 1) * 2 * PI;
-                x = WIDTH / 2 + r * cos(theta);
+                x = CANVAS_WIDTH / 2 + r * cos(theta);
                 y = HEIGHT / 2 + r * sin(theta);
                 break;
             default: // FullScreen is default
@@ -90,9 +90,9 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 vy = generate_random_double(-1.0, 1.0);
                 break;
             case SpeedType::Angular:
-                ang_to_cent = atan2(y - HEIGHT / 2, x - WIDTH / 2);
+                ang_to_cent = atan2(y - HEIGHT / 2, x - CANVAS_WIDTH / 2);
                 angle = ang_to_cent + 90;
-                distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+                distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(CANVAS_WIDTH / 2, HEIGHT / 2));
                 speed = map_value(distance, 0.0, R, 0.0, MASS*8.0);
                 rand_x = generate_random_double(0.7, 2.0);
                 rand_y = generate_random_double(0.7, 2.0);
@@ -100,7 +100,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 vy = speed * sin(angle) * rand_y;
                 break;
             case SpeedType::Central:
-                direction = sf::Vector2f(WIDTH / 2 - x, HEIGHT / 2 - y);
+                direction = sf::Vector2f(CANVAS_WIDTH / 2 - x, HEIGHT / 2 - y);
                 vx = direction.x;
                 vy = direction.y;
                 break;

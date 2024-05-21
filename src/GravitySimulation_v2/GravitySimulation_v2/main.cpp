@@ -15,13 +15,14 @@ int main()
     sf::RenderWindow window(screen, "Gravitational Force Simulation", sf::Style::Fullscreen);
     WIDTH = screen.width;
     HEIGHT = screen.height;
-    if (WIDTH > HEIGHT)
+    CANVAS_WIDTH = WIDTH - MENU_WIDTH;
+    if (CANVAS_WIDTH > HEIGHT)
         R = 2 * HEIGHT / 5;
     else
-        R = 2 * WIDTH / 5;
+        R = 2 * CANVAS_WIDTH / 5;
 
     // Init particles
-    particles = generate_particles(SPAWN_MARGIN, WIDTH - SPAWN_MARGIN, SPAWN_MARGIN, HEIGHT - SPAWN_MARGIN);
+    particles = generate_particles(SPAWN_MARGIN, CANVAS_WIDTH - SPAWN_MARGIN, SPAWN_MARGIN, CANVAS_WIDTH - SPAWN_MARGIN);
     Grid collision_grid(COLLISION_CELL_SIZE);
     init_collision_grid(collision_grid);
 

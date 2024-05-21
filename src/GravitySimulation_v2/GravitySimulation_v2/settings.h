@@ -5,7 +5,8 @@
 #include "setup_type.h"
 
 // We will automatically set width and height when the app starts
-extern int WIDTH, HEIGHT;
+extern int WIDTH, HEIGHT, CANVAS_WIDTH;
+const int MENU_WIDTH = 500;
 
 // Timestep (speed of animation)
 const double TIMESTEP = 0.1;
@@ -47,10 +48,10 @@ const double DAMPING_COEFF = MASS * TIMESTEP / 5;
 const double DAMPING_DIST = 2.0;
 
 // Collision optimization settings
-const bool VISUALIZE_SPATIAL_GRID = false; // draw grid
+const bool VISUALIZE_SPATIAL_GRID = true; // draw grid
 const bool VISUALIZE_PARTICLE_CELL = false; // color particle based on position in optimization grid (instead of the forces acting on it)
-const bool VISUALIZE_CELL_MASS = false; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
-const bool VISUALIZE_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
+const bool VISUALIZE_CELL_MASS = true; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
+const bool VISUALIZE_COM = true; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 static int id_counter = 0; // DO NOT MODIFY
 const int COLLISION_CELL_SIZE = 20; // WARNING: this const must be a divisor of both WIDTH and HEIGHT otherwise program crashes
 

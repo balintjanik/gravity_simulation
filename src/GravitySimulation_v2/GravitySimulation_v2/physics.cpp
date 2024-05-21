@@ -220,9 +220,9 @@ void update_positions(Grid& collision_grid)
         // Bounce back from borders if enabled
         if (HAS_BORDERS)
         {
-            if (p.position.x + p.radius >= WIDTH)
+            if (p.position.x + p.radius >= CANVAS_WIDTH)
             {
-                p.position.x = WIDTH - p.radius;
+                p.position.x = CANVAS_WIDTH - p.radius;
                 p.velocity.x = -p.velocity.x;
             }
             else if (p.position.x - p.radius < 0)
