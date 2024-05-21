@@ -12,6 +12,9 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
+### 2024.05.21 - v2.3.2 \[UNDER DEVELOPMENT\]
+ - Fixed uneven damping forces
+
 ### 2024.05.21 - Release v2.3.1
  - Removed float values
  - Added center of mass visualization option
