@@ -123,6 +123,16 @@ int main()
                         circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
                         window.draw(circle);
                     }
+
+                    // draw center of mass
+                    if (VISUALIZE_COM)
+                    {
+                        sf::CircleShape com(4,3);
+                        com.setFillColor(sf::Color::Yellow);
+                        sf::Vector2f com_pos = collision_grid.get(x, y).center_of_mass;
+                        com.setPosition(com_pos.x - 2, com_pos.y - 2);
+                        window.draw(com);
+                    }
                 }
             }
         }

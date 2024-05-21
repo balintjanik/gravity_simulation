@@ -187,6 +187,15 @@ void update_trails()
 
 void update_positions(Grid& collision_grid)
 {
+    // Update center of mass
+    for (int i = 0; i < collision_grid.width; i++)
+    {
+        for (int j = 0; j < collision_grid.height; j++)
+        {
+            collision_grid.update_cell_mass_and_com(j * collision_grid.width + i);
+        }
+    }
+
     // Save old positions
     for (auto& p : particles)
     {

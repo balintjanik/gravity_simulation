@@ -44,10 +44,10 @@ public:
     // Update particle cell (move from old to new cell if necessary)
     void update_particle_cell(Particle& particle);
 
+    void update_cell_mass_and_com(int cell_index);
+    
 private:
     std::vector<Cell> cells;
-
-    void update_cell_mass_and_com(int cell_index);
 };
 
 #endif
