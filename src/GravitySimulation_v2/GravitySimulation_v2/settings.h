@@ -19,7 +19,7 @@ const int SPAWN_MARGIN = 50; // avoids spawning particles at edge of screen
 extern int R; // radius of circle in case of PlacementType::Circular (automatically set)
 
 // Number of particles
-const int N = 1000;
+const int N = 700;
 
 // Properties of particles
 const int RADIUS = 2;
@@ -54,7 +54,7 @@ const bool VISUALIZE_PARTICLE_CELL = false; // color particle based on position 
 const bool VISUALIZE_CELL_MASS = true; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 const bool VISUALIZE_COM = true; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 static int id_counter = 0; // DO NOT MODIFY
-const int COLLISION_CELL_SIZE = 20; // WARNING: this const must be a divisor of both WIDTH and HEIGHT otherwise program crashes
+const int COLLISION_CELL_SIZE = 50; // WARNING: this const must be a divisor of both WIDTH and HEIGHT otherwise program crashes
 
 
 // Button settings

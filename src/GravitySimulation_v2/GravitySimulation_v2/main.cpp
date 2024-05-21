@@ -180,6 +180,12 @@ int main()
             }
         }
 
+        // Menu background
+        sf::RectangleShape menu_background(sf::Vector2f(MENU_WIDTH,HEIGHT));
+        menu_background.setPosition(CANVAS_WIDTH, 0);
+        menu_background.setFillColor(sf::Color(12,12,12));
+        window.draw(menu_background);
+
         // Draw buttons
         ONOFF_BTN.draw(window);
         EXIT_BTN.draw(window);
