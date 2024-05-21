@@ -86,7 +86,7 @@ int main()
                         
                         cell.setOutlineColor(sf::Color(20, 20, 20));
                         cell.setOutlineThickness(0.5f);
-                        cell.setPosition(x * COLLISION_CELL_SIZE, y * COLLISION_CELL_SIZE);
+                        cell.setPosition(x * COLLISION_CELL_SIZE - collision_grid.overflow_x/2, y * COLLISION_CELL_SIZE - collision_grid.overflow_y/2);
                         window.draw(cell);
                     }
                 }

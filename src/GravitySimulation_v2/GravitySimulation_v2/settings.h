@@ -5,8 +5,8 @@
 #include "setup_type.h"
 
 // Width and height of screen
-const int WIDTH = 1900;
-const int HEIGHT = 1000;
+const int WIDTH = 1920;
+const int HEIGHT = 1080;
 
 // Timestep (speed of animation)
 const double TIMESTEP = 0.1;

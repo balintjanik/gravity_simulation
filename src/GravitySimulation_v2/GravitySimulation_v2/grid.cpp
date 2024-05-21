@@ -2,8 +2,8 @@
 
 int Grid::get_cell_index(double x, double y) const
 {
-    int cell_x = std::floor(x / cell_size);
-    int cell_y = std::floor(y / cell_size);
+    int cell_x = std::floor((x + overflow_x / 2) / cell_size);
+    int cell_y = std::floor((y + overflow_y / 2) / cell_size);
     return cell_y * width + cell_x;
 }
 
