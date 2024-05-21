@@ -127,10 +127,17 @@ int main()
                     // draw center of mass
                     if (VISUALIZE_COM)
                     {
-                        sf::CircleShape com(4,3);
-                        com.setFillColor(sf::Color::Yellow);
+                        sf::CircleShape com(5,3);
+                        com.setFillColor(sf::Color::Red);
                         sf::Vector2f com_pos = collision_grid.get(x, y).center_of_mass;
-                        com.setPosition(com_pos.x - 2, com_pos.y - 2);
+                        if (com_pos.x == 0 && com_pos.y == 0)
+                        {
+                            com.setPosition(x * COLLISION_CELL_SIZE + COLLISION_CELL_SIZE / 2 - 5, y * COLLISION_CELL_SIZE + COLLISION_CELL_SIZE / 2 - 5);
+                        }
+                        else
+                        {
+                            com.setPosition(com_pos.x - 5, com_pos.y - 5);
+                        }
                         window.draw(com);
                     }
                 }
