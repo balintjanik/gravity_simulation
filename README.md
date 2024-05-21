@@ -12,6 +12,14 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
+### 2024.05.21 - Release v2.3.1
+ - Removed float values
+ - Added center of mass visualization option
+
+<img src="data/sample_v2.3.1_1_com_visualization_cropped.gif" alt="sample gif of simulation center of mass visualization">
+
+**Note:** noise is due to compression, I don't want to fill the repo with large image files
+
 ### 2024.05.19 - Release v2.3.0
  - Reorganised header files
  - Switched to doubles from floats
