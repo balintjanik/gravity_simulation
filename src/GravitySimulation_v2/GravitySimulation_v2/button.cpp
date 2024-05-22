@@ -1,13 +1,10 @@
 ////////////////////////////////////////////////////////////
-///
-/// Credit to: Pyromagne (https://github.com/Pyromagne/SFML-Button)
-///
-////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////
+//
+// Credit to: Pyromagne (https://github.com/Pyromagne/SFML-Button)
+//
 // MIT License
 //
-// Copyright (c) 2023 Pyromagne
+// Copyright (c) 2024 Pyromagne
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,19 +23,17 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+// 
 ////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-// HEADERS
-////////////////////////////////////////////////////////////
 #include "button.h"
 
 ColorSet::ColorSet()
 {
-    this->color = defaultColor;
-    this->chosen = defaultChosen;
-    this->hover = defaultHover;
-    this->press = defaultPress;
+    this->color = defult_color;
+    this->toggle = default_toggle;
+    this->hover = default_hover;
+    this->press = default_press;
 }
 
 ColorSet::ColorSet(sf::Color color)
@@ -46,49 +41,82 @@ ColorSet::ColorSet(sf::Color color)
     init(color, color, color, color);
 }
 
-ColorSet::ColorSet(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press)
+ColorSet::ColorSet(sf::Color color, sf::Color toggle, sf::Color hover, sf::Color press)
 {
-    init(color, chosen, hover, press);
+    init(color, toggle, hover, press);
 }
 
-void ColorSet::init(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press)
+void ColorSet::init(sf::Color color, sf::Color toggle, sf::Color hover, sf::Color press)
 {
     this->color = color;
-    this->chosen = chosen;
+    this->toggle = toggle;
     this->hover = hover;
     this->press = press;
 }
 
-void Button::setButtonFont(sf::Font& font)
+void Button::draw(sf::RenderWindow& window)
 {
-    buttonLabel.setFont(font);
+    window.draw(button);
+
+    if (is_label_visible)
+    {
+        window.draw(button_label);
+    }
+
 }
 
-void Button::setButtonColor(sf::Color color)
+void Button::set_button_label(float char_size, std::string label)
 {
-    setButtonColor(color,color,color,color);
+    this->font_size = char_size;
+    this->button_label.setString(label);
+    this->button_label.setCharacterSize(char_size);
+    this->button_label.setFillColor(label_colorset.color);
+    this->label = label;
+
+    this->label_rect = this->button_label.getLocalBounds();
+
+
+    this->button_label.setOrigin(this->label_rect.width / 2.0f, this->label_rect.height / 2.0f);
+
+    this->button_label.setPosition(this->button_pos.x + (this->button_rect.width / 2.0f), this->button_pos.y + (this->button_rect.height / 2.0f) - (font_size / 4));
 }
 
-void Button::setButtonColor(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press)
+void Button::set_button_label(float char_size)
 {
-    this->buttonColorSet.color = color;
-    this->buttonColorSet.chosen = color;
-    this->buttonColorSet.hover = hover;
-    this->buttonColorSet.press = press;
+    this->font_size = char_size;
+    set_button_label(char_size, this->label);
 }
 
-void Button::setLabelColor(sf::Color color)
+void Button::set_button_font(sf::Font& font)
 {
-    setLabelColor(color,color,color,color);
+    button_label.setFont(font);
+}
+
+void Button::set_button_color(sf::Color color)
+{
+    set_button_color(color,color,color,color);
+}
+
+void Button::set_button_color(sf::Color color, sf::Color toggle, sf::Color hover, sf::Color press)
+{
+    this->button_colorset.color = color;
+    this->button_colorset.toggle = toggle;
+    this->button_colorset.hover = hover;
+    this->button_colorset.press = press;
+}
+
+void Button::set_label_color(sf::Color color)
+{
+    set_label_color(color,color,color,color);
 }
 
 
-void Button::setLabelColor(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press)
+void Button::set_label_color(sf::Color color, sf::Color toggle, sf::Color hover, sf::Color press)
 {
-    this->labelColorSet.color = color;
-    this->labelColorSet.chosen = chosen;
-    this->labelColorSet.hover = hover;
-    this->labelColorSet.press = press;
+    this->label_colorset.color = color;
+    this->label_colorset.toggle = toggle;
+    this->label_colorset.hover = hover;
+    this->label_colorset.press = press;
 }
 
 unsigned int Button::count = 0;

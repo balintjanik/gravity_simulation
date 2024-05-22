@@ -1,10 +1,7 @@
 ////////////////////////////////////////////////////////////
-///
-/// Credit to: Pyromagne (https://github.com/Pyromagne/SFML-Button)
-///
-////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////
+//
+// Credit to: Pyromagne (https://github.com/Pyromagne/SFML-Button)
+//
 // MIT License
 //
 // Copyright (c) 2024 Pyromagne
@@ -26,24 +23,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+// 
 ////////////////////////////////////////////////////////////
 
 #ifndef BUTTON_H
 #define BUTTON_H
 
-////////////////////////////////////////////////////////////
-// HEADERS
-////////////////////////////////////////////////////////////
-
 #include <SFML/Graphics.hpp>
-#include <iostream>
 
-////////////////////////////////////////////////////////////
-
-const sf::Color defaultColor = sf::Color(0, 100, 200);
-const sf::Color defaultChosen = sf::Color(0, 150, 245);
-const sf::Color defaultHover = sf::Color(0, 160, 255);
-const sf::Color defaultPress = sf::Color(0, 70, 140);
+const sf::Color defult_color = sf::Color(0, 100, 200);
+const sf::Color default_toggle = sf::Color(0, 150, 245);
+const sf::Color default_hover = sf::Color(0, 160, 255);
+const sf::Color default_press = sf::Color(0, 70, 140);
 const sf::Color disabled = sf::Color(60,60,60);
 
 struct ColorSet
@@ -51,67 +42,53 @@ struct ColorSet
     public:
 
         sf::Color color;
-        sf::Color chosen;
+        sf::Color toggle;
         sf::Color hover;
         sf::Color press;
         
         ColorSet();
         ColorSet(sf::Color color);
-        ColorSet(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
-
-    //end of public
+        ColorSet(sf::Color color, sf::Color toggle, sf::Color hover, sf::Color press);
 
     private:
 
-        void init(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
-
-    //end of private
+        void init(sf::Color color, sf::Color toggle, sf::Color hover, sf::Color press);
 };
-
-
-////////////////////////////////////////////////////////////
-///
-/// @brief Base class for button
-///
-////////////////////////////////////////////////////////////
 
 class Button
 {
     public:
 
-        virtual void getButtonStatus(sf::RenderWindow& window, sf::Event& event) = 0;
-        virtual void draw(sf::RenderWindow& window) = 0;
-        virtual void setButtonLabel(float charsize, std::string label) = 0;
-        virtual void setButtonLabel(float charsize) = 0;
-        virtual void setButtonFont(sf::Font& font);
-        void setButtonColor(sf::Color color);
-        void setButtonColor(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
-        void setLabelColor(sf::Color color);
-        void setLabelColor(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
+        virtual void get_button_status(sf::RenderWindow& window, sf::Event& event) = 0;
+        void draw(sf::RenderWindow& window);
+        void set_button_label(float charsize, std::string label);
+        void set_button_label(float charsize);
+        void set_button_font(sf::Font& font);
+        void set_button_color(sf::Color color);
+        void set_button_color(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
+        void set_label_color(sf::Color color);
+        void set_label_color(sf::Color color, sf::Color chosen, sf::Color hover, sf::Color press);
 
-        bool isHover = false;
-        bool isPressed = false;
-        bool isChosen = false;
-        bool isActive = true;
-        bool isLabelVisible = true;
+        sf::RectangleShape button;
+
+        bool is_hover = false;
+        bool is_pressed = false;
+        bool is_toggle = false;
+        bool is_active = true;
+        bool is_label_visible = true;
         static unsigned int count;
 
-    //end of public
-
     protected:
-        
-        bool isToggle = false;
-        bool autoSize = false;
-        sf::Text buttonLabel;
-        sf::Vector2i mousePosWindow;
-        sf::Vector2f mousePosView;
-        sf::Vector2f buttonPos;
-        sf::FloatRect labelRect;
+        int font_size;
+        sf::Text button_label;
+        sf::Vector2i mouse_pos_window;
+        sf::Vector2f mouse_pos_view;
+        sf::Vector2f button_pos;
+        sf::FloatRect label_rect;
         std::string label;
-        ColorSet buttonColorSet;
-        ColorSet labelColorSet = ColorSet(sf::Color::White) ;
-
-    //end of protected
+        ColorSet button_colorset;
+        ColorSet label_colorset = ColorSet(sf::Color::White);
+        sf::FloatRect button_rect;
 };
 
-#endif // BUTTON_H
+#endif

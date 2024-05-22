@@ -1,10 +1,7 @@
 ////////////////////////////////////////////////////////////
-///
-/// Credit to: Pyromagne (https://github.com/Pyromagne/SFML-Button)
-///
-////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////
+//
+// Credit to: Pyromagne (https://github.com/Pyromagne/SFML-Button)
+//
 // MIT License
 //
 // Copyright (c) 2024 Pyromagne
@@ -26,49 +23,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+// 
 ////////////////////////////////////////////////////////////
 
-#ifndef RECTBUTTON_H
-#define RECTBUTTON_H
-
-////////////////////////////////////////////////////////////
-// HEADERS
-////////////////////////////////////////////////////////////
+#ifndef SIMPLEBUTTON_H
+#define SIMPLEBUTTON_H
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "button.h"
 
-////////////////////////////////////////////////////////////
-///
-/// @brief make a rectangle button
-///
-////////////////////////////////////////////////////////////
-
 class RectButton: public Button
 {
     public:
 
-        RectButton(                const sf::Vector2f size, const sf::Vector2f position, bool isToggle = false);
-        RectButton(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position, bool isToggle = false);
-        RectButton(sf::Font& font, bool autoSize,           const sf::Vector2f position, bool isToggle = false);
+        RectButton(                const sf::Vector2f size, const sf::Vector2f position);
+        RectButton(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position);
 
         ~RectButton();
 
-        void getButtonStatus(sf::RenderWindow& window, sf::Event& event);
-        void draw(sf::RenderWindow& window);
-        void setButtonLabel(float charSize, std::string label);
-        void setButtonLabel(float charSize);
-
-        sf::RectangleShape button;
-
-    //end of public
-
-    private:
-
-        sf::FloatRect buttonRect;
-
-    //end of private
+        void get_button_status(sf::RenderWindow& window, sf::Event& event);
 };
 
-#endif // RECTBUTTON_H
+#endif

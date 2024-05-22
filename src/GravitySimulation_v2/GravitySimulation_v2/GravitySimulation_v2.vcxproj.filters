@@ -39,7 +39,7 @@
     <ClCompile Include="button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rect_button.cpp">
+    <ClCompile Include="simple_button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,8 +71,19 @@
     <ClInclude Include="button.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="rect_button.h">
+    <ClInclude Include="simple_button.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GravitySimulation_v2.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Poppins-Bold.ttf" />
   </ItemGroup>
 </Project>

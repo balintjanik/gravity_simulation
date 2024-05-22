@@ -2,7 +2,7 @@
 #define SETTINGS_H
 
 #include <SFML/Graphics.hpp>
-#include "rect_button.h"
+#include "simple_button.h"
 #include "setup_type.h"
 
 // We will automatically set width and height when the app starts
