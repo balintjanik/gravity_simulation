@@ -54,6 +54,33 @@ void ColorSet::init(sf::Color color, sf::Color toggle, sf::Color hover, sf::Colo
     this->press = press;
 }
 
+Button::Button(const sf::Vector2f size, const sf::Vector2f position)
+{
+    this->button.setSize(size);
+    this->button.setPosition(position);
+    this->button_pos = position;
+    this->button_rect = this->button.getLocalBounds();
+    this->button.setFillColor(defult_color);
+
+    this->font_size = 10;
+    this->label = "Button " + std::to_string(count);
+    this->set_button_label(font_size, label);
+}
+
+Button::Button(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position)
+{
+    this->button.setSize(size);
+    this->button.setPosition(position);
+    this->button_pos = position;
+    this->button_rect = this->button.getLocalBounds();
+    this->button.setFillColor(defult_color);
+
+    this->font_size = 10;
+    this->button_label.setFont(font);
+    this->label = "Button " + std::to_string(count);
+    this->set_button_label(font_size, label);
+}
+
 void Button::draw(sf::RenderWindow& window)
 {
     window.draw(button);

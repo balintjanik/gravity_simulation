@@ -139,6 +139,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />
     <ClCompile Include="settings.cpp" />
+    <ClCompile Include="toggle_button.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="simple_button.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="setup_type.h" />
+    <ClInclude Include="toggle_button.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="simple_button.h" />

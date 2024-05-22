@@ -42,6 +42,9 @@
     <ClCompile Include="simple_button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="toggle_button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="toggle_button.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

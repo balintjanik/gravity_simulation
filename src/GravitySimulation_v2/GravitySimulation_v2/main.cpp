@@ -25,10 +25,10 @@ void init_buttons()
     FONT.loadFromFile("Poppins-Bold.ttf");
     FONT_SIZE = 30;
 
-    ONOFF_BTN = RectButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP));
+    ONOFF_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP), false);
     ONOFF_BTN.set_button_label(FONT_SIZE, "ONOFF");
 
-    EXIT_BTN = RectButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + BTN_HEIGHT + MARGIN_TOP));
+    EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + BTN_HEIGHT + MARGIN_TOP));
     EXIT_BTN.set_button_label(FONT_SIZE, "EXIT");
 }
 

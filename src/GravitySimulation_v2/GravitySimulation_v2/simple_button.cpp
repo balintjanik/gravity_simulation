@@ -29,45 +29,24 @@
 #include "button.h"
 #include "simple_button.h"
 
-RectButton::RectButton(const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0))
+SimpleButton::SimpleButton(const sf::Vector2f size, const sf::Vector2f position)
+    : Button(size, position)
 {
     count++;
-    this->button.setSize(size);
-    this->button.setPosition(position);
-    this->button_pos = position;
-    this->button_rect = this->button.getLocalBounds();
-    this->button.setFillColor(defult_color);
+};
 
-    this->font_size = 10;
-    this->label = "Button "+ std::to_string(count);
-    this->set_button_label(font_size, label);
-    
-    this->is_toggle = false;
-}
-
-RectButton::RectButton(sf::Font& font, const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0))
+SimpleButton::SimpleButton(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position)
+    : Button(font, size, position)
 {
     count++;
-    this->button.setSize(size);
-    this->button.setPosition(position);
-    this->button_pos = position;
-    this->button_rect = this->button.getLocalBounds();
-    this->button.setFillColor(defult_color);
+};
 
-    this->font_size = 10;
-    this->button_label.setFont(font);
-    this->label = "Button "+ std::to_string(count);
-    this->set_button_label(font_size, label);
-
-    this->is_toggle = false;
-}
-
-RectButton::~RectButton()
+SimpleButton::~SimpleButton()
 {
     count--;
 }
 
-void RectButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
+void SimpleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
 {
     this->mouse_pos_window = sf::Mouse::getPosition(window);
     this->mouse_pos_view = window.mapPixelToCoords(this->mouse_pos_window);
@@ -89,11 +68,6 @@ void RectButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
             if (event.type == sf::Event::MouseButtonReleased)
             {
                 this->is_pressed = true;
-
-                if (is_toggle)
-                    is_toggle = false;
-                else
-                    is_toggle = true;
             }
         }
 
@@ -101,11 +75,6 @@ void RectButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
         {
             button.setFillColor(button_colorset.hover);
             button_label.setFillColor(label_colorset.hover);
-        }
-        else if (is_toggle)
-        {
-            button.setFillColor(button_colorset.toggle);
-            button_label.setFillColor(label_colorset.toggle);
         }
         else
         {

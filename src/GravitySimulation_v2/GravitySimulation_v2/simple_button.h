@@ -30,17 +30,16 @@
 #define SIMPLEBUTTON_H
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include "button.h"
 
-class RectButton: public Button
+class SimpleButton: public Button
 {
     public:
 
-        RectButton(                const sf::Vector2f size, const sf::Vector2f position);
-        RectButton(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position);
+        SimpleButton(                const sf::Vector2f size, const sf::Vector2f position);
+        SimpleButton(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position);
 
-        ~RectButton();
+        ~SimpleButton();
 
         void get_button_status(sf::RenderWindow& window, sf::Event& event);
 };

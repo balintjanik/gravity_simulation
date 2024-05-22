@@ -59,6 +59,9 @@ class Button
 {
     public:
 
+        Button(const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0));
+        Button(sf::Font& font, const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0));
+
         virtual void get_button_status(sf::RenderWindow& window, sf::Event& event) = 0;
         void draw(sf::RenderWindow& window);
         void set_button_label(float charsize, std::string label);
@@ -73,7 +76,6 @@ class Button
 
         bool is_hover = false;
         bool is_pressed = false;
-        bool is_toggle = false;
         bool is_active = true;
         bool is_label_visible = true;
         static unsigned int count;

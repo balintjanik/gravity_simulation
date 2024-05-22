@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "simple_button.h"
+#include "toggle_button.h"
 #include "setup_type.h"
 
 // We will automatically set width and height when the app starts
@@ -68,6 +69,6 @@ const int MARGIN_BETWEEN = 10;
 const int BTN_HEIGHT = 60;
 
 // Buttons
-extern RectButton ONOFF_BTN;
-extern RectButton EXIT_BTN;
+extern ToggleButton ONOFF_BTN;
+extern SimpleButton EXIT_BTN;
 #endif
