@@ -9,13 +9,13 @@
 #include "grid.h"
 #include "double_vector_ops.h"
 
-void update_positions(Grid& collision_grid);
+void update_positions(Grid& optim_grid);
 
-void update_gravity(Grid& grid);
+void update_gravity(Grid& optim_grid);
 
 void check_cells_collision(Cell& cell_1, Cell& cell_2);
 
-void update_collisions(Grid& collision_grid);
+void update_collisions(Grid& optim_grid);
 
 void update_trails();
 #endif

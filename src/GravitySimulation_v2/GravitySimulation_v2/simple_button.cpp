@@ -71,6 +71,8 @@ void SimpleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
             }
         }
 
+        button.setOutlineThickness(4);
+        button.setOutlineColor(button_colorset.color);
         if (is_hover)
         {
             button.setFillColor(button_colorset.hover);

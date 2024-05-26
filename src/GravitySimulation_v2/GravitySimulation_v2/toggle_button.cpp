@@ -50,6 +50,12 @@ void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
             }
         }
 
+        button.setOutlineThickness(4);
+        if (is_toggle)
+            button.setOutlineColor(button_colorset.toggle);
+        else
+            button.setOutlineColor(button_colorset.color);
+
         if (is_hover)
         {
             button.setFillColor(button_colorset.hover);
@@ -57,7 +63,7 @@ void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
         }
         else if (is_toggle)
         {
-            button.setFillColor(button_colorset.toggle);
+            button.setFillColor(button_colorset.color);
             button_label.setFillColor(label_colorset.toggle);
         }
         else

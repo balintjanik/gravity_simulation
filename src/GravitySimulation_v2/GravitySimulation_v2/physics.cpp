@@ -5,18 +5,18 @@
 
 using namespace std;
 
-void update_gravity(Grid& grid) {
+void update_gravity(Grid& optim_grid) {
     for (auto& p_1 : particles) {
         double all_force = 0.0;
-        int p_1_x = std::floor(p_1.position.x / grid.cell_size);
-        int p_1_y = std::floor(p_1.position.y / grid.cell_size);
+        int p_1_x = std::floor(p_1.position.x / optim_grid.cell_size);
+        int p_1_y = std::floor(p_1.position.y / optim_grid.cell_size);
 
-        for (int x = 0; x < grid.width; x++) {
-            for (int y = 0; y < grid.height; y++) {
+        for (int x = 0; x < optim_grid.width; x++) {
+            for (int y = 0; y < optim_grid.height; y++) {
                 if (abs(p_1_x - x) <= 1 && abs(p_1_y - y) <= 1)
                     continue;
 
-                const Cell& cell = grid.get(x,y);
+                const Cell& cell = optim_grid.get(x,y);
                 if (cell.total_mass > 0.0) {
                     // Calculate distance and angle
                     double angle = atan2(p_1.position.y - cell.center_of_mass.y, p_1.position.x - cell.center_of_mass.x);
@@ -38,11 +38,11 @@ void update_gravity(Grid& grid) {
         for (int dx = -1; dx <= 1; ++dx) {
             for (int dy = -1; dy <= 1; ++dy) {
                 
-                if (p_1_x + dx < 0 || p_1_x + dx >= grid.width
-                    || p_1_y + dy < 0 || p_1_y + dy >= grid.height)
+                if (p_1_x + dx < 0 || p_1_x + dx >= optim_grid.width
+                    || p_1_y + dy < 0 || p_1_y + dy >= optim_grid.height)
                     continue;
 
-                const Cell& cell = grid.get(p_1_x + dx, p_1_y + dy);
+                const Cell& cell = optim_grid.get(p_1_x + dx, p_1_y + dy);
                 for (int particle_id : cell.particle_indices) {
                     if (particle_id == p_1.id) continue;
 
@@ -101,12 +101,12 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
             double dx = p_2.position.x - p_1.position.x;
             double dy = p_2.position.y - p_1.position.y;
             double distance = v2f_distance(p_1.position, p_2.position);
-            double min_distance = p_1.radius + p_2.radius + COLLISION_THRESHOLD;
+            double min_distance = p_1.radius + p_2.radius + settings.COLLISION_THRESHOLD;
 
             // Check collision
             if (distance < min_distance)
             {
-                if (HAS_OVERLAPCHECK)
+                if (settings.HAS_OVERLAPCHECK)
                 {
                     double displacement_x = (dx / distance) * (min_distance - distance) / 2.0;
                     double displacement_y = (dy / distance) * (min_distance - distance) / 2.0;
@@ -118,7 +118,7 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                     p_2.position.y += displacement_y;
                 }
 
-                if (HAS_BOUNCEOFF)
+                if (settings.HAS_BOUNCEOFF)
                 {
                     // Calculate relative velocity
                     double relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
@@ -139,31 +139,31 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                 }
             }
             // Dampen velocity of close particles to avoid too fast spinning of planets
-            else if (distance < min_distance + DAMPING_DIST && p_1.id < p_2.id)
+            else if (distance < min_distance + settings.DAMPING_DIST && p_1.id < p_2.id)
             {
-                p_1.velocity *= (1 - ((DAMPING_COEFF / 2) / pow(COLLISION_ITERATIONS, 2)));
-                p_2.velocity *= (1 - ((DAMPING_COEFF / 2) / pow(COLLISION_ITERATIONS, 2)));
+                p_1.velocity *= (1 - ((settings.DAMPING_COEFF / 2) / pow(settings.COLLISION_ITERATIONS, 2)));
+                p_2.velocity *= (1 - ((settings.DAMPING_COEFF / 2) / pow(settings.COLLISION_ITERATIONS, 2)));
             }
         }
     }
 }
 
-void update_collisions(Grid& collision_grid)
+void update_collisions(Grid& optim_grid)
 {
-    for (int x = 0; x < collision_grid.width; x++)
+    for (int x = 0; x < optim_grid.width; x++)
     {
-        for (int y = 0; y < collision_grid.height; y++)
+        for (int y = 0; y < optim_grid.height; y++)
         {
-            auto& current_cell = collision_grid.get(x, y);
+            auto& current_cell = optim_grid.get(x, y);
             for (int dx = -1; dx <= 1; dx++)
             {
                 for (int dy = -1; dy <= 1; dy++)
                 {
-                    if (x + dx < 0 || x + dx >= collision_grid.width
-                        || y + dy < 0 || y + dy >= collision_grid.height)
+                    if (x + dx < 0 || x + dx >= optim_grid.width
+                        || y + dy < 0 || y + dy >= optim_grid.height)
                         continue;
 
-                    auto& other_cell = collision_grid.get(x + dx, y + dy);
+                    auto& other_cell = optim_grid.get(x + dx, y + dy);
                     check_cells_collision(current_cell, other_cell);
                 }
             }
@@ -175,20 +175,20 @@ void update_trails()
 {
     for (auto& p : particles)
     {
-        if (p.trail.size() > TRAIL_SIZE)
+        if (p.trail.size() > settings.TRAIL_SIZE)
             p.trail.pop_front();
         p.trail.push_back(p.position);
     }
 }
 
-void update_positions(Grid& collision_grid)
+void update_positions(Grid& optim_grid)
 {
     // Update center of mass
-    for (int i = 0; i < collision_grid.width; i++)
+    for (int i = 0; i < optim_grid.width; i++)
     {
-        for (int j = 0; j < collision_grid.height; j++)
+        for (int j = 0; j < optim_grid.height; j++)
         {
-            collision_grid.update_cell_mass_and_com(j * collision_grid.width + i);
+            optim_grid.update_cell_mass_and_com(j * optim_grid.width + i);
         }
     }
 
@@ -199,26 +199,26 @@ void update_positions(Grid& collision_grid)
     }
 
     // Calculate collisions
-    for (int i = 0; i < COLLISION_ITERATIONS; i++)
+    for (int i = 0; i < settings.COLLISION_ITERATIONS; i++)
     {
-        update_collisions(collision_grid);
+        update_collisions(optim_grid);
     }
 
 
     // Calculate gravitational forces
-    update_gravity(collision_grid);
+    update_gravity(optim_grid);
 
     // Update trails
-    if (HAS_TRAIL)
+    if (settings.HAS_TRAIL)
         update_trails();
 
     // Calculate new positions
     for (auto& p : particles)
     {
-        p.position += p.velocity * TIMESTEP;
+        p.position += p.velocity * settings.TIMESTEP;
 
         // Bounce back from borders if enabled
-        if (HAS_BORDERS)
+        if (settings.HAS_BORDERS)
         {
             if (p.position.x + p.radius >= CANVAS_WIDTH)
             {
@@ -243,6 +243,6 @@ void update_positions(Grid& collision_grid)
         }
 
         // Reassign to new cell in optimization grid if necessary
-        collision_grid.update_particle_cell(p);
+        optim_grid.update_particle_cell(p);
     }
 }

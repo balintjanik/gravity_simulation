@@ -25,7 +25,7 @@ sf::Color hsv_to_rgb(double H, double S, double V)
 
 sf::Color map_forces_to_color(double all_forces)
 {
-    double normalized_forces = min(all_forces / MAX_FORCES, 1.0);
+    double normalized_forces = min(all_forces / settings.MAX_FORCES, 1.0);
     double hue = (1.0 - normalized_forces) * 0.65;
     double saturation = 1.0;
     double value = 1.0;
@@ -64,13 +64,13 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
     double ang_to_cent, angle, distance, speed, rand_x, rand_y;
     sf::Vector2f direction;
 
-    for (int i = 0; i < N - 1; i++)
+    for (int i = 0; i < settings.N - 1; i++)
     {
         // set random position
-        switch (PLACEMENT_TYPE)
+        switch (settings.PLACEMENT_TYPE)
         {
             case PlacementType::Circular:
-                r = R * sqrt(generate_random_double(0, 1));
+                r = settings.R * sqrt(generate_random_double(0, 1));
                 theta = generate_random_double(0, 1) * 2 * PI;
                 x = CANVAS_WIDTH / 2 + r * cos(theta);
                 y = HEIGHT / 2 + r * sin(theta);
@@ -83,7 +83,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
         sf::Vector2f initialPosition(x, y);
 
         // set velocity
-        switch (SPEED_TYPE)
+        switch (settings.SPEED_TYPE)
         {
             case SpeedType::Random:
                 vx = generate_random_double(-1.0, 1.0);
@@ -93,7 +93,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 ang_to_cent = atan2(y - HEIGHT / 2, x - CANVAS_WIDTH / 2);
                 angle = ang_to_cent + 90;
                 distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(CANVAS_WIDTH / 2, HEIGHT / 2));
-                speed = map_value(distance, 0.0, R, 0.0, MASS*8.0);
+                speed = map_value(distance, 0.0, settings.R, 0.0, settings.MASS*8.0);
                 rand_x = generate_random_double(0.7, 2.0);
                 rand_y = generate_random_double(0.7, 2.0);
                 vx = speed * cos(angle) * rand_x;
@@ -114,29 +114,29 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
         // set color
         sf::Color particleColor(sf::Color::Blue);
 
-        particles.push_back(Particle(initialPosition, initialVelocity, particleColor, RADIUS, MASS));
+        particles.push_back(Particle(initialPosition, initialVelocity, particleColor, settings.RADIUS, settings.MASS));
         id_counter++;
     }
 
     return particles;
 }
 
-void init_collision_grid(Grid& collision_grid)
+void init_collision_grid(Grid& optim_grid)
 {
     for (auto& p : particles)
     {
-        collision_grid.add_particle(p);
+        optim_grid.add_particle(p);
     }
 }
 
 int get_idx_by_id(int id)
 {
     int i = 0;
-    while (i < N && particles[i].id != id)
+    while (i < settings.N && particles[i].id != id)
     {
         i++;
     }
-    if (i < N)
+    if (i < settings.N)
     {
         return i;
     }

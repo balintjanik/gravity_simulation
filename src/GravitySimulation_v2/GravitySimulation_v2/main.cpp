@@ -9,15 +9,23 @@
 #include "physics.h"
 #include "grid.h"
 
-void init_display_vars(sf::VideoMode screen)
+void reload_sim()
 {
-    WIDTH = screen.width;
-    HEIGHT = screen.height;
+    // Init particles
+    particles = generate_particles(settings.SPAWN_MARGIN, CANVAS_WIDTH - settings.SPAWN_MARGIN, settings.SPAWN_MARGIN, CANVAS_WIDTH - settings.SPAWN_MARGIN);
+    optim_grid = Grid(settings.COLLISION_CELL_SIZE);
+    init_collision_grid(optim_grid);
+}
+
+void recalc_sizes(int width, int height)
+{
+    WIDTH = width;
+    HEIGHT = height;
     CANVAS_WIDTH = WIDTH - MENU_WIDTH;
     if (CANVAS_WIDTH > HEIGHT)
-        R = 2 * HEIGHT / 5;
+        settings.R = 2 * HEIGHT / 5;
     else
-        R = 2 * CANVAS_WIDTH / 5;
+        settings.R = 2 * CANVAS_WIDTH / 5;
 }
 
 void init_buttons()
@@ -28,7 +36,10 @@ void init_buttons()
     ONOFF_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP), false);
     ONOFF_BTN.set_button_label(FONT_SIZE, "ONOFF");
 
-    EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + BTN_HEIGHT + MARGIN_TOP));
+    RELOAD_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + BTN_HEIGHT + MARGIN_TOP));
+    RELOAD_BTN.set_button_label(FONT_SIZE, "RELOAD");
+
+    EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
     EXIT_BTN.set_button_label(FONT_SIZE, "EXIT");
 }
 
@@ -37,13 +48,9 @@ int main()
     sf::VideoMode screen = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(screen, "Gravitational Force Simulation", sf::Style::Fullscreen);
 
-    init_display_vars(screen);
+    recalc_sizes(screen.width, screen.height);
     init_buttons();
-
-    // Init particles
-    particles = generate_particles(SPAWN_MARGIN, CANVAS_WIDTH - SPAWN_MARGIN, SPAWN_MARGIN, CANVAS_WIDTH - SPAWN_MARGIN);
-    Grid collision_grid(COLLISION_CELL_SIZE);
-    init_collision_grid(collision_grid);
+    reload_sim();
 
     while (window.isOpen()) {
         sf::Event event;
@@ -51,31 +58,35 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
+            RELOAD_BTN.get_button_status(window, event);
             ONOFF_BTN.get_button_status(window, event);
             EXIT_BTN.get_button_status(window, event);
+
+            if (RELOAD_BTN.is_pressed)
+                reload_sim();
 
             if (EXIT_BTN.is_pressed)
                 window.close();
         }
 
         // Update positions
-        update_positions(collision_grid);
+        update_positions(optim_grid);
 
         // Display
         window.clear();
 
         // Draw trails first to avoid trails covering particles
-        if (HAS_TRAIL)
+        if (settings.HAS_TRAIL)
         {
             for (auto& p : particles)
             {
-                sf::Color current_trail_color = TRAIL_COLOR;
+                sf::Color current_trail_color = settings.TRAIL_COLOR;
                 for (int i = 0; i < p.trail.size(); i++)
                 {
-                    sf::CircleShape circle(TRAIL_RADIUS);
-                    current_trail_color.a = ((255 * i) / TRAIL_SIZE);
+                    sf::CircleShape circle(settings.TRAIL_RADIUS);
+                    current_trail_color.a = ((255 * i) / settings.TRAIL_SIZE);
                     circle.setFillColor(current_trail_color);
-                    circle.setPosition(p.trail[i].x - TRAIL_RADIUS, p.trail[i].y - TRAIL_RADIUS);
+                    circle.setPosition(p.trail[i].x - settings.TRAIL_RADIUS, p.trail[i].y - settings.TRAIL_RADIUS);
                     window.draw(circle);
                 }
             }
@@ -83,7 +94,7 @@ int main()
 
         // Draw particles
         // If not set otherwise, draw them the most effective way
-        if (!(VISUALIZE_SPATIAL_GRID || VISUALIZE_PARTICLE_CELL))
+        if (!(settings.VISUALIZE_SPATIAL_GRID || settings.VISUALIZE_PARTICLE_CELL))
         {
             for (auto& p : particles)
             {
@@ -100,26 +111,26 @@ int main()
         else
         {
             // Draw grid
-            if (VISUALIZE_SPATIAL_GRID)
+            if (settings.VISUALIZE_SPATIAL_GRID)
             {
-                for (int x = 0; x < collision_grid.width; x++)
+                for (int x = 0; x < optim_grid.width; x++)
                 {
-                    for (int y = 0; y < collision_grid.height; y++)
+                    for (int y = 0; y < optim_grid.height; y++)
                     {
-                        sf::Vector2f c_size(COLLISION_CELL_SIZE, COLLISION_CELL_SIZE);
+                        sf::Vector2f c_size(settings.COLLISION_CELL_SIZE, settings.COLLISION_CELL_SIZE);
                         sf::RectangleShape cell(c_size);
 
                         sf::Color fill_col = sf::Color::Transparent;
-                        if (VISUALIZE_CELL_MASS)
+                        if (settings.VISUALIZE_CELL_MASS)
                         {
-                            fill_col = map_forces_to_color(collision_grid.get(x, y).total_mass/COLLISION_CELL_SIZE);
+                            fill_col = map_forces_to_color(optim_grid.get(x, y).total_mass/ settings.COLLISION_CELL_SIZE);
                             fill_col.a = 140;
                         }
                         cell.setFillColor(fill_col);
                         
                         cell.setOutlineColor(sf::Color(20, 20, 20));
                         cell.setOutlineThickness(0.5f);
-                        cell.setPosition(x * COLLISION_CELL_SIZE - collision_grid.overflow_x/2, y * COLLISION_CELL_SIZE - collision_grid.overflow_y/2);
+                        cell.setPosition(x * settings.COLLISION_CELL_SIZE - optim_grid.overflow_x/2, y * settings.COLLISION_CELL_SIZE - optim_grid.overflow_y/2);
                         window.draw(cell);
                     }
                 }
@@ -127,16 +138,16 @@ int main()
 
             // Draw particles of cells
             int idx;
-            for (int x = 0; x < collision_grid.width; x++)
+            for (int x = 0; x < optim_grid.width; x++)
             {
-                for (int y = 0; y < collision_grid.height; y++)
+                for (int y = 0; y < optim_grid.height; y++)
                 {
                     // Calculate color based on grid position
                     sf::Color col = sf::Color::Green;
                     if ((y % 2 == 0 && x % 2 == 1) || (y % 2 == 1 && x % 2 == 0))
                         col = sf::Color::Magenta;
 
-                    auto& current_cell = collision_grid.get(x, y);
+                    auto& current_cell = optim_grid.get(x, y);
                     for (auto it1 = current_cell.particle_indices.begin(); it1 != current_cell.particle_indices.end(); ++it1)
                     {
                         idx = get_idx_by_id(*it1);
@@ -148,7 +159,7 @@ int main()
                         sf::CircleShape circle(p.radius);
 
                         // Set color based on custom settings
-                        if (VISUALIZE_PARTICLE_CELL)
+                        if (settings.VISUALIZE_PARTICLE_CELL)
                             circle.setFillColor(col);
                         else
                             circle.setFillColor(p.color);
@@ -158,17 +169,17 @@ int main()
                     }
 
                     // draw center of mass
-                    if (VISUALIZE_COM)
+                    if (settings.VISUALIZE_COM)
                     {
                         sf::CircleShape com(5,3);
                         com.setFillColor(sf::Color::Red);
-                        sf::Vector2f com_pos = collision_grid.get(x, y).center_of_mass;
+                        sf::Vector2f com_pos = optim_grid.get(x, y).center_of_mass;
                         if (com_pos.x == 0 && com_pos.y == 0)
                         {
-                            int to_center = COLLISION_CELL_SIZE / 2;
-                            int correct_overflow_x = collision_grid.overflow_x / 2;
-                            int correct_overflow_y = collision_grid.overflow_y / 2;
-                            com.setPosition(x * COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_x, y * COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_y);
+                            int to_center = settings.COLLISION_CELL_SIZE / 2;
+                            int correct_overflow_x = optim_grid.overflow_x / 2;
+                            int correct_overflow_y = optim_grid.overflow_y / 2;
+                            com.setPosition(x * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_x, y * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_y);
                         }
                         else
                         {
@@ -188,6 +199,7 @@ int main()
 
         // Draw buttons
         ONOFF_BTN.draw(window);
+        RELOAD_BTN.draw(window);
         EXIT_BTN.draw(window);
         
         window.display();

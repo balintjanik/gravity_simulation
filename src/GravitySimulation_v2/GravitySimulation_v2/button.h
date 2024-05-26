@@ -32,7 +32,7 @@
 #include <SFML/Graphics.hpp>
 
 const sf::Color defult_color = sf::Color(0, 100, 200);
-const sf::Color default_toggle = sf::Color(0, 150, 245);
+const sf::Color default_toggle = sf::Color::White;
 const sf::Color default_hover = sf::Color(0, 160, 255);
 const sf::Color default_press = sf::Color(0, 70, 140);
 const sf::Color disabled = sf::Color(60,60,60);

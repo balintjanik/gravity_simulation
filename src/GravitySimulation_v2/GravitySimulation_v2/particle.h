@@ -5,6 +5,8 @@
 #include <deque>
 #include "settings.h"
 
+static int id_counter = 0;
+
 struct Particle {
     sf::Vector2f position;
     sf::Vector2f old_position;
