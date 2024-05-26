@@ -12,6 +12,11 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
+### 2024.05.26 - Release v2.4.0 [IN PROGRESS]
+ - Added menu
+ 
+**Note:** there is a bug where the simulation stops when a particle reaches the edge of the screen and borders are turned off.
+
 ### 2024.05.21 - Release v2.3.2
  - Fixed uneven damping forces
 

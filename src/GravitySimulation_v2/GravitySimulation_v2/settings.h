@@ -12,13 +12,13 @@ static int MENU_WIDTH = 500;
 
 // Button settings
 extern sf::Font FONT;
-static float FONT_SIZE = 10;
-const int MARGIN_TOP = 50;
-const int MARGIN_LEFT = 20;
-const int MARGIN_BOTTOM = 50;
-const int MARGIN_RIGHT = 20;
-const int MARGIN_BETWEEN = 20;
-const int BTN_HEIGHT = 40;
+const float FONT_SIZE = 15;
+const int MARGIN_TOP = 20;
+const int MARGIN_LEFT = 15;
+const int MARGIN_BOTTOM = 30;
+const int MARGIN_RIGHT = 15;
+const int MARGIN_BETWEEN = 10;
+const int BTN_HEIGHT = 30;
 
 // Buttons
 static sf::Text PLACEMENT_TYPE_TXT;
@@ -30,6 +30,22 @@ extern ToggleButton SPEED_TYPE_RANDOM_BTN;
 extern ToggleButton SPEED_TYPE_ANGULAR_BTN;
 extern ToggleButton SPEED_TYPE_ZERO_BTN;
 extern ToggleButton SPEED_TYPE_CENTRAL_BTN;
+
+static sf::Text BORDER_TXT;
+extern ToggleButton HAS_BORDERS_BTN;
+
+static sf::Text TRAIL_TXT;
+extern ToggleButton HAS_TRAIL_BTN;
+
+static sf::Text COLLISION_TXT;
+extern ToggleButton HAS_OVERLAPCHECK_BTN;
+extern ToggleButton HAS_BOUNCEOFF_BTN;
+
+static sf::Text GRID_TXT;
+extern ToggleButton VISUALIZE_GRID_BTN;
+extern ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
+extern ToggleButton VISUALIZE_CELL_MASS_BTN;
+extern ToggleButton VISUALIZE_COM_BTN;
 
 extern ToggleButton ONOFF_BTN;
 extern SimpleButton RELOAD_BTN;
