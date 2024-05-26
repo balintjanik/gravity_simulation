@@ -17,10 +17,20 @@ const int MARGIN_TOP = 50;
 const int MARGIN_LEFT = 20;
 const int MARGIN_BOTTOM = 50;
 const int MARGIN_RIGHT = 20;
-const int MARGIN_BETWEEN = 10;
-const int BTN_HEIGHT = 60;
+const int MARGIN_BETWEEN = 20;
+const int BTN_HEIGHT = 40;
 
 // Buttons
+static sf::Text PLACEMENT_TYPE_TXT;
+extern ToggleButton PLACEMENT_TYPE_FULLSCREEN_BTN;
+extern ToggleButton PLACEMENT_TYPE_CIRCULAR_BTN;
+
+static sf::Text SPEED_TYPE_TXT;
+extern ToggleButton SPEED_TYPE_RANDOM_BTN;
+extern ToggleButton SPEED_TYPE_ANGULAR_BTN;
+extern ToggleButton SPEED_TYPE_ZERO_BTN;
+extern ToggleButton SPEED_TYPE_CENTRAL_BTN;
+
 extern ToggleButton ONOFF_BTN;
 extern SimpleButton RELOAD_BTN;
 extern SimpleButton EXIT_BTN;

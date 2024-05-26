@@ -82,6 +82,7 @@ class Button
 
     protected:
         int font_size;
+        int button_border_thickness = 3;
         sf::Text button_label;
         sf::Vector2i mouse_pos_window;
         sf::Vector2f mouse_pos_view;

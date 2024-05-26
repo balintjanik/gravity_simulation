@@ -20,6 +20,15 @@ ToggleButton::~ToggleButton()
     count--;
 }
 
+void ToggleButton::set_toggle(bool value)
+{
+    this->is_toggle = value;
+    if (is_toggle)
+        button.setOutlineColor(button_colorset.toggle);
+    else
+        button.setOutlineColor(button_colorset.color);
+}
+
 void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
 {
     this->mouse_pos_window = sf::Mouse::getPosition(window);
@@ -50,7 +59,7 @@ void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
             }
         }
 
-        button.setOutlineThickness(4);
+        button.setOutlineThickness(button_border_thickness);
         if (is_toggle)
             button.setOutlineColor(button_colorset.toggle);
         else

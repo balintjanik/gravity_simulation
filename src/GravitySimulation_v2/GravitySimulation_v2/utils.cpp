@@ -64,7 +64,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
     double ang_to_cent, angle, distance, speed, rand_x, rand_y;
     sf::Vector2f direction;
 
-    for (int i = 0; i < settings.N - 1; i++)
+    for (int i = 0; i < settings.N; i++)
     {
         // set random position
         switch (settings.PLACEMENT_TYPE)
@@ -101,8 +101,8 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 break;
             case SpeedType::Central:
                 direction = sf::Vector2f(CANVAS_WIDTH / 2 - x, HEIGHT / 2 - y);
-                vx = direction.x;
-                vy = direction.y;
+                vx = direction.x / 10;
+                vy = direction.y / 10;
                 break;
             default: // Zero is default
                 vx = 0.0;
@@ -121,7 +121,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
     return particles;
 }
 
-void init_collision_grid(Grid& optim_grid)
+void init_optim_grid(Grid& optim_grid)
 {
     for (auto& p : particles)
     {

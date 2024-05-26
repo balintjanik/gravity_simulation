@@ -10,6 +10,7 @@ public:
 
     ToggleButton(const sf::Vector2f size, const sf::Vector2f position, bool is_toggle = false);
     ToggleButton(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position, bool is_toggle = false);
+    void set_toggle(bool value);
 
     ~ToggleButton();
 
