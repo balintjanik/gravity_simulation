@@ -106,6 +106,19 @@ void init_buttons()
     button_counter++;
     block_counter++;
 
+    // Gravity settings
+    GRAVITY_TXT.setString("GRAVITY SETTINGS");
+    GRAVITY_TXT.setFillColor(sf::Color::White);
+    GRAVITY_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    GRAVITY_TXT.setFont(FONT);
+    GRAVITY_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    HAS_GRAVITY_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.HAS_GRAVITY);
+    HAS_GRAVITY_BTN.set_button_label(FONT_SIZE, "GRAVITY ON/OFF");
+    button_counter++;
+    block_counter++;
+
     // Collision settings
     COLLISION_TXT.setString("COLLISION SETTINGS");
     COLLISION_TXT.setFillColor(sf::Color::White);
@@ -148,12 +161,14 @@ void init_buttons()
     button_counter++;
     block_counter++;
 
-    // Test
-    ONOFF_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), false);
-    ONOFF_BTN.set_button_label(FONT_SIZE, "ONOFF");
-    button_counter++;
-
     // Restart simulation
+    RELOAD_REQUIRED_TXT.setString("RELOAD REQUIRED");
+    RELOAD_REQUIRED_TXT.setFillColor(sf::Color::Red);
+    RELOAD_REQUIRED_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    RELOAD_REQUIRED_TXT.setFont(FONT);
+    RELOAD_REQUIRED_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
     RELOAD_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
     RELOAD_BTN.set_button_label(FONT_SIZE, "RELOAD");
     button_counter++;
@@ -161,6 +176,14 @@ void init_buttons()
     // Exit
     EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
     EXIT_BTN.set_button_label(FONT_SIZE, "EXIT");
+}
+
+bool check_reload_required()
+{
+    if (settings.PLACEMENT_TYPE != current_settings.PLACEMENT_TYPE || settings.SPEED_TYPE != current_settings.SPEED_TYPE)
+        return true;
+
+    return false;
 }
 
 void draw_menu(sf::RenderWindow& window)
@@ -181,6 +204,9 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(TRAIL_TXT);
     HAS_TRAIL_BTN.draw(window);
 
+    window.draw(GRAVITY_TXT);
+    HAS_GRAVITY_BTN.draw(window);
+
     window.draw(COLLISION_TXT);
     HAS_OVERLAPCHECK_BTN.draw(window);
     HAS_BOUNCEOFF_BTN.draw(window);
@@ -191,7 +217,9 @@ void draw_menu(sf::RenderWindow& window)
     VISUALIZE_CELL_MASS_BTN.draw(window);
     VISUALIZE_COM_BTN.draw(window);
 
-    ONOFF_BTN.draw(window);
+    if (check_reload_required())
+        window.draw(RELOAD_REQUIRED_TXT);
+
     RELOAD_BTN.draw(window);
     EXIT_BTN.draw(window);
 }
@@ -219,13 +247,13 @@ int main()
             SPEED_TYPE_CENTRAL_BTN.get_button_status(window, event);
             HAS_BORDERS_BTN.get_button_status(window, event);
             HAS_TRAIL_BTN.get_button_status(window, event);
+            HAS_GRAVITY_BTN.get_button_status(window, event);
             HAS_OVERLAPCHECK_BTN.get_button_status(window, event);
             HAS_BOUNCEOFF_BTN.get_button_status(window, event);
             VISUALIZE_GRID_BTN.get_button_status(window, event);
             VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
             VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
             VISUALIZE_COM_BTN.get_button_status(window, event);
-            ONOFF_BTN.get_button_status(window, event);
             RELOAD_BTN.get_button_status(window, event);
             EXIT_BTN.get_button_status(window, event);
 
@@ -282,32 +310,70 @@ int main()
             if (HAS_BORDERS_BTN.is_pressed)
             {
                 if (current_settings.HAS_BORDERS)
+                {
                     current_settings.HAS_BORDERS = false;
+                    settings.HAS_BORDERS = false;
+                }
                 else
+                {
                     current_settings.HAS_BORDERS = true;
+                    settings.HAS_BORDERS = true;
+                }
             }
 
             if (HAS_TRAIL_BTN.is_pressed)
             {
                 if (current_settings.HAS_TRAIL)
+                {
                     current_settings.HAS_TRAIL = false;
+                    settings.HAS_TRAIL = false;
+                }
                 else
+                {
                     current_settings.HAS_TRAIL = true;
+                    settings.HAS_TRAIL = true;
+                }
+            }
+
+            if (HAS_GRAVITY_BTN.is_pressed)
+            {
+                if (current_settings.HAS_GRAVITY)
+                {
+                    current_settings.HAS_GRAVITY = false;
+                    settings.HAS_GRAVITY = false;
+                }
+                else
+                {
+                    current_settings.HAS_GRAVITY = true;
+                    settings.HAS_GRAVITY = true;
+                }
             }
 
             if (HAS_OVERLAPCHECK_BTN.is_pressed)
             {
                 if (current_settings.HAS_OVERLAPCHECK)
+                {
                     current_settings.HAS_OVERLAPCHECK = false;
+                    settings.HAS_OVERLAPCHECK = false;
+                }
                 else
+                {
                     current_settings.HAS_OVERLAPCHECK = true;
+                    settings.HAS_OVERLAPCHECK = true;
+                }
             }
             if (HAS_BOUNCEOFF_BTN.is_pressed)
             {
                 if (current_settings.HAS_BOUNCEOFF)
+                {
                     current_settings.HAS_BOUNCEOFF = false;
+                    settings.HAS_BOUNCEOFF = false;
+                }
                 else
+                {
                     current_settings.HAS_BOUNCEOFF = true;
+                    settings.HAS_BOUNCEOFF = true;
+                }
             }
 
             if (VISUALIZE_GRID_BTN.is_pressed)

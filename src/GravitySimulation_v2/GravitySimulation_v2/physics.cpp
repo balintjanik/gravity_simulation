@@ -206,7 +206,8 @@ void update_positions(Grid& optim_grid)
 
 
     // Calculate gravitational forces
-    update_gravity(optim_grid);
+    if (settings.HAS_GRAVITY)
+        update_gravity(optim_grid);
 
     // Update trails
     if (settings.HAS_TRAIL)

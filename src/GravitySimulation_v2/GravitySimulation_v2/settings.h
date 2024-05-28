@@ -37,6 +37,9 @@ extern ToggleButton HAS_BORDERS_BTN;
 static sf::Text TRAIL_TXT;
 extern ToggleButton HAS_TRAIL_BTN;
 
+static sf::Text GRAVITY_TXT;
+extern ToggleButton HAS_GRAVITY_BTN;
+
 static sf::Text COLLISION_TXT;
 extern ToggleButton HAS_OVERLAPCHECK_BTN;
 extern ToggleButton HAS_BOUNCEOFF_BTN;
@@ -47,7 +50,7 @@ extern ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
 extern ToggleButton VISUALIZE_CELL_MASS_BTN;
 extern ToggleButton VISUALIZE_COM_BTN;
 
-extern ToggleButton ONOFF_BTN;
+static sf::Text RELOAD_REQUIRED_TXT;
 extern SimpleButton RELOAD_BTN;
 extern SimpleButton EXIT_BTN;
 
@@ -80,6 +83,9 @@ public:
 	int TRAIL_SIZE = 50;
 	double TRAIL_RADIUS = 0.5;
 	sf::Color TRAIL_COLOR = sf::Color(40,40,40);
+
+	// Gravity settings
+	bool HAS_GRAVITY = true;
 	
 	// Collision settings (to fully turn off collision set both to false)
 	bool HAS_OVERLAPCHECK = true; // Turns on/off overlap avoidance

@@ -18,6 +18,8 @@ ToggleButton HAS_BORDERS_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 
 ToggleButton HAS_TRAIL_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 
+ToggleButton HAS_GRAVITY_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
+
 ToggleButton HAS_OVERLAPCHECK_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 ToggleButton HAS_BOUNCEOFF_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 
@@ -26,6 +28,5 @@ ToggleButton VISUALIZE_PARTICLE_CELL_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0))
 ToggleButton VISUALIZE_CELL_MASS_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 ToggleButton VISUALIZE_COM_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 
-ToggleButton ONOFF_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 SimpleButton RELOAD_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 SimpleButton EXIT_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
