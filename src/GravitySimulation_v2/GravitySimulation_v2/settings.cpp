@@ -6,6 +6,11 @@ int CANVAS_WIDTH = WIDTH - MENU_WIDTH;
 
 sf::Font FONT;
 
+TextBox PARTICLE_NUM_TB(sf::Vector2f(0,0), sf::Vector2f(0,0), 0, "int");
+
+TextBox PARTICLE_RADIUS_TB(sf::Vector2f(0, 0), sf::Vector2f(0, 0), 0, "int");
+TextBox PARTICLE_MASS_TB(sf::Vector2f(0, 0), sf::Vector2f(0, 0), 0, "double");
+
 ToggleButton PLACEMENT_TYPE_FULLSCREEN_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 ToggleButton PLACEMENT_TYPE_CIRCULAR_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 

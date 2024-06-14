@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "simple_button.h"
 #include "toggle_button.h"
+#include "textbox.h"
 #include "setup_type.h"
 
 // We will automatically set width and height when the app starts
@@ -21,6 +22,15 @@ const int MARGIN_BETWEEN = 10;
 const int BTN_HEIGHT = 30;
 
 // Buttons
+static sf::Text PARTICLE_NUM_TXT;
+extern TextBox PARTICLE_NUM_TB;
+
+static sf::Text PARTICLE_PROPS_TXT;
+static sf::Text PARTICLE_RADIUS_TXT;
+extern TextBox PARTICLE_RADIUS_TB;
+static sf::Text PARTICLE_MASS_TXT;
+extern TextBox PARTICLE_MASS_TB;
+
 static sf::Text PLACEMENT_TYPE_TXT;
 extern ToggleButton PLACEMENT_TYPE_FULLSCREEN_BTN;
 extern ToggleButton PLACEMENT_TYPE_CIRCULAR_BTN;
@@ -99,11 +109,11 @@ public:
 	double DAMPING_DIST = 2.0;
 	
 	// Collision optimization settings
-	bool VISUALIZE_SPATIAL_GRID = true; // draw grid
+	bool VISUALIZE_SPATIAL_GRID = false; // draw grid
 	bool VISUALIZE_PARTICLE_CELL = false; // color particle based on position in optimization grid (instead of the forces acting on it)
-	bool VISUALIZE_CELL_MASS = true; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
-	bool VISUALIZE_COM = true; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
-	int COLLISION_CELL_SIZE = 50; // WARNING: this const must be a divisor of both WIDTH and HEIGHT otherwise program crashes
+	bool VISUALIZE_CELL_MASS = false; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
+	bool VISUALIZE_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
+	int COLLISION_CELL_SIZE = 20;
 };
 
 #endif

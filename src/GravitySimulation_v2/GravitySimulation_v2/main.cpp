@@ -41,6 +41,48 @@ void init_buttons()
     int label_counter = 0;
     int block_counter = 0;
 
+    // Particle number settings
+    PARTICLE_NUM_TXT.setString("NUMBER OF PARTICLES");
+    PARTICLE_NUM_TXT.setFillColor(sf::Color::White);
+    PARTICLE_NUM_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    PARTICLE_NUM_TXT.setFont(FONT);
+    PARTICLE_NUM_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    PARTICLE_NUM_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.N, "int");
+    PARTICLE_NUM_TB.set_button_label(FONT_SIZE, std::to_string(settings.N));
+    button_counter++;
+    block_counter++;
+
+    // Particle properties settings
+    PARTICLE_PROPS_TXT.setString("PARTICLE PROPERTIES");
+    PARTICLE_PROPS_TXT.setFillColor(sf::Color::White);
+    PARTICLE_PROPS_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    PARTICLE_PROPS_TXT.setFont(FONT);
+    PARTICLE_PROPS_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    PARTICLE_RADIUS_TXT.setString("RADIUS");
+    PARTICLE_RADIUS_TXT.setFillColor(sf::Color::White);
+    PARTICLE_RADIUS_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    PARTICLE_RADIUS_TXT.setFont(FONT);
+    PARTICLE_RADIUS_TXT.setCharacterSize(FONT_SIZE);
+
+    PARTICLE_MASS_TXT.setString("MASS");
+    PARTICLE_MASS_TXT.setFillColor(sf::Color::White);
+    PARTICLE_MASS_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    PARTICLE_MASS_TXT.setFont(FONT);
+    PARTICLE_MASS_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+    
+    PARTICLE_RADIUS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.RADIUS, "int");
+    PARTICLE_RADIUS_TB.set_button_label(FONT_SIZE, std::to_string(settings.RADIUS));
+
+    PARTICLE_MASS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.MASS, "double");
+    PARTICLE_MASS_TB.set_button_label(FONT_SIZE, std::to_string(settings.MASS));
+    button_counter++;
+    block_counter++;
+
     // Placement type settings
     PLACEMENT_TYPE_TXT.setString("PLACEMENT TYPE");
     PLACEMENT_TYPE_TXT.setFillColor(sf::Color::White);
@@ -180,7 +222,8 @@ void init_buttons()
 
 bool check_reload_required()
 {
-    if (settings.PLACEMENT_TYPE != current_settings.PLACEMENT_TYPE || settings.SPEED_TYPE != current_settings.SPEED_TYPE)
+    if (settings.PLACEMENT_TYPE != current_settings.PLACEMENT_TYPE || settings.SPEED_TYPE != current_settings.SPEED_TYPE
+        || settings.N != current_settings.N || settings.RADIUS != current_settings.RADIUS || settings.MASS != current_settings.MASS)
         return true;
 
     return false;
@@ -188,6 +231,15 @@ bool check_reload_required()
 
 void draw_menu(sf::RenderWindow& window)
 {
+    window.draw(PARTICLE_NUM_TXT);
+    PARTICLE_NUM_TB.draw(window);
+
+    window.draw(PARTICLE_PROPS_TXT);
+    window.draw(PARTICLE_RADIUS_TXT);
+    PARTICLE_RADIUS_TB.draw(window);
+    window.draw(PARTICLE_MASS_TXT);
+    PARTICLE_MASS_TB.draw(window);
+
     window.draw(PLACEMENT_TYPE_TXT);
     PLACEMENT_TYPE_CIRCULAR_BTN.draw(window);
     PLACEMENT_TYPE_FULLSCREEN_BTN.draw(window);
@@ -224,6 +276,23 @@ void draw_menu(sf::RenderWindow& window)
     EXIT_BTN.draw(window);
 }
 
+void untoggle_textboxes()
+{
+    PARTICLE_NUM_TB.set_toggle(false);
+    current_settings.N = (int)PARTICLE_NUM_TB.value;
+    PARTICLE_RADIUS_TB.set_toggle(false);
+    current_settings.RADIUS = (int)PARTICLE_RADIUS_TB.value;
+    PARTICLE_MASS_TB.set_toggle(false);
+    current_settings.MASS = PARTICLE_MASS_TB.value;
+}
+
+void handle_textbox_input(const sf::Event& event)
+{
+    PARTICLE_NUM_TB.handle_input(event);
+    PARTICLE_RADIUS_TB.handle_input(event);
+    PARTICLE_MASS_TB.handle_input(event);
+}
+
 int main()
 {
     sf::VideoMode screen = sf::VideoMode::getDesktopMode();
@@ -239,6 +308,14 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
+            if (event.type == sf::Event::MouseButtonReleased)
+            {
+                untoggle_textboxes();
+            }
+
+            PARTICLE_NUM_TB.get_button_status(window, event);
+            PARTICLE_RADIUS_TB.get_button_status(window, event);
+            PARTICLE_MASS_TB.get_button_status(window, event);
             PLACEMENT_TYPE_CIRCULAR_BTN.get_button_status(window, event);
             PLACEMENT_TYPE_FULLSCREEN_BTN.get_button_status(window, event);
             SPEED_TYPE_ANGULAR_BTN.get_button_status(window, event);
@@ -257,7 +334,23 @@ int main()
             RELOAD_BTN.get_button_status(window, event);
             EXIT_BTN.get_button_status(window, event);
 
-            if (PLACEMENT_TYPE_CIRCULAR_BTN.is_pressed)
+            if (event.type == sf::Event::TextEntered)
+                handle_textbox_input(event);
+
+            if (PARTICLE_NUM_TB.is_pressed)
+            {
+                PARTICLE_NUM_TB.set_toggle(true);
+            }
+            else if (PARTICLE_RADIUS_TB.is_pressed)
+            {
+                PARTICLE_RADIUS_TB.set_toggle(true);
+            }
+            else if (PARTICLE_MASS_TB.is_pressed)
+            {
+                PARTICLE_MASS_TB.set_toggle(true);
+            }
+
+            else if (PLACEMENT_TYPE_CIRCULAR_BTN.is_pressed)
             {
                 PLACEMENT_TYPE_CIRCULAR_BTN.set_toggle(true);
                 PLACEMENT_TYPE_FULLSCREEN_BTN.set_toggle(false);
@@ -270,7 +363,7 @@ int main()
                 current_settings.PLACEMENT_TYPE = PlacementType::Fullscreen;
             }
 
-            if (SPEED_TYPE_ANGULAR_BTN.is_pressed)
+            else if (SPEED_TYPE_ANGULAR_BTN.is_pressed)
             {
                 SPEED_TYPE_ANGULAR_BTN.set_toggle(true);
                 SPEED_TYPE_RANDOM_BTN.set_toggle(false);
@@ -307,7 +400,7 @@ int main()
 
             }
 
-            if (HAS_BORDERS_BTN.is_pressed)
+            else if (HAS_BORDERS_BTN.is_pressed)
             {
                 if (current_settings.HAS_BORDERS)
                 {
@@ -321,7 +414,7 @@ int main()
                 }
             }
 
-            if (HAS_TRAIL_BTN.is_pressed)
+            else if (HAS_TRAIL_BTN.is_pressed)
             {
                 if (current_settings.HAS_TRAIL)
                 {
@@ -335,7 +428,7 @@ int main()
                 }
             }
 
-            if (HAS_GRAVITY_BTN.is_pressed)
+            else if (HAS_GRAVITY_BTN.is_pressed)
             {
                 if (current_settings.HAS_GRAVITY)
                 {
@@ -349,7 +442,7 @@ int main()
                 }
             }
 
-            if (HAS_OVERLAPCHECK_BTN.is_pressed)
+            else if (HAS_OVERLAPCHECK_BTN.is_pressed)
             {
                 if (current_settings.HAS_OVERLAPCHECK)
                 {
@@ -362,7 +455,7 @@ int main()
                     settings.HAS_OVERLAPCHECK = true;
                 }
             }
-            if (HAS_BOUNCEOFF_BTN.is_pressed)
+            else if (HAS_BOUNCEOFF_BTN.is_pressed)
             {
                 if (current_settings.HAS_BOUNCEOFF)
                 {
@@ -376,7 +469,7 @@ int main()
                 }
             }
 
-            if (VISUALIZE_GRID_BTN.is_pressed)
+            else if (VISUALIZE_GRID_BTN.is_pressed)
             {
                 if (settings.VISUALIZE_SPATIAL_GRID)
                 {
@@ -389,7 +482,7 @@ int main()
                     current_settings.VISUALIZE_SPATIAL_GRID = true;
                 }
             }
-            if (VISUALIZE_PARTICLE_CELL_BTN.is_pressed)
+            else if (VISUALIZE_PARTICLE_CELL_BTN.is_pressed)
             {
                 if (settings.VISUALIZE_PARTICLE_CELL)
                 {
@@ -402,7 +495,7 @@ int main()
                     current_settings.VISUALIZE_PARTICLE_CELL = true;
                 }
             }
-            if (VISUALIZE_CELL_MASS_BTN.is_pressed)
+            else if (VISUALIZE_CELL_MASS_BTN.is_pressed)
             {
                 if (settings.VISUALIZE_CELL_MASS)
                 {
@@ -415,7 +508,7 @@ int main()
                     current_settings.VISUALIZE_CELL_MASS = true;
                 }
             }
-            if (VISUALIZE_COM_BTN.is_pressed)
+            else if (VISUALIZE_COM_BTN.is_pressed)
             {
                 if (settings.VISUALIZE_COM)
                 {
@@ -429,10 +522,10 @@ int main()
                 }
             }
 
-            if (RELOAD_BTN.is_pressed)
+            else if (RELOAD_BTN.is_pressed)
                 reload_sim();
 
-            if (EXIT_BTN.is_pressed)
+            else if (EXIT_BTN.is_pressed)
                 window.close();
         }
 
@@ -566,7 +659,6 @@ int main()
 
         // Draw menu
         draw_menu(window);
-        
         
         window.display();
     }

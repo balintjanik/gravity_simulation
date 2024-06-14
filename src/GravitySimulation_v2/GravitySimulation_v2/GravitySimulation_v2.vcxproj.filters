@@ -45,6 +45,9 @@
     <ClCompile Include="toggle_button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="textbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="toggle_button.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="textbox.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

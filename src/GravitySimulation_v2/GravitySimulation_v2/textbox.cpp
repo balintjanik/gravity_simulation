@@ -1,35 +1,74 @@
 #include "button.h"
-#include "toggle_button.h"
+#include "textbox.h"
 
-ToggleButton::ToggleButton(const sf::Vector2f size, const sf::Vector2f position, bool is_toggle)
+TextBox::TextBox(const sf::Vector2f size, const sf::Vector2f position, int value, std::string type)
     : Button(size, position)
 {
     count++;
-    this->is_toggle = is_toggle;
+    this->is_toggle = false;
+    this->value = value;
+    this->type = type;
 };
 
-ToggleButton::ToggleButton(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position, bool is_toggle)
+TextBox::TextBox(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position, int value, std::string type)
     : Button(font, size, position)
 {
     count++;
-    this->is_toggle = is_toggle;
+    this->is_toggle = false;
+    this->value = value;
+    this->type = type;
 };
 
-ToggleButton::~ToggleButton()
+TextBox::~TextBox()
 {
     count--;
 }
 
-void ToggleButton::set_toggle(bool value)
+void TextBox::handle_input(const sf::Event& event) {
+    if (event.type == sf::Event::TextEntered && is_toggle) {
+        if (event.text.unicode == '\b' && !label.empty() && label != default_text) {
+            label.pop_back();
+        }
+        else if (std::isdigit(static_cast<char>(event.text.unicode)) && (label.size() < 9 || label == default_text)) {
+            if (label == default_text)
+                label.clear();
+            label += static_cast<char>(event.text.unicode);
+        }
+        else if (type == "double" && (static_cast<char>(event.text.unicode) == '.' && label.find('.') == std::string::npos)
+            && label.size() > 0 && label.size() < 9)
+        {
+            label += static_cast<char>(event.text.unicode);
+        }
+        set_button_label(font_size, label);
+    }
+}
+
+void TextBox::set_toggle(bool value)
 {
     this->is_toggle = value;
     if (is_toggle)
+    {
         button.setOutlineColor(button_colorset.toggle);
+        set_button_label(font_size, default_text);
+    }
     else
+    {
         button.setOutlineColor(button_colorset.color);
+        if (label.size() == 0)
+            set_button_label(font_size, "0");
+        if (label != default_text)
+            this->value = std::stod(label);
+        
+        if (type == "int")
+            set_button_label(font_size, std::to_string((int)this->value));
+        else
+        {
+            set_button_label(font_size, std::to_string(this->value));
+        }
+    }
 }
 
-void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
+void TextBox::get_button_status(sf::RenderWindow& window, sf::Event& event)
 {
     this->mouse_pos_window = sf::Mouse::getPosition(window);
     this->mouse_pos_view = window.mapPixelToCoords(this->mouse_pos_window);
@@ -51,11 +90,6 @@ void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
             if (event.type == sf::Event::MouseButtonReleased)
             {
                 this->is_pressed = true;
-
-                if (is_toggle)
-                    set_toggle(false);
-                else
-                    set_toggle(true);
             }
         }
 
