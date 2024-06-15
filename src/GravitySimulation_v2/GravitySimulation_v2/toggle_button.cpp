@@ -59,7 +59,6 @@ void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
             }
         }
 
-        button.setOutlineThickness(button_border_thickness);
         if (is_toggle)
             button.setOutlineColor(button_colorset.toggle);
         else
@@ -93,6 +92,7 @@ void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
     else
     {
         button.setFillColor(disabled);
+        button.setOutlineColor(disabled);
     }
 
 }

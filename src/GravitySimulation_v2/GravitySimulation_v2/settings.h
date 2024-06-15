@@ -83,15 +83,15 @@ public:
 	double MASS = 2;
 	
 	// Max force to expect per particle (for coloring purposes only)
-	double MAX_FORCES = 3.0;
+	double MAX_FORCES = 3 * sqrt(MASS) * (N / 700);
 	
 	// Bounce back from edges of screen
 	bool HAS_BORDERS = true;
 	
 	// Trail settings
 	bool HAS_TRAIL = false;
-	int TRAIL_SIZE = 50;
-	double TRAIL_RADIUS = 0.5;
+	int TRAIL_SIZE = 30;
+	double TRAIL_RADIUS = (RADIUS / 2 > 1 ? RADIUS / 2 : 1);
 	sf::Color TRAIL_COLOR = sf::Color(40,40,40);
 
 	// Gravity settings
@@ -114,6 +114,12 @@ public:
 	bool VISUALIZE_CELL_MASS = false; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 	bool VISUALIZE_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 	int COLLISION_CELL_SIZE = 20;
+
+	void update_dynamic_properties()
+	{
+		MAX_FORCES = 3 * sqrt(MASS) * ((double)N / 700);
+		TRAIL_RADIUS = (RADIUS / 2 > 1 ? RADIUS / 2 : 1);
+	}
 };
 
 #endif

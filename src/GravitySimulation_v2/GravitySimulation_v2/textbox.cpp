@@ -106,7 +106,7 @@ void TextBox::get_button_status(sf::RenderWindow& window, sf::Event& event)
         }
         else if (is_toggle)
         {
-            button.setFillColor(button_colorset.color);
+            button.setFillColor(button_colorset.hover);
             button_label.setFillColor(label_colorset.toggle);
         }
         else

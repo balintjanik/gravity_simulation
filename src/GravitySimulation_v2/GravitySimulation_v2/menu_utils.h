@@ -5,10 +5,13 @@
 #include "globals.h"
 #include "utils.h"
 
+#include <iostream>
+
 void reload_sim()
 {
     // Load new settings
     settings = current_settings;
+    settings.update_dynamic_properties();
 
     // Init particles
     particles = generate_particles(settings.SPAWN_MARGIN, CANVAS_WIDTH - settings.SPAWN_MARGIN, settings.SPAWN_MARGIN, HEIGHT - settings.SPAWN_MARGIN);
@@ -16,6 +19,8 @@ void reload_sim()
     // Init optimization grid
     optim_grid = Grid(settings.COLLISION_CELL_SIZE);
     init_optim_grid(optim_grid);
+
+    std::cout << settings.TRAIL_RADIUS << ", " << settings.MAX_FORCES << std::endl;
 }
 
 void recalc_sizes(int width, int height)
@@ -192,10 +197,12 @@ void init_buttons()
 
     VISUALIZE_CELL_MASS_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.VISUALIZE_CELL_MASS);
     VISUALIZE_CELL_MASS_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' MASS ON/OFF");
+    VISUALIZE_CELL_MASS_BTN.is_active = false;
     button_counter++;
 
     VISUALIZE_COM_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.VISUALIZE_COM);
     VISUALIZE_COM_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' CENTER OF MASS ON/OFF");
+    VISUALIZE_COM_BTN.is_active = false;
     button_counter++;
     block_counter++;
 
@@ -459,11 +466,21 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
         {
             settings.VISUALIZE_SPATIAL_GRID = false;
             current_settings.VISUALIZE_SPATIAL_GRID = false;
+
+            VISUALIZE_CELL_MASS_BTN.is_active = false;
+            VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
+            VISUALIZE_COM_BTN.is_active = false;
+            VISUALIZE_COM_BTN.get_button_status(window, event);
         }
         else
         {
             settings.VISUALIZE_SPATIAL_GRID = true;
             current_settings.VISUALIZE_SPATIAL_GRID = true;
+
+            VISUALIZE_CELL_MASS_BTN.is_active = true;
+            VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
+            VISUALIZE_COM_BTN.is_active = true;
+            VISUALIZE_COM_BTN.get_button_status(window, event);
         }
     }
     else if (VISUALIZE_PARTICLE_CELL_BTN.is_pressed)

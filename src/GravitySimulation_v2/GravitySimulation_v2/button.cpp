@@ -79,6 +79,8 @@ Button::Button(sf::Font& font, const sf::Vector2f size, const sf::Vector2f posit
     this->button_label.setFont(font);
     this->label = "Button " + std::to_string(count);
     this->set_button_label(font_size, label);
+
+    button.setOutlineThickness(button_border_thickness);
 }
 
 void Button::draw(sf::RenderWindow& window)
