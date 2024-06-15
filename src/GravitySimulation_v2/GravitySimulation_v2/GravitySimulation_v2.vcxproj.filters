@@ -89,6 +89,9 @@
     <ClInclude Include="textbox.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="menu_utils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GravitySimulation_v2.rc">

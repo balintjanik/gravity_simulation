@@ -25,4 +25,6 @@ void init_optim_grid(Grid& optim_grid);
 
 int get_idx_by_id(int id);
 
+void draw_particles(sf::RenderWindow& window);
+
 #endif

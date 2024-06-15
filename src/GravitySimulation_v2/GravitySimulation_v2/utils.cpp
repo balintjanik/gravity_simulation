@@ -142,3 +142,122 @@ int get_idx_by_id(int id)
     }
     return -1;
 }
+
+void draw_particles(sf::RenderWindow& window)
+{
+    // Draw trails first to avoid trails covering particles
+    if (settings.HAS_TRAIL)
+    {
+        for (auto& p : particles)
+        {
+            sf::Color current_trail_color = settings.TRAIL_COLOR;
+            for (int i = 0; i < p.trail.size(); i++)
+            {
+                sf::CircleShape circle(settings.TRAIL_RADIUS);
+                current_trail_color.a = ((255 * i) / settings.TRAIL_SIZE);
+                circle.setFillColor(current_trail_color);
+                circle.setPosition(p.trail[i].x - settings.TRAIL_RADIUS, p.trail[i].y - settings.TRAIL_RADIUS);
+                window.draw(circle);
+            }
+        }
+    }
+
+    // Draw particles
+    // If not set otherwise, draw them the most effective way
+    if (!(settings.VISUALIZE_SPATIAL_GRID || settings.VISUALIZE_PARTICLE_CELL))
+    {
+        for (auto& p : particles)
+        {
+            sf::CircleShape circle(p.radius);
+            circle.setFillColor(p.color);
+
+            // setPosition sets the coordinates of top left corner
+            circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
+
+            window.draw(circle);
+        }
+    }
+    // If set, draw grid and color particles accordingly
+    else
+    {
+        // Draw grid
+        if (settings.VISUALIZE_SPATIAL_GRID)
+        {
+            for (int x = 0; x < optim_grid.width; x++)
+            {
+                for (int y = 0; y < optim_grid.height; y++)
+                {
+                    sf::Vector2f c_size(settings.COLLISION_CELL_SIZE, settings.COLLISION_CELL_SIZE);
+                    sf::RectangleShape cell(c_size);
+
+                    sf::Color fill_col = sf::Color::Transparent;
+                    if (settings.VISUALIZE_CELL_MASS)
+                    {
+                        fill_col = map_forces_to_color(optim_grid.get(x, y).total_mass / settings.COLLISION_CELL_SIZE);
+                        fill_col.a = 140;
+                    }
+                    cell.setFillColor(fill_col);
+
+                    cell.setOutlineColor(sf::Color(20, 20, 20));
+                    cell.setOutlineThickness(0.5f);
+                    cell.setPosition(x * settings.COLLISION_CELL_SIZE - optim_grid.overflow_x / 2, y * settings.COLLISION_CELL_SIZE - optim_grid.overflow_y / 2);
+                    window.draw(cell);
+                }
+            }
+        }
+
+        // Draw particles of cells
+        int idx;
+        for (int x = 0; x < optim_grid.width; x++)
+        {
+            for (int y = 0; y < optim_grid.height; y++)
+            {
+                // Calculate color based on grid position
+                sf::Color col = sf::Color::Green;
+                if ((y % 2 == 0 && x % 2 == 1) || (y % 2 == 1 && x % 2 == 0))
+                    col = sf::Color::Magenta;
+
+                auto& current_cell = optim_grid.get(x, y);
+                for (auto it1 = current_cell.particle_indices.begin(); it1 != current_cell.particle_indices.end(); ++it1)
+                {
+                    idx = get_idx_by_id(*it1);
+                    if (idx < 0)
+                        continue;
+
+                    Particle& p = particles[idx];
+
+                    sf::CircleShape circle(p.radius);
+
+                    // Set color based on custom settings
+                    if (settings.VISUALIZE_PARTICLE_CELL)
+                        circle.setFillColor(col);
+                    else
+                        circle.setFillColor(p.color);
+
+                    circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
+                    window.draw(circle);
+                }
+
+                // draw center of mass
+                if (settings.VISUALIZE_COM)
+                {
+                    sf::CircleShape com(5, 3);
+                    com.setFillColor(sf::Color::Red);
+                    sf::Vector2f com_pos = optim_grid.get(x, y).center_of_mass;
+                    if (com_pos.x == 0 && com_pos.y == 0)
+                    {
+                        int to_center = settings.COLLISION_CELL_SIZE / 2;
+                        int correct_overflow_x = optim_grid.overflow_x / 2;
+                        int correct_overflow_y = optim_grid.overflow_y / 2;
+                        com.setPosition(x * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_x, y * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_y);
+                    }
+                    else
+                    {
+                        com.setPosition(com_pos.x - 5, com_pos.y - 5);
+                    }
+                    window.draw(com);
+                }
+            }
+        }
+    }
+}
