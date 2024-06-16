@@ -27,6 +27,9 @@ ToggleButton HAS_GRAVITY_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 
 ToggleButton HAS_OVERLAPCHECK_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 ToggleButton HAS_BOUNCEOFF_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
+TextBox COLLISION_THRESHOLD_TB(sf::Vector2f(0, 0), sf::Vector2f(0, 0), 0, "double");
+TextBox COLLISION_ITERATIONS_TB(sf::Vector2f(0, 0), sf::Vector2f(0, 0), 0, "int");
+
 
 ToggleButton VISUALIZE_GRID_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 ToggleButton VISUALIZE_PARTICLE_CELL_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));

@@ -13,13 +13,13 @@ static int MENU_WIDTH = 500;
 
 // Button settings
 extern sf::Font FONT;
-const float FONT_SIZE = 15;
-const int MARGIN_TOP = 20;
-const int MARGIN_LEFT = 15;
-const int MARGIN_BOTTOM = 30;
-const int MARGIN_RIGHT = 15;
-const int MARGIN_BETWEEN = 10;
-const int BTN_HEIGHT = 30;
+static float FONT_SIZE = 15;
+static int MARGIN_TOP = 20;
+static int MARGIN_LEFT = 15;
+static int MARGIN_BOTTOM = 30;
+static int MARGIN_RIGHT = 15;
+static int MARGIN_BETWEEN = 10;
+static int BTN_HEIGHT = 30;
 
 // Buttons
 static sf::Text PARTICLE_NUM_TXT;
@@ -53,6 +53,11 @@ extern ToggleButton HAS_GRAVITY_BTN;
 static sf::Text COLLISION_TXT;
 extern ToggleButton HAS_OVERLAPCHECK_BTN;
 extern ToggleButton HAS_BOUNCEOFF_BTN;
+static sf::Text COLLISION_THRESHOLD_TXT;
+extern TextBox COLLISION_THRESHOLD_TB;
+static sf::Text COLLISION_ITERATIONS_TXT;
+extern TextBox COLLISION_ITERATIONS_TB;
+
 
 static sf::Text GRID_TXT;
 extern ToggleButton VISUALIZE_GRID_BTN;

@@ -27,11 +27,20 @@ void recalc_sizes(int width, int height)
 {
     WIDTH = width;
     HEIGHT = height;
+    MENU_WIDTH = WIDTH / 6;
     CANVAS_WIDTH = WIDTH - MENU_WIDTH;
     if (CANVAS_WIDTH > HEIGHT)
         settings.R = 2 * HEIGHT / 5;
     else
         settings.R = 2 * CANVAS_WIDTH / 5;
+
+    BTN_HEIGHT = HEIGHT / 48; // 30;
+    FONT_SIZE = BTN_HEIGHT / 2; // 15;
+    MARGIN_TOP = 2 * BTN_HEIGHT / 3; // 20;
+    MARGIN_LEFT = BTN_HEIGHT / 2; // 15;
+    MARGIN_BOTTOM = BTN_HEIGHT; // 30;
+    MARGIN_RIGHT = BTN_HEIGHT / 2; // 15;
+    MARGIN_BETWEEN = (MARGIN_LEFT / 2 < 10 ? 10 : MARGIN_LEFT / 2); // 10
 }
 
 void init_buttons()
@@ -177,6 +186,26 @@ void init_buttons()
     HAS_BOUNCEOFF_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.HAS_BOUNCEOFF);
     HAS_BOUNCEOFF_BTN.set_button_label(FONT_SIZE, "BOUNCE ON/OFF");
     button_counter++;
+    
+    COLLISION_THRESHOLD_TXT.setString("THRESHOLD");
+    COLLISION_THRESHOLD_TXT.setFillColor(sf::Color::White);
+    COLLISION_THRESHOLD_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    COLLISION_THRESHOLD_TXT.setFont(FONT);
+    COLLISION_THRESHOLD_TXT.setCharacterSize(FONT_SIZE);
+
+    COLLISION_ITERATIONS_TXT.setString("ITERATIONS");
+    COLLISION_ITERATIONS_TXT.setFillColor(sf::Color::White);
+    COLLISION_ITERATIONS_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    COLLISION_ITERATIONS_TXT.setFont(FONT);
+    COLLISION_ITERATIONS_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    COLLISION_THRESHOLD_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.COLLISION_THRESHOLD, "double");
+    COLLISION_THRESHOLD_TB.set_button_label(FONT_SIZE, std::to_string(settings.COLLISION_THRESHOLD));
+
+    COLLISION_ITERATIONS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.COLLISION_ITERATIONS, "int");
+    COLLISION_ITERATIONS_TB.set_button_label(FONT_SIZE, std::to_string(settings.COLLISION_ITERATIONS));
+    button_counter++;
     block_counter++;
 
     // Grid visualization settings
@@ -226,7 +255,8 @@ void init_buttons()
 bool check_reload_required()
 {
     if (settings.PLACEMENT_TYPE != current_settings.PLACEMENT_TYPE || settings.SPEED_TYPE != current_settings.SPEED_TYPE
-        || settings.N != current_settings.N || settings.RADIUS != current_settings.RADIUS || settings.MASS != current_settings.MASS)
+        || settings.N != current_settings.N || settings.RADIUS != current_settings.RADIUS || settings.MASS != current_settings.MASS
+        || settings.COLLISION_THRESHOLD != current_settings.COLLISION_THRESHOLD || settings.COLLISION_ITERATIONS != current_settings.COLLISION_ITERATIONS)
         return true;
 
     return false;
@@ -271,6 +301,10 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(COLLISION_TXT);
     HAS_OVERLAPCHECK_BTN.draw(window);
     HAS_BOUNCEOFF_BTN.draw(window);
+    window.draw(COLLISION_THRESHOLD_TXT);
+    COLLISION_THRESHOLD_TB.draw(window);
+    window.draw(COLLISION_ITERATIONS_TXT);
+    COLLISION_ITERATIONS_TB.draw(window);
 
     window.draw(GRID_TXT);
     VISUALIZE_GRID_BTN.draw(window);
@@ -293,6 +327,11 @@ void untoggle_textboxes()
     current_settings.RADIUS = (int)PARTICLE_RADIUS_TB.value;
     PARTICLE_MASS_TB.set_toggle(false);
     current_settings.MASS = PARTICLE_MASS_TB.value;
+
+    COLLISION_THRESHOLD_TB.set_toggle(false);
+    current_settings.COLLISION_THRESHOLD = COLLISION_THRESHOLD_TB.value;
+    COLLISION_ITERATIONS_TB.set_toggle(false);
+    current_settings.COLLISION_ITERATIONS = (int)COLLISION_ITERATIONS_TB.value;
 }
 
 void handle_textbox_input(const sf::Event& event)
@@ -300,29 +339,44 @@ void handle_textbox_input(const sf::Event& event)
     PARTICLE_NUM_TB.handle_input(event);
     PARTICLE_RADIUS_TB.handle_input(event);
     PARTICLE_MASS_TB.handle_input(event);
+
+    COLLISION_THRESHOLD_TB.handle_input(event);
+    COLLISION_ITERATIONS_TB.handle_input(event);
 }
 
 void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
 {
     PARTICLE_NUM_TB.get_button_status(window, event);
+
     PARTICLE_RADIUS_TB.get_button_status(window, event);
     PARTICLE_MASS_TB.get_button_status(window, event);
+
     PLACEMENT_TYPE_CIRCULAR_BTN.get_button_status(window, event);
     PLACEMENT_TYPE_FULLSCREEN_BTN.get_button_status(window, event);
+
     SPEED_TYPE_ANGULAR_BTN.get_button_status(window, event);
     SPEED_TYPE_RANDOM_BTN.get_button_status(window, event);
     SPEED_TYPE_ZERO_BTN.get_button_status(window, event);
     SPEED_TYPE_CENTRAL_BTN.get_button_status(window, event);
+
     HAS_BORDERS_BTN.get_button_status(window, event);
+
     HAS_TRAIL_BTN.get_button_status(window, event);
+
     HAS_GRAVITY_BTN.get_button_status(window, event);
+
     HAS_OVERLAPCHECK_BTN.get_button_status(window, event);
     HAS_BOUNCEOFF_BTN.get_button_status(window, event);
+    COLLISION_THRESHOLD_TB.get_button_status(window, event);
+    COLLISION_ITERATIONS_TB.get_button_status(window, event);
+
     VISUALIZE_GRID_BTN.get_button_status(window, event);
     VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
     VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
     VISUALIZE_COM_BTN.get_button_status(window, event);
+
     RELOAD_BTN.get_button_status(window, event);
+
     EXIT_BTN.get_button_status(window, event);
 }
 
@@ -458,6 +512,14 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
             current_settings.HAS_BOUNCEOFF = true;
             settings.HAS_BOUNCEOFF = true;
         }
+    }
+    else if (COLLISION_THRESHOLD_TB.is_pressed)
+    {
+        COLLISION_THRESHOLD_TB.set_toggle(true);
+    }
+    else if (COLLISION_ITERATIONS_TB.is_pressed)
+    {
+        COLLISION_ITERATIONS_TB.set_toggle(true);
     }
 
     else if (VISUALIZE_GRID_BTN.is_pressed)
