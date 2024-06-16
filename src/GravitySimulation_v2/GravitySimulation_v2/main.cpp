@@ -14,6 +14,7 @@ int main()
 {
     sf::VideoMode screen = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(screen, "Gravitational Force Simulation", sf::Style::Fullscreen);
+    window.setFramerateLimit(30);
 
     // Initialize
     recalc_sizes(screen.width, screen.height);
@@ -25,6 +26,16 @@ int main()
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            if (event.type == sf::Event::Resized)
+            {
+                sf::Vector2u new_size = window.getSize();
+                sf::View view(sf::FloatRect(0, 0, static_cast<float>(new_size.x), static_cast<float>(new_size.y)));
+                window.setView(view);
+                recalc_sizes(new_size.x, new_size.y);
+                init_buttons();
+                reload_sim();
+            }
 
             // Untoggle textboxes on click
             if (event.type == sf::Event::MouseButtonReleased)

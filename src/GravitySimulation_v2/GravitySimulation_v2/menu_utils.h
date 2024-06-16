@@ -5,8 +5,6 @@
 #include "globals.h"
 #include "utils.h"
 
-#include <iostream>
-
 void reload_sim()
 {
     // Load new settings
@@ -19,8 +17,6 @@ void reload_sim()
     // Init optimization grid
     optim_grid = Grid(settings.COLLISION_CELL_SIZE);
     init_optim_grid(optim_grid);
-
-    std::cout << settings.TRAIL_RADIUS << ", " << settings.MAX_FORCES << std::endl;
 }
 
 void recalc_sizes(int width, int height)
