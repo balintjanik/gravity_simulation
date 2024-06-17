@@ -137,9 +137,16 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                     p_2.velocity.x -= impulse * normal_x * p_1.mass;
                     p_2.velocity.y -= impulse * normal_y * p_1.mass;
                 }
+
+                // Update color based on collision if gravity is off and collision is on
+                if (settings.HAS_OVERLAPCHECK && settings.HAS_BOUNCEOFF && !settings.HAS_GRAVITY)
+                {
+                    p_1.color = sf::Color(255, 0, 0);
+                    p_2.color = sf::Color(255, 0, 0);
+                }
             }
-            // Dampen velocity of close particles to avoid too fast spinning of planets
-            else if (distance < min_distance + settings.DAMPING_DIST && p_1.id < p_2.id)
+            // Dampen velocity of close particles to avoid too fast spinning of planets (if enabled)
+            else if (settings.HAS_DAMPING &&  distance < min_distance + settings.DAMPING_DIST && p_1.id < p_2.id)
             {
                 p_1.velocity *= (1 - ((settings.DAMPING_COEFF / 2) / pow(settings.COLLISION_ITERATIONS, 2)));
                 p_2.velocity *= (1 - ((settings.DAMPING_COEFF / 2) / pow(settings.COLLISION_ITERATIONS, 2)));
@@ -208,6 +215,14 @@ void update_positions(Grid& optim_grid)
     // Calculate gravitational forces
     if (settings.HAS_GRAVITY)
         update_gravity(optim_grid);
+    else // Update default coloring
+    {
+        for (auto& p : particles)
+        {
+            int new_val = (p.color.g > 255 - 10 ? 255 : p.color.g + 10);
+            p.color = sf::Color(255, new_val, new_val);
+        }
+    }
 
     // Update trails
     if (settings.HAS_TRAIL)

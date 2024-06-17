@@ -50,6 +50,13 @@ extern ToggleButton HAS_TRAIL_BTN;
 static sf::Text GRAVITY_TXT;
 extern ToggleButton HAS_GRAVITY_BTN;
 
+static sf::Text DAMPING_TXT;
+extern ToggleButton HAS_DAMPING_BTN;
+static sf::Text DAMPING_DIST_TXT;
+extern TextBox DAMPING_DIST_TB;
+static sf::Text DAMPING_COEFF_TXT;
+extern TextBox DAMPING_COEFF_TB;
+
 static sf::Text COLLISION_TXT;
 extern ToggleButton HAS_OVERLAPCHECK_BTN;
 extern ToggleButton HAS_BOUNCEOFF_BTN;
@@ -57,7 +64,6 @@ static sf::Text COLLISION_THRESHOLD_TXT;
 extern TextBox COLLISION_THRESHOLD_TB;
 static sf::Text COLLISION_ITERATIONS_TXT;
 extern TextBox COLLISION_ITERATIONS_TB;
-
 
 static sf::Text GRID_TXT;
 extern ToggleButton VISUALIZE_GRID_BTN;
@@ -110,6 +116,7 @@ public:
 	
 	// Small damping to avoid uncontrollable velocities (first dampens the angular velocity, then the final calculated velocity again)
 	// THESE SETTINGS ARE CAREFULLY SET AND NOT ADVISED TO BE CHANGED
+	bool HAS_DAMPING = true;
 	double DAMPING_COEFF = MASS * TIMESTEP / 5;
 	double DAMPING_DIST = 2.0;
 	

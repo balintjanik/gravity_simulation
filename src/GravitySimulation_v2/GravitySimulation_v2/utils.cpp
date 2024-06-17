@@ -86,8 +86,8 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
         switch (settings.SPEED_TYPE)
         {
             case SpeedType::Random:
-                vx = generate_random_double(-1.0, 1.0);
-                vy = generate_random_double(-1.0, 1.0);
+                vx = generate_random_double(-15.0, 15.0);
+                vy = generate_random_double(-15.0, 15.0);
                 break;
             case SpeedType::Angular:
                 ang_to_cent = atan2(y - HEIGHT / 2, x - CANVAS_WIDTH / 2);

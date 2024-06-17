@@ -167,6 +167,39 @@ void init_buttons()
     button_counter++;
     block_counter++;
 
+    // Damping settings
+    DAMPING_TXT.setString("DAMPING SETTINGS");
+    DAMPING_TXT.setFillColor(sf::Color::White);
+    DAMPING_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    DAMPING_TXT.setFont(FONT);
+    DAMPING_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    HAS_DAMPING_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.HAS_DAMPING);
+    HAS_DAMPING_BTN.set_button_label(FONT_SIZE, "DAMPING ON/OFF");
+    button_counter++;
+
+    DAMPING_DIST_TXT.setString("DISTANCE");
+    DAMPING_DIST_TXT.setFillColor(sf::Color::White);
+    DAMPING_DIST_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    DAMPING_DIST_TXT.setFont(FONT);
+    DAMPING_DIST_TXT.setCharacterSize(FONT_SIZE);
+
+    DAMPING_COEFF_TXT.setString("COEFFICIENT");
+    DAMPING_COEFF_TXT.setFillColor(sf::Color::White);
+    DAMPING_COEFF_TXT.setPosition(sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    DAMPING_COEFF_TXT.setFont(FONT);
+    DAMPING_COEFF_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    DAMPING_DIST_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.DAMPING_DIST, "double");
+    DAMPING_DIST_TB.set_button_label(FONT_SIZE, std::to_string(settings.DAMPING_DIST));
+
+    DAMPING_COEFF_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(CANVAS_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.DAMPING_COEFF, "double");
+    DAMPING_COEFF_TB.set_button_label(FONT_SIZE, std::to_string(settings.DAMPING_COEFF));
+    button_counter++;
+    block_counter++;
+
     // Collision settings
     COLLISION_TXT.setString("COLLISION SETTINGS");
     COLLISION_TXT.setFillColor(sf::Color::White);
@@ -251,8 +284,7 @@ void init_buttons()
 bool check_reload_required()
 {
     if (settings.PLACEMENT_TYPE != current_settings.PLACEMENT_TYPE || settings.SPEED_TYPE != current_settings.SPEED_TYPE
-        || settings.N != current_settings.N || settings.RADIUS != current_settings.RADIUS || settings.MASS != current_settings.MASS
-        || settings.COLLISION_THRESHOLD != current_settings.COLLISION_THRESHOLD || settings.COLLISION_ITERATIONS != current_settings.COLLISION_ITERATIONS)
+        || settings.N != current_settings.N || settings.RADIUS != current_settings.RADIUS || settings.MASS != current_settings.MASS)
         return true;
 
     return false;
@@ -294,6 +326,13 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(GRAVITY_TXT);
     HAS_GRAVITY_BTN.draw(window);
 
+    window.draw(DAMPING_TXT);
+    HAS_DAMPING_BTN.draw(window);
+    window.draw(DAMPING_DIST_TXT);
+    DAMPING_DIST_TB.draw(window);
+    window.draw(DAMPING_COEFF_TXT);
+    DAMPING_COEFF_TB.draw(window);
+
     window.draw(COLLISION_TXT);
     HAS_OVERLAPCHECK_BTN.draw(window);
     HAS_BOUNCEOFF_BTN.draw(window);
@@ -326,8 +365,17 @@ void untoggle_textboxes()
 
     COLLISION_THRESHOLD_TB.set_toggle(false);
     current_settings.COLLISION_THRESHOLD = COLLISION_THRESHOLD_TB.value;
+    settings.COLLISION_THRESHOLD = COLLISION_THRESHOLD_TB.value;
     COLLISION_ITERATIONS_TB.set_toggle(false);
     current_settings.COLLISION_ITERATIONS = (int)COLLISION_ITERATIONS_TB.value;
+    settings.COLLISION_ITERATIONS = (int)COLLISION_ITERATIONS_TB.value;
+
+    DAMPING_DIST_TB.set_toggle(false);
+    current_settings.DAMPING_DIST = DAMPING_DIST_TB.value;
+    settings.DAMPING_DIST = DAMPING_DIST_TB.value;
+    DAMPING_COEFF_TB.set_toggle(false);
+    current_settings.DAMPING_COEFF = DAMPING_COEFF_TB.value;
+    settings.DAMPING_COEFF = DAMPING_COEFF_TB.value;
 }
 
 void handle_textbox_input(const sf::Event& event)
@@ -338,6 +386,9 @@ void handle_textbox_input(const sf::Event& event)
 
     COLLISION_THRESHOLD_TB.handle_input(event);
     COLLISION_ITERATIONS_TB.handle_input(event);
+
+    DAMPING_DIST_TB.handle_input(event);
+    DAMPING_COEFF_TB.handle_input(event);
 }
 
 void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
@@ -360,6 +411,10 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     HAS_TRAIL_BTN.get_button_status(window, event);
 
     HAS_GRAVITY_BTN.get_button_status(window, event);
+
+    HAS_DAMPING_BTN.get_button_status(window, event);
+    DAMPING_DIST_TB.get_button_status(window, event);
+    DAMPING_COEFF_TB.get_button_status(window, event);
 
     HAS_OVERLAPCHECK_BTN.get_button_status(window, event);
     HAS_BOUNCEOFF_BTN.get_button_status(window, event);
@@ -481,6 +536,38 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
             current_settings.HAS_GRAVITY = true;
             settings.HAS_GRAVITY = true;
         }
+    }
+
+    else if (HAS_DAMPING_BTN.is_pressed)
+    {
+        if (current_settings.HAS_DAMPING)
+        {
+            current_settings.HAS_DAMPING = false;
+            settings.HAS_DAMPING = false;
+
+            DAMPING_DIST_TB.is_active = false;
+            DAMPING_DIST_TB.get_button_status(window, event);
+            DAMPING_COEFF_TB.is_active = false;
+            DAMPING_COEFF_TB.get_button_status(window, event);
+        }
+        else
+        {
+            current_settings.HAS_DAMPING = true;
+            settings.HAS_DAMPING = true;
+
+            DAMPING_DIST_TB.is_active = true;
+            DAMPING_DIST_TB.get_button_status(window, event);
+            DAMPING_COEFF_TB.is_active = true;
+            DAMPING_COEFF_TB.get_button_status(window, event);
+        }
+    }
+    else if (DAMPING_DIST_TB.is_pressed)
+    {
+        DAMPING_DIST_TB.set_toggle(true);
+    }
+    else if (DAMPING_COEFF_TB.is_pressed)
+    {
+        DAMPING_COEFF_TB.set_toggle(true);
     }
 
     else if (HAS_OVERLAPCHECK_BTN.is_pressed)

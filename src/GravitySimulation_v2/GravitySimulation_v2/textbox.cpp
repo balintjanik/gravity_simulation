@@ -127,6 +127,7 @@ void TextBox::get_button_status(sf::RenderWindow& window, sf::Event& event)
     else
     {
         button.setFillColor(disabled);
+        button.setOutlineColor(disabled);
     }
 
 }

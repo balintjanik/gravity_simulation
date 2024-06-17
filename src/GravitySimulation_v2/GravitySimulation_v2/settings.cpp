@@ -25,6 +25,10 @@ ToggleButton HAS_TRAIL_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 
 ToggleButton HAS_GRAVITY_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 
+ToggleButton HAS_DAMPING_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
+TextBox DAMPING_DIST_TB(sf::Vector2f(0, 0), sf::Vector2f(0, 0), 0, "double");
+TextBox DAMPING_COEFF_TB(sf::Vector2f(0, 0), sf::Vector2f(0, 0), 0, "double");
+
 ToggleButton HAS_OVERLAPCHECK_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 ToggleButton HAS_BOUNCEOFF_BTN(sf::Vector2f(0, 0), sf::Vector2f(0, 0));
 TextBox COLLISION_THRESHOLD_TB(sf::Vector2f(0, 0), sf::Vector2f(0, 0), 0, "double");
