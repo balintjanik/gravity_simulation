@@ -31,7 +31,7 @@ void recalc_sizes(int width, int height)
         settings.R = 2 * CANVAS_WIDTH / 5;
 
     BTN_HEIGHT = HEIGHT / 48; // 30;
-    FONT_SIZE = BTN_HEIGHT / 2; // 15;
+    FONT_SIZE = 4 * BTN_HEIGHT / 7; // 15;
     MARGIN_TOP = 2 * BTN_HEIGHT / 3; // 20;
     MARGIN_LEFT = BTN_HEIGHT / 2; // 15;
     MARGIN_BOTTOM = BTN_HEIGHT; // 30;

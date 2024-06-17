@@ -104,10 +104,9 @@ void Button::set_button_label(float char_size, std::string label)
 
     this->label_rect = this->button_label.getLocalBounds();
 
+    this->button_label.setOrigin(this->label_rect.width / 2.0f, this->label_rect.height / 2.0f - (this->label_rect.height - char_size < 0 ? this->label_rect.height - char_size : 0));
 
-    this->button_label.setOrigin(this->label_rect.width / 2.0f, this->label_rect.height / 2.0f);
-
-    this->button_label.setPosition(this->button_pos.x + (this->button_rect.width / 2.0f), this->button_pos.y + (this->button_rect.height / 2.0f) - (font_size / 4));
+    this->button_label.setPosition(this->button_pos.x + (this->button_rect.width / 2.0f), this->button_pos.y + (this->button_rect.height / 2.0f));
 }
 
 void Button::set_button_label(float char_size)
