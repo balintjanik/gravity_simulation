@@ -60,7 +60,7 @@ class Button
     public:
 
         Button(const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0));
-        Button(sf::Font& font, const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0));
+        Button(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position);
 
         virtual void get_button_status(sf::RenderWindow& window, sf::Event& event) = 0;
         void draw(sf::RenderWindow& window);

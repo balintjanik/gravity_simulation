@@ -12,7 +12,7 @@ extern int WIDTH, HEIGHT, CANVAS_WIDTH;
 static int MENU_WIDTH = 500;
 
 // Button settings
-extern sf::Font FONT;
+static sf::Font FONT;
 static float FONT_SIZE = 15;
 static int MARGIN_TOP = 20;
 static int MARGIN_LEFT = 15;
@@ -23,57 +23,57 @@ static int BTN_HEIGHT = 30;
 
 // Buttons
 static sf::Text PARTICLE_NUM_TXT;
-extern TextBox PARTICLE_NUM_TB;
+static TextBox PARTICLE_NUM_TB;
 
 static sf::Text PARTICLE_PROPS_TXT;
 static sf::Text PARTICLE_RADIUS_TXT;
-extern TextBox PARTICLE_RADIUS_TB;
+static TextBox PARTICLE_RADIUS_TB;
 static sf::Text PARTICLE_MASS_TXT;
-extern TextBox PARTICLE_MASS_TB;
+static TextBox PARTICLE_MASS_TB;
 
 static sf::Text PLACEMENT_TYPE_TXT;
-extern ToggleButton PLACEMENT_TYPE_FULLSCREEN_BTN;
-extern ToggleButton PLACEMENT_TYPE_CIRCULAR_BTN;
+static ToggleButton PLACEMENT_TYPE_FULLSCREEN_BTN;
+static ToggleButton PLACEMENT_TYPE_CIRCULAR_BTN;
 
 static sf::Text SPEED_TYPE_TXT;
-extern ToggleButton SPEED_TYPE_RANDOM_BTN;
-extern ToggleButton SPEED_TYPE_ANGULAR_BTN;
-extern ToggleButton SPEED_TYPE_ZERO_BTN;
-extern ToggleButton SPEED_TYPE_CENTRAL_BTN;
+static ToggleButton SPEED_TYPE_RANDOM_BTN;
+static ToggleButton SPEED_TYPE_ANGULAR_BTN;
+static ToggleButton SPEED_TYPE_ZERO_BTN;
+static ToggleButton SPEED_TYPE_CENTRAL_BTN;
 
 static sf::Text BORDER_TXT;
-extern ToggleButton HAS_BORDERS_BTN;
+static ToggleButton HAS_BORDERS_BTN;
 
 static sf::Text TRAIL_TXT;
-extern ToggleButton HAS_TRAIL_BTN;
+static ToggleButton HAS_TRAIL_BTN;
 
 static sf::Text GRAVITY_TXT;
-extern ToggleButton HAS_GRAVITY_BTN;
+static ToggleButton HAS_GRAVITY_BTN;
 
 static sf::Text DAMPING_TXT;
-extern ToggleButton HAS_DAMPING_BTN;
+static ToggleButton HAS_DAMPING_BTN;
 static sf::Text DAMPING_DIST_TXT;
-extern TextBox DAMPING_DIST_TB;
+static TextBox DAMPING_DIST_TB;
 static sf::Text DAMPING_COEFF_TXT;
-extern TextBox DAMPING_COEFF_TB;
+static TextBox DAMPING_COEFF_TB;
 
 static sf::Text COLLISION_TXT;
-extern ToggleButton HAS_OVERLAPCHECK_BTN;
-extern ToggleButton HAS_BOUNCEOFF_BTN;
+static ToggleButton HAS_OVERLAPCHECK_BTN;
+static ToggleButton HAS_BOUNCEOFF_BTN;
 static sf::Text COLLISION_THRESHOLD_TXT;
-extern TextBox COLLISION_THRESHOLD_TB;
+static TextBox COLLISION_THRESHOLD_TB;
 static sf::Text COLLISION_ITERATIONS_TXT;
-extern TextBox COLLISION_ITERATIONS_TB;
+static TextBox COLLISION_ITERATIONS_TB;
 
 static sf::Text GRID_TXT;
-extern ToggleButton VISUALIZE_GRID_BTN;
-extern ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
-extern ToggleButton VISUALIZE_CELL_MASS_BTN;
-extern ToggleButton VISUALIZE_COM_BTN;
+static ToggleButton VISUALIZE_GRID_BTN;
+static ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
+static ToggleButton VISUALIZE_CELL_MASS_BTN;
+static ToggleButton VISUALIZE_COM_BTN;
 
 static sf::Text RELOAD_REQUIRED_TXT;
-extern SimpleButton RELOAD_BTN;
-extern SimpleButton EXIT_BTN;
+static SimpleButton RELOAD_BTN;
+static SimpleButton EXIT_BTN;
 
 class Settings {
 public:

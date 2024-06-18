@@ -8,7 +8,7 @@ class TextBox : public Button
 {
 public:
 
-    TextBox(const sf::Vector2f size, const sf::Vector2f position, int value, std::string type);
+    TextBox(const sf::Vector2f size = sf::Vector2f(0, 0), const sf::Vector2f position = sf::Vector2f(0, 0), int value = 0, std::string type = "int");
     TextBox(sf::Font& font, const sf::Vector2f size, const sf::Vector2f position, int value, std::string type);
     void set_toggle(bool value);
     void handle_input(const sf::Event& event);
