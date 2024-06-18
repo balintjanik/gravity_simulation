@@ -11,6 +11,15 @@
 extern int WIDTH, HEIGHT, CANVAS_WIDTH;
 static int MENU_WIDTH = 500;
 
+// Menu show/hide
+static bool SHOW_MENU = true;
+
+// FPS settings
+static unsigned int M_FRAME = 0;
+static unsigned int M_FPS;
+static sf::Clock M_CLOCK;
+static sf::Text FPS_TEXT;
+
 // Button settings
 static sf::Font FONT;
 static float FONT_SIZE = 15;

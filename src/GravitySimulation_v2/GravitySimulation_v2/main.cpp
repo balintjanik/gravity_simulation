@@ -37,6 +37,18 @@ int main()
                 reload_sim();
             }
 
+            // Show/hide menu on H keypress
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::H)
+                {
+                    if (SHOW_MENU)
+                        SHOW_MENU = false;
+                    else
+                        SHOW_MENU = true;
+                }
+            }
+
             // Untoggle textboxes on click
             if (event.type == sf::Event::MouseButtonReleased)
                 untoggle_textboxes();
@@ -53,6 +65,9 @@ int main()
                 handle_button_clicks(window, event);
         }
 
+        // Update fps
+        update_fps();
+
         // Update positions
         update_positions(optim_grid);
 
@@ -63,7 +78,8 @@ int main()
         draw_particles(window);
 
         // Draw menu
-        draw_menu(window);
+        if (SHOW_MENU)
+            draw_menu(window);
         
         window.display();
     }
