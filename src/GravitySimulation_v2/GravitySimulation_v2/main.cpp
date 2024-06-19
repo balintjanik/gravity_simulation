@@ -27,6 +27,7 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
+            // Handle resize
             if (event.type == sf::Event::Resized)
             {
                 sf::Vector2u new_size = window.getSize();
@@ -88,7 +89,7 @@ int main()
                     window.close();
             }
 
-            // Untoggle textboxes on click
+            // Untoggle textboxes on any click
             if (event.type == sf::Event::MouseButtonReleased)
                 untoggle_textboxes();
 

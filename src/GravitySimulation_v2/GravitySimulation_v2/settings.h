@@ -38,6 +38,7 @@ static sf::Text FPS_TEXT;
 
 // Button settings
 static sf::Font FONT;
+static float TITLE_FONT_SIZE = 25;
 static float FONT_SIZE = 15;
 static int MARGIN_TOP = 20;
 static int MARGIN_LEFT = 15;
@@ -95,6 +96,8 @@ static ToggleButton VISUALIZE_GRID_BTN;
 static ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
 static ToggleButton VISUALIZE_CELL_MASS_BTN;
 static ToggleButton VISUALIZE_COM_BTN;
+static sf::Text COLLISION_CELL_SIZE_TXT;
+static TextBox COLLISION_CELL_SIZE_TB;
 
 static sf::Text RELOAD_REQUIRED_TXT;
 static SimpleButton RELOAD_BTN;
