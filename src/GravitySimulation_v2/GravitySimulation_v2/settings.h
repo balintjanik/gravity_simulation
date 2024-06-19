@@ -103,6 +103,13 @@ static SimpleButton RELOAD_BTN;
 // Right menu
 static sf::Text RIGHT_TITLE;
 
+static sf::Text ANIMATION_SETTINGS_TXT;
+static sf::Text TIMESTEP_TXT;
+static TextBox TIMESTEP_TB;
+static unsigned int DEFAULT_FPS_LIMIT = 30;
+static sf::Text FPS_LIMIT_TXT;
+static TextBox FPS_LIMIT_TB;
+
 static sf::Text TRAIL_TXT;
 static ToggleButton HAS_TRAIL_BTN;
 

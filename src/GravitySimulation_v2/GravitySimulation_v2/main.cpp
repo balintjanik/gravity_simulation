@@ -14,7 +14,7 @@ int main()
 {
     sf::VideoMode screen = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(screen, "Gravitational Force Simulation", sf::Style::Fullscreen);
-    window.setFramerateLimit(30);
+    window.setFramerateLimit(DEFAULT_FPS_LIMIT);
 
     // Initialize
     recalc_sizes(screen.width, screen.height);
@@ -99,7 +99,7 @@ int main()
 
             // Untoggle textboxes on any click
             if (event.type == sf::Event::MouseButtonReleased)
-                untoggle_textboxes();
+                untoggle_textboxes(window);
 
             // Update button statuses
             update_button_statuses(window, event);

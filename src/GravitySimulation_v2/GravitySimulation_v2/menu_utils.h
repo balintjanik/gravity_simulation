@@ -307,18 +307,13 @@ void init_ui()
     // Restart simulation
     RELOAD_REQUIRED_TXT.setString("RELOAD REQUIRED");
     RELOAD_REQUIRED_TXT.setFillColor(sf::Color::Red);
-    RELOAD_REQUIRED_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    RELOAD_REQUIRED_TXT.setPosition(MARGIN_LEFT, HEIGHT - MARGIN_BOTTOM - BTN_HEIGHT - MARGIN_BETWEEN - FONT_SIZE);
     RELOAD_REQUIRED_TXT.setFont(FONT);
     RELOAD_REQUIRED_TXT.setCharacterSize(FONT_SIZE);
-    label_counter++;
 
     RELOAD_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
     RELOAD_BTN.set_button_label(FONT_SIZE, "RELOAD");
     button_counter++;
-
-    // Exit
-    EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
-    EXIT_BTN.set_button_label(FONT_SIZE, "EXIT");
 
     // RIGHT MENU
     button_counter = 0;
@@ -334,6 +329,37 @@ void init_ui()
     RIGHT_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
     title_counter++;
     title_counter++;
+    block_counter++;
+
+    // Animation settings
+    ANIMATION_SETTINGS_TXT.setString("ANIMATION SETTINGS");
+    ANIMATION_SETTINGS_TXT.setFillColor(sf::Color::White);
+    ANIMATION_SETTINGS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    ANIMATION_SETTINGS_TXT.setFont(FONT);
+    ANIMATION_SETTINGS_TXT.setCharacterSize(TITLE_FONT_SIZE);
+    title_counter++;
+
+    TIMESTEP_TXT.setString("TIMESTEP");
+    TIMESTEP_TXT.setFillColor(sf::Color::White);
+    TIMESTEP_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    TIMESTEP_TXT.setFont(FONT);
+    TIMESTEP_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    TIMESTEP_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.TIMESTEP, "double");
+    TIMESTEP_TB.set_button_label(FONT_SIZE, std::to_string(settings.TIMESTEP));
+    button_counter++;
+
+    FPS_LIMIT_TXT.setString("FPS LIMIT");
+    FPS_LIMIT_TXT.setFillColor(sf::Color::White);
+    FPS_LIMIT_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    FPS_LIMIT_TXT.setFont(FONT);
+    FPS_LIMIT_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    FPS_LIMIT_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), DEFAULT_FPS_LIMIT, "int");
+    FPS_LIMIT_TB.set_button_label(FONT_SIZE, std::to_string(DEFAULT_FPS_LIMIT));
+    button_counter++;
     block_counter++;
 
     // Trail settings
@@ -375,6 +401,10 @@ void init_ui()
     VISUALIZE_COM_BTN.is_active = false;
     button_counter++;
     block_counter++;
+
+    // Exit
+    EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
+    EXIT_BTN.set_button_label(FONT_SIZE, "EXIT");
 }
 
 bool check_reload_required()
@@ -458,6 +488,12 @@ void draw_menu(sf::RenderWindow& window)
     // Right menu elements
     window.draw(RIGHT_TITLE);
 
+    window.draw(ANIMATION_SETTINGS_TXT);
+    window.draw(TIMESTEP_TXT);
+    TIMESTEP_TB.draw(window);
+    window.draw(FPS_LIMIT_TXT);
+    FPS_LIMIT_TB.draw(window);
+
     window.draw(TRAIL_TXT);
     HAS_TRAIL_BTN.draw(window);
 
@@ -481,8 +517,9 @@ void draw_help(sf::RenderWindow& window)
     window.draw(HELP_TXT);
 }
 
-void untoggle_textboxes()
+void untoggle_textboxes(sf::RenderWindow& window)
 {
+    // Left menu
     PARTICLE_NUM_TB.set_toggle(false);
     current_settings.N = (int)PARTICLE_NUM_TB.value;
     PARTICLE_RADIUS_TB.set_toggle(false);
@@ -509,10 +546,18 @@ void untoggle_textboxes()
 
     COLLISION_CELL_SIZE_TB.set_toggle(false);
     current_settings.COLLISION_CELL_SIZE = COLLISION_CELL_SIZE_TB.value;
+
+    // Right menu
+    TIMESTEP_TB.set_toggle(false);
+    current_settings.TIMESTEP = TIMESTEP_TB.value;
+    settings.TIMESTEP = TIMESTEP_TB.value;
+    FPS_LIMIT_TB.set_toggle(false);
+    window.setFramerateLimit(FPS_LIMIT_TB.value);
 }
 
 void handle_textbox_input(const sf::Event& event)
 {
+    // Left menu
     PARTICLE_NUM_TB.handle_input(event);
     PARTICLE_RADIUS_TB.handle_input(event);
     PARTICLE_MASS_TB.handle_input(event);
@@ -525,10 +570,15 @@ void handle_textbox_input(const sf::Event& event)
     DAMPING_COEFF_TB.handle_input(event);
 
     COLLISION_CELL_SIZE_TB.handle_input(event);
+
+    // Right menu
+    TIMESTEP_TB.handle_input(event);
+    FPS_LIMIT_TB.handle_input(event);
 }
 
 void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
 {
+    // Left menu
     PARTICLE_NUM_TB.get_button_status(window, event);
 
     PARTICLE_RADIUS_TB.get_button_status(window, event);
@@ -544,8 +594,6 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
 
     HAS_BORDERS_BTN.get_button_status(window, event);
 
-    HAS_TRAIL_BTN.get_button_status(window, event);
-
     HAS_GRAVITY_BTN.get_button_status(window, event);
 
     HAS_DAMPING_BTN.get_button_status(window, event);
@@ -558,20 +606,27 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     COLLISION_ITERATIONS_TB.get_button_status(window, event);
     COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
 
+    COLLISION_CELL_SIZE_TB.get_button_status(window, event);
+
+    RELOAD_BTN.get_button_status(window, event);
+
+    // Right menu
+    TIMESTEP_TB.get_button_status(window, event);
+    FPS_LIMIT_TB.get_button_status(window, event);
+
+    HAS_TRAIL_BTN.get_button_status(window, event);
+
     VISUALIZE_GRID_BTN.get_button_status(window, event);
     VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
     VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
     VISUALIZE_COM_BTN.get_button_status(window, event);
-    COLLISION_CELL_SIZE_TB.get_button_status(window, event);
-
-    RELOAD_BTN.get_button_status(window, event);
 
     EXIT_BTN.get_button_status(window, event);
 }
 
 void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
 {
-    // LEFT MENU
+    // Left menu
 
     if (PARTICLE_NUM_TB.is_pressed)
     {
@@ -741,7 +796,13 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
     else if (RELOAD_BTN.is_pressed)
         reload_sim();
 
-    // RIGHT MENU
+    // Left menu
+
+    else if (TIMESTEP_TB.is_pressed)
+        TIMESTEP_TB.set_toggle(true);
+    
+    else if (FPS_LIMIT_TB.is_pressed)
+        FPS_LIMIT_TB.set_toggle(true);
 
     else if (HAS_TRAIL_BTN.is_pressed)
     {
