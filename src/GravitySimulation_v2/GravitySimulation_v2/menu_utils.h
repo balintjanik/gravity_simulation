@@ -53,10 +53,13 @@ void recalc_sizes(int width, int height)
     MARGIN_BOTTOM = BTN_HEIGHT;
     MARGIN_RIGHT = BTN_HEIGHT / 2;
     MARGIN_BETWEEN = (MARGIN_LEFT / 2 < 10 ? 10 : MARGIN_LEFT / 2);
+    MARGIN_BLOCK = BTN_HEIGHT;
 }
 
 void init_ui()
 {
+    // BASIC STUFF
+
     FONT.loadFromFile("Poppins-Bold.ttf");
 
     // FPS counter
@@ -64,11 +67,6 @@ void init_ui()
     FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
     FPS_TXT.setFont(FONT);
     FPS_TXT.setCharacterSize(TITLE_FONT_SIZE);
-
-    int button_counter = 0;
-    int title_counter = 0;
-    int label_counter = 0;
-    int block_counter = 0;
 
     // Help text
     HELP_TXT.setString(key_to_string(RELOAD_KEY) + ": RELOAD\t\t"
@@ -82,44 +80,60 @@ void init_ui()
     HELP_TXT.setCharacterSize(TITLE_FONT_SIZE);
     sf::FloatRect help_txt_rect = HELP_TXT.getLocalBounds();
     HELP_TXT.setOrigin(help_txt_rect.width / 2.0f, help_txt_rect.height / 2.0f);
-    HELP_TXT.setPosition(WIDTH / 2, HEIGHT - TITLE_FONT_SIZE - MARGIN_BOTTOM);
+    HELP_TXT.setPosition(WIDTH / 2, HEIGHT - FONT_SIZE - MARGIN_BOTTOM);
+
+    // LEFT MENU
+    int button_counter = 0;
+    int title_counter = 0;
+    int label_counter = 0;
+    int block_counter = 0;
+
+    // Left title
+    LEFT_TITLE.setString("SIMULATION");
+    LEFT_TITLE.setFillColor(sf::Color::White);
+    LEFT_TITLE.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    LEFT_TITLE.setFont(FONT);
+    LEFT_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
+    title_counter++;
+    title_counter++;
+    block_counter++;
 
     // Particle properties settings
     PARTICLE_PROPS_TXT.setString("PARTICLE PROPERTIES");
     PARTICLE_PROPS_TXT.setFillColor(sf::Color::White);
-    PARTICLE_PROPS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    PARTICLE_PROPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     PARTICLE_PROPS_TXT.setFont(FONT);
     PARTICLE_PROPS_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
     PARTICLE_NUM_TXT.setString("NUMBER OF PARTICLES");
     PARTICLE_NUM_TXT.setFillColor(sf::Color::White);
-    PARTICLE_NUM_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    PARTICLE_NUM_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     PARTICLE_NUM_TXT.setFont(FONT);
     PARTICLE_NUM_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
 
-    PARTICLE_NUM_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.N, "int");
+    PARTICLE_NUM_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.N, "int");
     PARTICLE_NUM_TB.set_button_label(FONT_SIZE, std::to_string(settings.N));
     button_counter++;
 
     PARTICLE_RADIUS_TXT.setString("RADIUS");
     PARTICLE_RADIUS_TXT.setFillColor(sf::Color::White);
-    PARTICLE_RADIUS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    PARTICLE_RADIUS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     PARTICLE_RADIUS_TXT.setFont(FONT);
     PARTICLE_RADIUS_TXT.setCharacterSize(FONT_SIZE);
 
     PARTICLE_MASS_TXT.setString("MASS");
     PARTICLE_MASS_TXT.setFillColor(sf::Color::White);
-    PARTICLE_MASS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    PARTICLE_MASS_TXT.setPosition(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     PARTICLE_MASS_TXT.setFont(FONT);
     PARTICLE_MASS_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
 
-    PARTICLE_RADIUS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.RADIUS, "int");
+    PARTICLE_RADIUS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.RADIUS, "int");
     PARTICLE_RADIUS_TB.set_button_label(FONT_SIZE, std::to_string(settings.RADIUS));
 
-    PARTICLE_MASS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.MASS, "double");
+    PARTICLE_MASS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.MASS, "double");
     PARTICLE_MASS_TB.set_button_label(FONT_SIZE, std::to_string(settings.MASS));
     button_counter++;
     block_counter++;
@@ -127,15 +141,15 @@ void init_ui()
     // Placement type settings
     PLACEMENT_TYPE_TXT.setString("PLACEMENT TYPE");
     PLACEMENT_TYPE_TXT.setFillColor(sf::Color::White);
-    PLACEMENT_TYPE_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    PLACEMENT_TYPE_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     PLACEMENT_TYPE_TXT.setFont(FONT);
     PLACEMENT_TYPE_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    PLACEMENT_TYPE_CIRCULAR_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), true);
+    PLACEMENT_TYPE_CIRCULAR_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), true);
     PLACEMENT_TYPE_CIRCULAR_BTN.set_button_label(FONT_SIZE, "CIRCULAR");
 
-    PLACEMENT_TYPE_FULLSCREEN_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), false);
+    PLACEMENT_TYPE_FULLSCREEN_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), false);
     PLACEMENT_TYPE_FULLSCREEN_BTN.set_button_label(FONT_SIZE, "FULLSCREEN");
     button_counter++;
     block_counter++;
@@ -143,22 +157,22 @@ void init_ui()
     // Speed type settings
     SPEED_TYPE_TXT.setString("SPEED TYPE");
     SPEED_TYPE_TXT.setFillColor(sf::Color::White);
-    SPEED_TYPE_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    SPEED_TYPE_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     SPEED_TYPE_TXT.setFont(FONT);
     SPEED_TYPE_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    SPEED_TYPE_ANGULAR_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), true);
+    SPEED_TYPE_ANGULAR_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), true);
     SPEED_TYPE_ANGULAR_BTN.set_button_label(FONT_SIZE, "ANGULAR");
 
-    SPEED_TYPE_RANDOM_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), false);
+    SPEED_TYPE_RANDOM_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), false);
     SPEED_TYPE_RANDOM_BTN.set_button_label(FONT_SIZE, "RANDOM");
     button_counter++;
 
-    SPEED_TYPE_ZERO_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), false);
+    SPEED_TYPE_ZERO_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), false);
     SPEED_TYPE_ZERO_BTN.set_button_label(FONT_SIZE, "ZERO");
 
-    SPEED_TYPE_CENTRAL_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), false);
+    SPEED_TYPE_CENTRAL_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), false);
     SPEED_TYPE_CENTRAL_BTN.set_button_label(FONT_SIZE, "CENTRAL");
     button_counter++;
     block_counter++;
@@ -166,38 +180,25 @@ void init_ui()
     // Border settings
     BORDER_TXT.setString("BORDER SETTINGS");
     BORDER_TXT.setFillColor(sf::Color::White);
-    BORDER_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    BORDER_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     BORDER_TXT.setFont(FONT);
     BORDER_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    HAS_BORDERS_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.HAS_BORDERS);
+    HAS_BORDERS_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_BORDERS);
     HAS_BORDERS_BTN.set_button_label(FONT_SIZE, "BORDERS ON/OFF");
-    button_counter++;
-    block_counter++;
-
-    // Trail settings
-    TRAIL_TXT.setString("TRAIL SETTINGS");
-    TRAIL_TXT.setFillColor(sf::Color::White);
-    TRAIL_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
-    TRAIL_TXT.setFont(FONT);
-    TRAIL_TXT.setCharacterSize(TITLE_FONT_SIZE);
-    title_counter++;
-
-    HAS_TRAIL_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.HAS_TRAIL);
-    HAS_TRAIL_BTN.set_button_label(FONT_SIZE, "TRAILS ON/OFF");
     button_counter++;
     block_counter++;
 
     // Gravity settings
     GRAVITY_TXT.setString("GRAVITY SETTINGS");
     GRAVITY_TXT.setFillColor(sf::Color::White);
-    GRAVITY_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    GRAVITY_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     GRAVITY_TXT.setFont(FONT);
     GRAVITY_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    HAS_GRAVITY_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.HAS_GRAVITY);
+    HAS_GRAVITY_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_GRAVITY);
     HAS_GRAVITY_BTN.set_button_label(FONT_SIZE, "GRAVITY ON/OFF");
     button_counter++;
     block_counter++;
@@ -205,32 +206,32 @@ void init_ui()
     // Damping settings
     DAMPING_TXT.setString("DAMPING SETTINGS");
     DAMPING_TXT.setFillColor(sf::Color::White);
-    DAMPING_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    DAMPING_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     DAMPING_TXT.setFont(FONT);
     DAMPING_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    HAS_DAMPING_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.HAS_DAMPING);
+    HAS_DAMPING_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_DAMPING);
     HAS_DAMPING_BTN.set_button_label(FONT_SIZE, "DAMPING ON/OFF");
     button_counter++;
 
     DAMPING_DIST_TXT.setString("DISTANCE");
     DAMPING_DIST_TXT.setFillColor(sf::Color::White);
-    DAMPING_DIST_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    DAMPING_DIST_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     DAMPING_DIST_TXT.setFont(FONT);
     DAMPING_DIST_TXT.setCharacterSize(FONT_SIZE);
 
     DAMPING_COEFF_TXT.setString("COEFFICIENT");
     DAMPING_COEFF_TXT.setFillColor(sf::Color::White);
-    DAMPING_COEFF_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    DAMPING_COEFF_TXT.setPosition(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     DAMPING_COEFF_TXT.setFont(FONT);
     DAMPING_COEFF_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
 
-    DAMPING_DIST_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.DAMPING_DIST, "double");
+    DAMPING_DIST_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.DAMPING_DIST, "double");
     DAMPING_DIST_TB.set_button_label(FONT_SIZE, std::to_string(settings.DAMPING_DIST));
 
-    DAMPING_COEFF_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.DAMPING_COEFF, "double");
+    DAMPING_COEFF_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.DAMPING_COEFF, "double");
     DAMPING_COEFF_TB.set_button_label(FONT_SIZE, std::to_string(settings.DAMPING_COEFF));
     button_counter++;
     block_counter++;
@@ -238,92 +239,142 @@ void init_ui()
     // Collision settings
     COLLISION_TXT.setString("COLLISION SETTINGS");
     COLLISION_TXT.setFillColor(sf::Color::White);
-    COLLISION_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    COLLISION_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     COLLISION_TXT.setFont(FONT);
     COLLISION_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    HAS_OVERLAPCHECK_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.HAS_OVERLAPCHECK);
+    HAS_OVERLAPCHECK_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_OVERLAPCHECK);
     HAS_OVERLAPCHECK_BTN.set_button_label(FONT_SIZE, "OVERLAP CHECK ON/OFF");
     button_counter++;
 
-    HAS_BOUNCEOFF_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.HAS_BOUNCEOFF);
+    HAS_BOUNCEOFF_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_BOUNCEOFF);
     HAS_BOUNCEOFF_BTN.set_button_label(FONT_SIZE, "BOUNCE ON/OFF");
     button_counter++;
     
     COLLISION_THRESHOLD_TXT.setString("THRESHOLD");
     COLLISION_THRESHOLD_TXT.setFillColor(sf::Color::White);
-    COLLISION_THRESHOLD_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    COLLISION_THRESHOLD_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     COLLISION_THRESHOLD_TXT.setFont(FONT);
     COLLISION_THRESHOLD_TXT.setCharacterSize(FONT_SIZE);
 
     COLLISION_ITERATIONS_TXT.setString("ITERATIONS");
     COLLISION_ITERATIONS_TXT.setFillColor(sf::Color::White);
-    COLLISION_ITERATIONS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    COLLISION_ITERATIONS_TXT.setPosition(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     COLLISION_ITERATIONS_TXT.setFont(FONT);
     COLLISION_ITERATIONS_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
 
-    COLLISION_THRESHOLD_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.COLLISION_THRESHOLD, "double");
+    COLLISION_THRESHOLD_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.COLLISION_THRESHOLD, "double");
     COLLISION_THRESHOLD_TB.set_button_label(FONT_SIZE, std::to_string(settings.COLLISION_THRESHOLD));
 
-    COLLISION_ITERATIONS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.COLLISION_ITERATIONS, "int");
+    COLLISION_ITERATIONS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.COLLISION_ITERATIONS, "int");
     COLLISION_ITERATIONS_TB.set_button_label(FONT_SIZE, std::to_string(settings.COLLISION_ITERATIONS));
+    button_counter++;
+
+    COLLISION_IMPULSE_COEFF_TXT.setString("IMPULSE COEFFICIENT");
+    COLLISION_IMPULSE_COEFF_TXT.setFillColor(sf::Color::White);
+    COLLISION_IMPULSE_COEFF_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    COLLISION_IMPULSE_COEFF_TXT.setFont(FONT);
+    COLLISION_IMPULSE_COEFF_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    COLLISION_IMPULSE_COEFF_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.COLLISION_IMPULSE_COEFF, "double");
+    COLLISION_IMPULSE_COEFF_TB.set_button_label(FONT_SIZE, std::to_string(settings.COLLISION_IMPULSE_COEFF));
     button_counter++;
     block_counter++;
 
-    // Grid visualization settings
+    // Optimization grid settings
     GRID_TXT.setString("OPTIMIZATION GRID SETTINGS");
     GRID_TXT.setFillColor(sf::Color::White);
-    GRID_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    GRID_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     GRID_TXT.setFont(FONT);
     GRID_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
-    
-    VISUALIZE_GRID_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.VISUALIZE_SPATIAL_GRID);
-    VISUALIZE_GRID_BTN.set_button_label(FONT_SIZE, "VISUALIZE GRID ON/OFF");
-    button_counter++;
-
-    VISUALIZE_PARTICLE_CELL_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.VISUALIZE_PARTICLE_CELL);
-    VISUALIZE_PARTICLE_CELL_BTN.set_button_label(FONT_SIZE, "VISUALIZE PARTICLES' CELL ON/OFF");
-    button_counter++;
-
-    VISUALIZE_CELL_MASS_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.VISUALIZE_CELL_MASS);
-    VISUALIZE_CELL_MASS_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' MASS ON/OFF");
-    VISUALIZE_CELL_MASS_BTN.is_active = false;
-    button_counter++;
-
-    VISUALIZE_COM_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.VISUALIZE_COM);
-    VISUALIZE_COM_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' CENTER OF MASS ON/OFF");
-    VISUALIZE_COM_BTN.is_active = false;
-    button_counter++;
 
     COLLISION_CELL_SIZE_TXT.setString("CELL SIZE");
     COLLISION_CELL_SIZE_TXT.setFillColor(sf::Color::White);
-    COLLISION_CELL_SIZE_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    COLLISION_CELL_SIZE_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     COLLISION_CELL_SIZE_TXT.setFont(FONT);
     COLLISION_CELL_SIZE_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
 
-    COLLISION_CELL_SIZE_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.COLLISION_CELL_SIZE, "int");
+    COLLISION_CELL_SIZE_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.COLLISION_CELL_SIZE, "int");
     COLLISION_CELL_SIZE_TB.set_button_label(FONT_SIZE, std::to_string(settings.COLLISION_CELL_SIZE));
     button_counter++;
+    block_counter++;
 
     // Restart simulation
     RELOAD_REQUIRED_TXT.setString("RELOAD REQUIRED");
     RELOAD_REQUIRED_TXT.setFillColor(sf::Color::Red);
-    RELOAD_REQUIRED_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
+    RELOAD_REQUIRED_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     RELOAD_REQUIRED_TXT.setFont(FONT);
     RELOAD_REQUIRED_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
 
-    RELOAD_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    RELOAD_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
     RELOAD_BTN.set_button_label(FONT_SIZE, "RELOAD");
     button_counter++;
 
     // Exit
     EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
     EXIT_BTN.set_button_label(FONT_SIZE, "EXIT");
+
+    // RIGHT MENU
+    button_counter = 0;
+    title_counter = 0;
+    label_counter = 0;
+    block_counter = 0;
+
+    // Right title
+    RIGHT_TITLE.setString("VISUALIZATION");
+    RIGHT_TITLE.setFillColor(sf::Color::White);
+    RIGHT_TITLE.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    RIGHT_TITLE.setFont(FONT);
+    RIGHT_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
+    title_counter++;
+    title_counter++;
+    block_counter++;
+
+    // Trail settings
+    TRAIL_TXT.setString("TRAIL SETTINGS");
+    TRAIL_TXT.setFillColor(sf::Color::White);
+    TRAIL_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    TRAIL_TXT.setFont(FONT);
+    TRAIL_TXT.setCharacterSize(TITLE_FONT_SIZE);
+    title_counter++;
+
+    HAS_TRAIL_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_TRAIL);
+    HAS_TRAIL_BTN.set_button_label(FONT_SIZE, "TRAILS ON/OFF");
+    button_counter++;
+    block_counter++;
+
+    // Grid visualization settings
+    GRID_VIS_TXT.setString("GRID VISUALIZATION SETTINGS");
+    GRID_VIS_TXT.setFillColor(sf::Color::White);
+    GRID_VIS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    GRID_VIS_TXT.setFont(FONT);
+    GRID_VIS_TXT.setCharacterSize(TITLE_FONT_SIZE);
+    title_counter++;
+
+    VISUALIZE_GRID_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_SPATIAL_GRID);
+    VISUALIZE_GRID_BTN.set_button_label(FONT_SIZE, "VISUALIZE GRID ON/OFF");
+    button_counter++;
+
+    VISUALIZE_PARTICLE_CELL_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_PARTICLE_CELL);
+    VISUALIZE_PARTICLE_CELL_BTN.set_button_label(FONT_SIZE, "VISUALIZE PARTICLES' CELL ON/OFF");
+    button_counter++;
+
+    VISUALIZE_CELL_MASS_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_CELL_MASS);
+    VISUALIZE_CELL_MASS_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' MASS ON/OFF");
+    VISUALIZE_CELL_MASS_BTN.is_active = false;
+    button_counter++;
+
+    VISUALIZE_COM_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_COM);
+    VISUALIZE_COM_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' CENTER OF MASS ON/OFF");
+    VISUALIZE_COM_BTN.is_active = false;
+    button_counter++;
+    block_counter++;
 }
 
 bool check_reload_required()
@@ -338,17 +389,14 @@ bool check_reload_required()
 
 void draw_menu(sf::RenderWindow& window)
 {
-    // Menu left background
+    // Left menu background
     sf::RectangleShape menu_left_background(sf::Vector2f(MENU_WIDTH, HEIGHT));
     menu_left_background.setPosition(0, 0);
     menu_left_background.setFillColor(sf::Color(12, 12, 12, 200));
     window.draw(menu_left_background);
 
-    // Menu right background
-    sf::RectangleShape menu_right_background(sf::Vector2f(MENU_WIDTH, HEIGHT));
-    menu_right_background.setPosition(WIDTH - MENU_WIDTH, 0);
-    menu_right_background.setFillColor(sf::Color(12, 12, 12, 200));
-    window.draw(menu_right_background);
+    // Left menu elements
+    window.draw(LEFT_TITLE);
 
     window.draw(PARTICLE_NUM_TXT);
     PARTICLE_NUM_TB.draw(window);
@@ -372,9 +420,6 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(BORDER_TXT);
     HAS_BORDERS_BTN.draw(window);
 
-    window.draw(TRAIL_TXT);
-    HAS_TRAIL_BTN.draw(window);
-
     window.draw(GRAVITY_TXT);
     HAS_GRAVITY_BTN.draw(window);
 
@@ -392,12 +437,10 @@ void draw_menu(sf::RenderWindow& window)
     COLLISION_THRESHOLD_TB.draw(window);
     window.draw(COLLISION_ITERATIONS_TXT);
     COLLISION_ITERATIONS_TB.draw(window);
+    window.draw(COLLISION_IMPULSE_COEFF_TXT);
+    COLLISION_IMPULSE_COEFF_TB.draw(window);
 
     window.draw(GRID_TXT);
-    VISUALIZE_GRID_BTN.draw(window);
-    VISUALIZE_PARTICLE_CELL_BTN.draw(window);
-    VISUALIZE_CELL_MASS_BTN.draw(window);
-    VISUALIZE_COM_BTN.draw(window);
     window.draw(COLLISION_CELL_SIZE_TXT);
     COLLISION_CELL_SIZE_TB.draw(window);
 
@@ -405,6 +448,25 @@ void draw_menu(sf::RenderWindow& window)
         window.draw(RELOAD_REQUIRED_TXT);
 
     RELOAD_BTN.draw(window);
+
+    // Right menu background
+    sf::RectangleShape menu_right_background(sf::Vector2f(MENU_WIDTH, HEIGHT));
+    menu_right_background.setPosition(WIDTH - MENU_WIDTH, 0);
+    menu_right_background.setFillColor(sf::Color(12, 12, 12, 200));
+    window.draw(menu_right_background);
+
+    // Right menu elements
+    window.draw(RIGHT_TITLE);
+
+    window.draw(TRAIL_TXT);
+    HAS_TRAIL_BTN.draw(window);
+
+    window.draw(GRID_VIS_TXT);
+    VISUALIZE_GRID_BTN.draw(window);
+    VISUALIZE_PARTICLE_CELL_BTN.draw(window);
+    VISUALIZE_CELL_MASS_BTN.draw(window);
+    VISUALIZE_COM_BTN.draw(window);
+
     EXIT_BTN.draw(window);
 }
 
@@ -434,6 +496,9 @@ void untoggle_textboxes()
     COLLISION_ITERATIONS_TB.set_toggle(false);
     current_settings.COLLISION_ITERATIONS = (int)COLLISION_ITERATIONS_TB.value;
     settings.COLLISION_ITERATIONS = (int)COLLISION_ITERATIONS_TB.value;
+    COLLISION_IMPULSE_COEFF_TB.set_toggle(false);
+    current_settings.COLLISION_IMPULSE_COEFF = COLLISION_IMPULSE_COEFF_TB.value;
+    settings.COLLISION_IMPULSE_COEFF = COLLISION_IMPULSE_COEFF_TB.value;
 
     DAMPING_DIST_TB.set_toggle(false);
     current_settings.DAMPING_DIST = DAMPING_DIST_TB.value;
@@ -454,6 +519,7 @@ void handle_textbox_input(const sf::Event& event)
 
     COLLISION_THRESHOLD_TB.handle_input(event);
     COLLISION_ITERATIONS_TB.handle_input(event);
+    COLLISION_IMPULSE_COEFF_TB.handle_input(event);
 
     DAMPING_DIST_TB.handle_input(event);
     DAMPING_COEFF_TB.handle_input(event);
@@ -490,6 +556,7 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     HAS_BOUNCEOFF_BTN.get_button_status(window, event);
     COLLISION_THRESHOLD_TB.get_button_status(window, event);
     COLLISION_ITERATIONS_TB.get_button_status(window, event);
+    COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
 
     VISUALIZE_GRID_BTN.get_button_status(window, event);
     VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
@@ -504,6 +571,8 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
 
 void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
 {
+    // LEFT MENU
+
     if (PARTICLE_NUM_TB.is_pressed)
     {
         PARTICLE_NUM_TB.set_toggle(true);
@@ -578,20 +647,6 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
         {
             current_settings.HAS_BORDERS = true;
             settings.HAS_BORDERS = true;
-        }
-    }
-
-    else if (HAS_TRAIL_BTN.is_pressed)
-    {
-        if (current_settings.HAS_TRAIL)
-        {
-            current_settings.HAS_TRAIL = false;
-            settings.HAS_TRAIL = false;
-        }
-        else
-        {
-            current_settings.HAS_TRAIL = true;
-            settings.HAS_TRAIL = true;
         }
     }
 
@@ -675,6 +730,32 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
     {
         COLLISION_ITERATIONS_TB.set_toggle(true);
     }
+    else if (COLLISION_IMPULSE_COEFF_TB.is_pressed)
+    {
+        COLLISION_IMPULSE_COEFF_TB.set_toggle(true);
+    }
+
+    else if (COLLISION_CELL_SIZE_TB.is_pressed)
+        COLLISION_CELL_SIZE_TB.set_toggle(true);
+
+    else if (RELOAD_BTN.is_pressed)
+        reload_sim();
+
+    // RIGHT MENU
+
+    else if (HAS_TRAIL_BTN.is_pressed)
+    {
+        if (current_settings.HAS_TRAIL)
+        {
+            current_settings.HAS_TRAIL = false;
+            settings.HAS_TRAIL = false;
+        }
+        else
+        {
+            current_settings.HAS_TRAIL = true;
+            settings.HAS_TRAIL = true;
+        }
+    }
 
     else if (VISUALIZE_GRID_BTN.is_pressed)
     {
@@ -738,11 +819,6 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
             current_settings.VISUALIZE_COM = true;
         }
     }
-    else if (COLLISION_CELL_SIZE_TB.is_pressed)
-        COLLISION_CELL_SIZE_TB.set_toggle(true);
-
-    else if (RELOAD_BTN.is_pressed)
-        reload_sim();
 
     else if (EXIT_BTN.is_pressed)
         window.close();

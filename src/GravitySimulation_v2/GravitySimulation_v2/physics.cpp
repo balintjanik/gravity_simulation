@@ -129,7 +129,7 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                     double normal_y = dy / distance;
 
                     // Calculate impulse (change in velocity)
-                    double impulse = 1.0 * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
+                    double impulse = settings.COLLISION_IMPULSE_COEFF * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
 
                     // Update velocities based on impulse (conservation of momentum)
                     p_1.velocity.x += impulse * normal_x * p_2.mass;

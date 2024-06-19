@@ -36,7 +36,7 @@ static unsigned int M_FPS;
 static sf::Clock M_CLOCK;
 static sf::Text FPS_TXT;
 
-// Button settings
+// Menu settings
 static sf::Font FONT;
 static float TITLE_FONT_SIZE = 25;
 static float FONT_SIZE = 15;
@@ -45,9 +45,12 @@ static int MARGIN_LEFT = 15;
 static int MARGIN_BOTTOM = 30;
 static int MARGIN_RIGHT = 15;
 static int MARGIN_BETWEEN = 10;
+static int MARGIN_BLOCK = 20;
 static int BTN_HEIGHT = 30;
 
-// Buttons
+// Left menu
+static sf::Text LEFT_TITLE;
+
 static sf::Text PARTICLE_NUM_TXT;
 static TextBox PARTICLE_NUM_TB;
 
@@ -70,9 +73,6 @@ static ToggleButton SPEED_TYPE_CENTRAL_BTN;
 static sf::Text BORDER_TXT;
 static ToggleButton HAS_BORDERS_BTN;
 
-static sf::Text TRAIL_TXT;
-static ToggleButton HAS_TRAIL_BTN;
-
 static sf::Text GRAVITY_TXT;
 static ToggleButton HAS_GRAVITY_BTN;
 
@@ -90,17 +90,28 @@ static sf::Text COLLISION_THRESHOLD_TXT;
 static TextBox COLLISION_THRESHOLD_TB;
 static sf::Text COLLISION_ITERATIONS_TXT;
 static TextBox COLLISION_ITERATIONS_TB;
+static sf::Text COLLISION_IMPULSE_COEFF_TXT;
+static TextBox COLLISION_IMPULSE_COEFF_TB;
 
 static sf::Text GRID_TXT;
-static ToggleButton VISUALIZE_GRID_BTN;
-static ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
-static ToggleButton VISUALIZE_CELL_MASS_BTN;
-static ToggleButton VISUALIZE_COM_BTN;
 static sf::Text COLLISION_CELL_SIZE_TXT;
 static TextBox COLLISION_CELL_SIZE_TB;
 
 static sf::Text RELOAD_REQUIRED_TXT;
 static SimpleButton RELOAD_BTN;
+
+// Right menu
+static sf::Text RIGHT_TITLE;
+
+static sf::Text TRAIL_TXT;
+static ToggleButton HAS_TRAIL_BTN;
+
+static sf::Text GRID_VIS_TXT;
+static ToggleButton VISUALIZE_GRID_BTN;
+static ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
+static ToggleButton VISUALIZE_CELL_MASS_BTN;
+static ToggleButton VISUALIZE_COM_BTN;
+
 static SimpleButton EXIT_BTN;
 
 class Settings {
@@ -141,7 +152,8 @@ public:
 	bool HAS_BOUNCEOFF = true; // Turns on/off bounce off when collide (conservation of momentum)
 	double COLLISION_THRESHOLD = 0.5; // Amount of space left between particles
 	int COLLISION_ITERATIONS = 3; // Amount of collision handles per frame (higher is more accurate handling but more expensive)
-	
+	double COLLISION_IMPULSE_COEFF = 1.0; // Strength of bounceoff (0.0-2.0)
+
 	// Small damping to avoid uncontrollable velocities (first dampens the angular velocity, then the final calculated velocity again)
 	// THESE SETTINGS ARE CAREFULLY SET AND NOT ADVISED TO BE CHANGED
 	bool HAS_DAMPING = true;
@@ -159,6 +171,7 @@ public:
 	{
 		MAX_FORCES = 3 * sqrt(MASS) * ((double)N / 700);
 		TRAIL_RADIUS = (RADIUS / 2 > 1 ? RADIUS / 2 : 1);
+		DAMPING_DIST = MASS * TIMESTEP / 5;
 	}
 };
 
