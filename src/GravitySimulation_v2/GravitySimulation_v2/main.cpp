@@ -48,9 +48,15 @@ int main()
                 else if (event.key.code == SHOW_MENU_KEY)
                 {
                     if (SHOW_MENU)
+                    {
                         SHOW_MENU = false;
+                        FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
+                    }
                     else
+                    {
                         SHOW_MENU = true;
+                        FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
+                    }
                 }
                 // Show/hide help
                 else if (event.key.code == SHOW_HELP_KEY)
@@ -76,12 +82,14 @@ int main()
                         SHOW_MENU = false;
                         SHOW_HELP = false;
                         SHOW_FPS = false;
+                        FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
                     }
                     else
                     {
                         SHOW_MENU = true;
                         SHOW_HELP = true;
                         SHOW_FPS = true;
+                        FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
                     }
                 }
                 // Exit

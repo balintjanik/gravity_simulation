@@ -34,7 +34,7 @@ static sf::Text HELP_TXT;
 static unsigned int M_FRAME = 0;
 static unsigned int M_FPS;
 static sf::Clock M_CLOCK;
-static sf::Text FPS_TEXT;
+static sf::Text FPS_TXT;
 
 // Button settings
 static sf::Font FONT;

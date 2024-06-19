@@ -16,7 +16,7 @@ void update_fps()
     }
 
     M_FRAME++;
-    FPS_TEXT.setString(sf::String(std::to_string(M_FPS) + " FPS"));
+    FPS_TXT.setString(sf::String(std::to_string(M_FPS) + " FPS"));
 }
 
 void reload_sim()
@@ -60,10 +60,10 @@ void init_ui()
     FONT.loadFromFile("Poppins-Bold.ttf");
 
     // FPS counter
-    FPS_TEXT.setFillColor(sf::Color::White);
-    FPS_TEXT.setPosition(sf::Vector2f(MARGIN_LEFT, MARGIN_TOP));
-    FPS_TEXT.setFont(FONT);
-    FPS_TEXT.setCharacterSize(TITLE_FONT_SIZE);
+    FPS_TXT.setFillColor(sf::Color::White);
+    FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
+    FPS_TXT.setFont(FONT);
+    FPS_TXT.setCharacterSize(TITLE_FONT_SIZE);
 
     int button_counter = 0;
     int title_counter = 0;
@@ -87,14 +87,14 @@ void init_ui()
     // Particle properties settings
     PARTICLE_PROPS_TXT.setString("PARTICLE PROPERTIES");
     PARTICLE_PROPS_TXT.setFillColor(sf::Color::White);
-    PARTICLE_PROPS_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    PARTICLE_PROPS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     PARTICLE_PROPS_TXT.setFont(FONT);
     PARTICLE_PROPS_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
     PARTICLE_NUM_TXT.setString("NUMBER OF PARTICLES");
     PARTICLE_NUM_TXT.setFillColor(sf::Color::White);
-    PARTICLE_NUM_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    PARTICLE_NUM_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     PARTICLE_NUM_TXT.setFont(FONT);
     PARTICLE_NUM_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
@@ -105,13 +105,13 @@ void init_ui()
 
     PARTICLE_RADIUS_TXT.setString("RADIUS");
     PARTICLE_RADIUS_TXT.setFillColor(sf::Color::White);
-    PARTICLE_RADIUS_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    PARTICLE_RADIUS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     PARTICLE_RADIUS_TXT.setFont(FONT);
     PARTICLE_RADIUS_TXT.setCharacterSize(FONT_SIZE);
 
     PARTICLE_MASS_TXT.setString("MASS");
     PARTICLE_MASS_TXT.setFillColor(sf::Color::White);
-    PARTICLE_MASS_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    PARTICLE_MASS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     PARTICLE_MASS_TXT.setFont(FONT);
     PARTICLE_MASS_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
@@ -127,7 +127,7 @@ void init_ui()
     // Placement type settings
     PLACEMENT_TYPE_TXT.setString("PLACEMENT TYPE");
     PLACEMENT_TYPE_TXT.setFillColor(sf::Color::White);
-    PLACEMENT_TYPE_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    PLACEMENT_TYPE_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     PLACEMENT_TYPE_TXT.setFont(FONT);
     PLACEMENT_TYPE_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
@@ -143,7 +143,7 @@ void init_ui()
     // Speed type settings
     SPEED_TYPE_TXT.setString("SPEED TYPE");
     SPEED_TYPE_TXT.setFillColor(sf::Color::White);
-    SPEED_TYPE_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    SPEED_TYPE_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     SPEED_TYPE_TXT.setFont(FONT);
     SPEED_TYPE_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
@@ -166,7 +166,7 @@ void init_ui()
     // Border settings
     BORDER_TXT.setString("BORDER SETTINGS");
     BORDER_TXT.setFillColor(sf::Color::White);
-    BORDER_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    BORDER_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     BORDER_TXT.setFont(FONT);
     BORDER_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
@@ -179,7 +179,7 @@ void init_ui()
     // Trail settings
     TRAIL_TXT.setString("TRAIL SETTINGS");
     TRAIL_TXT.setFillColor(sf::Color::White);
-    TRAIL_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    TRAIL_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     TRAIL_TXT.setFont(FONT);
     TRAIL_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
@@ -192,7 +192,7 @@ void init_ui()
     // Gravity settings
     GRAVITY_TXT.setString("GRAVITY SETTINGS");
     GRAVITY_TXT.setFillColor(sf::Color::White);
-    GRAVITY_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    GRAVITY_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     GRAVITY_TXT.setFont(FONT);
     GRAVITY_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
@@ -205,7 +205,7 @@ void init_ui()
     // Damping settings
     DAMPING_TXT.setString("DAMPING SETTINGS");
     DAMPING_TXT.setFillColor(sf::Color::White);
-    DAMPING_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    DAMPING_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     DAMPING_TXT.setFont(FONT);
     DAMPING_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
@@ -216,13 +216,13 @@ void init_ui()
 
     DAMPING_DIST_TXT.setString("DISTANCE");
     DAMPING_DIST_TXT.setFillColor(sf::Color::White);
-    DAMPING_DIST_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    DAMPING_DIST_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     DAMPING_DIST_TXT.setFont(FONT);
     DAMPING_DIST_TXT.setCharacterSize(FONT_SIZE);
 
     DAMPING_COEFF_TXT.setString("COEFFICIENT");
     DAMPING_COEFF_TXT.setFillColor(sf::Color::White);
-    DAMPING_COEFF_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    DAMPING_COEFF_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     DAMPING_COEFF_TXT.setFont(FONT);
     DAMPING_COEFF_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
@@ -238,7 +238,7 @@ void init_ui()
     // Collision settings
     COLLISION_TXT.setString("COLLISION SETTINGS");
     COLLISION_TXT.setFillColor(sf::Color::White);
-    COLLISION_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    COLLISION_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     COLLISION_TXT.setFont(FONT);
     COLLISION_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
@@ -253,13 +253,13 @@ void init_ui()
     
     COLLISION_THRESHOLD_TXT.setString("THRESHOLD");
     COLLISION_THRESHOLD_TXT.setFillColor(sf::Color::White);
-    COLLISION_THRESHOLD_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    COLLISION_THRESHOLD_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     COLLISION_THRESHOLD_TXT.setFont(FONT);
     COLLISION_THRESHOLD_TXT.setCharacterSize(FONT_SIZE);
 
     COLLISION_ITERATIONS_TXT.setString("ITERATIONS");
     COLLISION_ITERATIONS_TXT.setFillColor(sf::Color::White);
-    COLLISION_ITERATIONS_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    COLLISION_ITERATIONS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     COLLISION_ITERATIONS_TXT.setFont(FONT);
     COLLISION_ITERATIONS_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
@@ -275,11 +275,11 @@ void init_ui()
     // Grid visualization settings
     GRID_TXT.setString("OPTIMIZATION GRID SETTINGS");
     GRID_TXT.setFillColor(sf::Color::White);
-    GRID_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    GRID_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     GRID_TXT.setFont(FONT);
     GRID_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
-
+    
     VISUALIZE_GRID_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP), settings.VISUALIZE_SPATIAL_GRID);
     VISUALIZE_GRID_BTN.set_button_label(FONT_SIZE, "VISUALIZE GRID ON/OFF");
     button_counter++;
@@ -300,7 +300,7 @@ void init_ui()
 
     COLLISION_CELL_SIZE_TXT.setString("CELL SIZE");
     COLLISION_CELL_SIZE_TXT.setFillColor(sf::Color::White);
-    COLLISION_CELL_SIZE_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    COLLISION_CELL_SIZE_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     COLLISION_CELL_SIZE_TXT.setFont(FONT);
     COLLISION_CELL_SIZE_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
@@ -312,7 +312,7 @@ void init_ui()
     // Restart simulation
     RELOAD_REQUIRED_TXT.setString("RELOAD REQUIRED");
     RELOAD_REQUIRED_TXT.setFillColor(sf::Color::Red);
-    RELOAD_REQUIRED_TXT.setPosition(sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP));
+    RELOAD_REQUIRED_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_TOP);
     RELOAD_REQUIRED_TXT.setFont(FONT);
     RELOAD_REQUIRED_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
@@ -338,11 +338,17 @@ bool check_reload_required()
 
 void draw_menu(sf::RenderWindow& window)
 {
-    // Menu background
-    sf::RectangleShape menu_background(sf::Vector2f(MENU_WIDTH, HEIGHT));
-    menu_background.setPosition(WIDTH - MENU_WIDTH, 0);
-    menu_background.setFillColor(sf::Color(12, 12, 12, 200));
-    window.draw(menu_background);
+    // Menu left background
+    sf::RectangleShape menu_left_background(sf::Vector2f(MENU_WIDTH, HEIGHT));
+    menu_left_background.setPosition(0, 0);
+    menu_left_background.setFillColor(sf::Color(12, 12, 12, 200));
+    window.draw(menu_left_background);
+
+    // Menu right background
+    sf::RectangleShape menu_right_background(sf::Vector2f(MENU_WIDTH, HEIGHT));
+    menu_right_background.setPosition(WIDTH - MENU_WIDTH, 0);
+    menu_right_background.setFillColor(sf::Color(12, 12, 12, 200));
+    window.draw(menu_right_background);
 
     window.draw(PARTICLE_NUM_TXT);
     PARTICLE_NUM_TB.draw(window);
@@ -405,7 +411,7 @@ void draw_menu(sf::RenderWindow& window)
 void draw_fps(sf::RenderWindow& window)
 {
     // FPS
-    window.draw(FPS_TEXT);
+    window.draw(FPS_TXT);
 }
 
 void draw_help(sf::RenderWindow& window)
