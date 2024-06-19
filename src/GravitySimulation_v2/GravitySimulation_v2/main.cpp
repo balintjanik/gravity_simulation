@@ -18,7 +18,7 @@ int main()
 
     // Initialize
     recalc_sizes(screen.width, screen.height);
-    init_buttons();
+    init_ui();
     reload_sim();
 
     while (window.isOpen()) {
@@ -33,20 +33,59 @@ int main()
                 sf::View view(sf::FloatRect(0, 0, static_cast<float>(new_size.x), static_cast<float>(new_size.y)));
                 window.setView(view);
                 recalc_sizes(new_size.x, new_size.y);
-                init_buttons();
+                init_ui();
                 reload_sim();
             }
 
-            // Show/hide menu on H keypress
+            // Show/hide UI elements
             if (event.type == sf::Event::KeyPressed)
             {
-                if (event.key.code == sf::Keyboard::H)
+                // Reload simulation
+                if (event.key.code == RELOAD_KEY)
+                    reload_sim();
+                // Show/hide menu
+                else if (event.key.code == SHOW_MENU_KEY)
                 {
                     if (SHOW_MENU)
                         SHOW_MENU = false;
                     else
                         SHOW_MENU = true;
                 }
+                // Show/hide help
+                else if (event.key.code == SHOW_HELP_KEY)
+                {
+                    if (SHOW_HELP)
+                        SHOW_HELP = false;
+                    else
+                        SHOW_HELP = true;
+                }
+                // Show/hide FPS
+                else if (event.key.code == SHOW_FPS_KEY)
+                {
+                    if (SHOW_FPS)
+                        SHOW_FPS = false;
+                    else
+                        SHOW_FPS = true;
+                }
+                // Show/hide everything
+                else if (event.key.code == SHOW_ALL_KEY)
+                {
+                    if (SHOW_MENU || SHOW_HELP || SHOW_FPS)
+                    {
+                        SHOW_MENU = false;
+                        SHOW_HELP = false;
+                        SHOW_FPS = false;
+                    }
+                    else
+                    {
+                        SHOW_MENU = true;
+                        SHOW_HELP = true;
+                        SHOW_FPS = true;
+                    }
+                }
+                // Exit
+                else if (event.key.code == EXIT_KEY)
+                    window.close();
             }
 
             // Untoggle textboxes on click
@@ -80,6 +119,14 @@ int main()
         // Draw menu
         if (SHOW_MENU)
             draw_menu(window);
+
+        // Draw fps
+        if (SHOW_FPS)
+            draw_fps(window);
+
+        // Draw help
+        if (SHOW_HELP)
+            draw_help(window);
         
         window.display();
     }

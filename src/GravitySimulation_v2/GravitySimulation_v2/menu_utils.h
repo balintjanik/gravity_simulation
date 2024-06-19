@@ -4,8 +4,7 @@
 #include "settings.h"
 #include "globals.h"
 #include "utils.h"
-
-#include <iostream>
+#include "key_conversion.h"
 
 void update_fps()
 {
@@ -55,7 +54,7 @@ void recalc_sizes(int width, int height)
     MARGIN_BETWEEN = (MARGIN_LEFT / 2 < 10 ? 10 : MARGIN_LEFT / 2); // 10
 }
 
-void init_buttons()
+void init_ui()
 {
     FONT.loadFromFile("Poppins-Bold.ttf");
 
@@ -68,6 +67,20 @@ void init_buttons()
     int button_counter = 0;
     int label_counter = 0;
     int block_counter = 0;
+
+    // Help text
+    HELP_TXT.setString(key_to_string(RELOAD_KEY) + ": RELOAD\t\t"
+        + key_to_string(SHOW_MENU_KEY) + ": SHOW/HIDE MENU\t\t"
+        + key_to_string(SHOW_HELP_KEY) + ": SHOW/HIDE HELP\t\t"
+        + key_to_string(SHOW_FPS_KEY) + ": SHOW/HIDE FPS\t\t"
+        + key_to_string(SHOW_ALL_KEY) + ": SHOW/HIDE EVERYTHING\t\t"
+        + key_to_string(EXIT_KEY) + ": EXIT");
+    HELP_TXT.setFillColor(sf::Color::White);
+    HELP_TXT.setFont(FONT);
+    HELP_TXT.setCharacterSize(FONT_SIZE);
+    sf::FloatRect help_txt_rect = HELP_TXT.getLocalBounds();
+    HELP_TXT.setOrigin(help_txt_rect.width / 2.0f, help_txt_rect.height / 2.0f);
+    HELP_TXT.setPosition(WIDTH / 2, HEIGHT - FONT_SIZE - MARGIN_BOTTOM);
 
     // Particle number settings
     PARTICLE_NUM_TXT.setString("NUMBER OF PARTICLES");
@@ -314,9 +327,6 @@ bool check_reload_required()
 
 void draw_menu(sf::RenderWindow& window)
 {
-    // FPS
-    window.draw(FPS_TEXT);
-
     // Menu background
     sf::RectangleShape menu_background(sf::Vector2f(MENU_WIDTH, HEIGHT));
     menu_background.setPosition(WIDTH - MENU_WIDTH, 0);
@@ -377,6 +387,17 @@ void draw_menu(sf::RenderWindow& window)
 
     RELOAD_BTN.draw(window);
     EXIT_BTN.draw(window);
+}
+
+void draw_fps(sf::RenderWindow& window)
+{
+    // FPS
+    window.draw(FPS_TEXT);
+}
+
+void draw_help(sf::RenderWindow& window)
+{
+    window.draw(HELP_TXT);
 }
 
 void untoggle_textboxes()

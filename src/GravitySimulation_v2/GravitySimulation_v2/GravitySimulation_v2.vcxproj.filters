@@ -92,6 +92,9 @@
     <ClInclude Include="menu_utils.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="key_conversion.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GravitySimulation_v2.rc">

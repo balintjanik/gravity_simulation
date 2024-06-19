@@ -11,8 +11,24 @@
 extern int WIDTH, HEIGHT, CANVAS_WIDTH;
 static int MENU_WIDTH = 500;
 
-// Menu show/hide
+// Show/hide settings and hotkeys
+static sf::Keyboard::Key RELOAD_KEY = sf::Keyboard::R;
+
 static bool SHOW_MENU = true;
+static sf::Keyboard::Key SHOW_MENU_KEY = sf::Keyboard::M;
+
+static bool SHOW_HELP = true;
+static sf::Keyboard::Key SHOW_HELP_KEY = sf::Keyboard::H;
+
+static bool SHOW_FPS = true;
+static sf::Keyboard::Key SHOW_FPS_KEY = sf::Keyboard::F;
+
+static sf::Keyboard::Key SHOW_ALL_KEY = sf::Keyboard::A;
+
+static sf::Keyboard::Key EXIT_KEY = sf::Keyboard::Escape;
+
+// Help settings
+static sf::Text HELP_TXT;
 
 // FPS settings
 static unsigned int M_FRAME = 0;
