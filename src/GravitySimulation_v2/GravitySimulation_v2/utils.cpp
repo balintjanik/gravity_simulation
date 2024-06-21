@@ -66,6 +66,14 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
 
     for (int i = 0; i < settings.N; i++)
     {
+        // Add singularity
+        if (settings.SPEED_TYPE == SpeedType::Galaxy && i == 0)
+        {
+            particles.push_back(Particle(sf::Vector2f(WIDTH / 2, HEIGHT / 2), sf::Vector2f(0, 0), sf::Color::White, 2, settings.SINGULARITY_MASS, true));
+            id_counter++;
+            continue;
+        }
+
         // set random position
         switch (settings.PLACEMENT_TYPE)
         {
@@ -94,15 +102,19 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 angle = ang_to_cent + 90;
                 distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(CANVAS_WIDTH / 2, HEIGHT / 2));
                 speed = map_value(distance, 0.0, settings.R, 0.0, settings.MASS*8.0);
-                rand_x = generate_random_double(0.7, 2.0);
-                rand_y = generate_random_double(0.7, 2.0);
+                rand_x = generate_random_double(0.7, 1.4);
+                rand_y = generate_random_double(0.7, 1.4);
                 vx = speed * cos(angle) * rand_x;
                 vy = speed * sin(angle) * rand_y;
                 break;
-            case SpeedType::Central:
-                direction = sf::Vector2f(CANVAS_WIDTH / 2 - x, HEIGHT / 2 - y);
-                vx = direction.x / 10;
-                vy = direction.y / 10;
+            case SpeedType::Galaxy:
+                distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+                speed = 3 * sqrt(settings.SINGULARITY_MASS / distance);
+                angle = atan2(y - HEIGHT / 2, x - WIDTH / 2) + PI / 2;
+                rand_x = generate_random_double(0.9, 1.1);
+                rand_y = generate_random_double(0.9, 1.1);
+                vx = speed * cos(angle) * rand_x;
+                vy = speed * sin(angle) * rand_y;
                 break;
             default: // Zero is default
                 vx = 0.0;

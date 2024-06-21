@@ -97,20 +97,23 @@ int main()
                     window.close();
             }
 
-            // Untoggle textboxes on any click
-            if (event.type == sf::Event::MouseButtonReleased)
-                untoggle_textboxes(window);
+            if (SHOW_MENU)
+            {
+                // Untoggle textboxes on any click
+                if (event.type == sf::Event::MouseButtonReleased)
+                    untoggle_textboxes(window);
 
-            // Update button statuses
-            update_button_statuses(window, event);
+                // Update button statuses
+                update_button_statuses(window, event);
 
-            // Handle text input
-            if (event.type == sf::Event::TextEntered)
-                handle_textbox_input(event);
+                // Handle text input
+                if (event.type == sf::Event::TextEntered)
+                    handle_textbox_input(event);
 
-            // Handle button clicks
-            if (event.type == sf::Event::MouseButtonReleased)
-                handle_button_clicks(window, event);
+                // Handle button clicks
+                if (event.type == sf::Event::MouseButtonReleased)
+                    handle_button_clicks(window, event);
+            }
         }
 
         // Update fps

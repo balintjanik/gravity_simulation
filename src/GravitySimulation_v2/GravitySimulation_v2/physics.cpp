@@ -25,7 +25,7 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
 
                     // Calculate gravitational force
                     double g = 1;
-                    double force = (g * p_1.mass * cell.total_mass) / (pow(distance, 2) + pow(EPSYLON, 2));
+                    double force = (g * cell.total_mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
                     // Update velocity
                     p_1.velocity.x -= force * cos(angle);
@@ -59,7 +59,7 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
 
                     // Calculate gravitational force
                     double g = 1;
-                    double force = (g * p_1.mass * p_2.mass) / (pow(distance, 2) + pow(EPSYLON, 2));
+                    double force = (g * p_2.mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
                     // Update velocity
                     p_1.velocity.x -= force * cos(angle);
@@ -71,7 +71,8 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
 
         // Update color based on amount of gravitational force
         sf::Color updated_color = map_forces_to_color(all_force);
-        p_1.color = updated_color;
+        if (!p_1.is_singularity)
+            p_1.color = updated_color;
     }
 }
 
@@ -131,10 +132,23 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                     double displacement_y = (dy / distance) * (min_distance - distance) / 2.0;
 
                     // Update position directly to avoid overlaps
-                    p_1.position.x -= displacement_x;
-                    p_1.position.y -= displacement_y;
-                    p_2.position.x += displacement_x;
-                    p_2.position.y += displacement_y;
+                    if (p_1.is_singularity)
+                    {
+                        p_2.position.x += 2 * displacement_x;
+                        p_2.position.y += 2 * displacement_y;
+                    }
+                    else if (p_2.is_singularity)
+                    {
+                        p_1.position.x -= 2 * displacement_x;
+                        p_1.position.y -= 2 * displacement_y;
+                    }
+                    else
+                    {
+                        p_1.position.x -= displacement_x;
+                        p_1.position.y -= displacement_y;
+                        p_2.position.x += displacement_x;
+                        p_2.position.y += displacement_y;
+                    }
 
                     // Calculate relative velocity
                     double relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
@@ -157,12 +171,14 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                 // Update color based on collision if gravity is off and collision is on
                 if (settings.HAS_COLLISIONS && !settings.HAS_GRAVITY)
                 {
-                    p_1.color = sf::Color(255, 0, 0);
-                    p_2.color = sf::Color(255, 0, 0);
+                    if (!p_1.is_singularity)
+                        p_1.color = sf::Color(255, 0, 0);
+                    if (!p_2.is_singularity)
+                        p_2.color = sf::Color(255, 0, 0);
                 }
             }
             // Dampen velocity of close particles to avoid too fast spinning of planets (if enabled)
-            else if (settings.HAS_DAMPING &&  distance < min_distance + settings.DAMPING_DIST && p_1.id < p_2.id)
+            else if (settings.HAS_DAMPING &&  distance < min_distance + settings.DAMPING_DIST && p_1.id < p_2.id && (!p_1.is_singularity && !p_2.is_singularity))
             {
                 p_1.velocity *= (1 - ((settings.DAMPING_COEFF / 2) / pow(settings.COLLISION_ITERATIONS, 2)));
                 p_2.velocity *= (1 - ((settings.DAMPING_COEFF / 2) / pow(settings.COLLISION_ITERATIONS, 2)));

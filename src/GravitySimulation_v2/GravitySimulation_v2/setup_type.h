@@ -16,7 +16,7 @@ enum class SpeedType
     Random,
     Angular,
     Zero,
-    Central
+    Galaxy
 };
 
 #endif

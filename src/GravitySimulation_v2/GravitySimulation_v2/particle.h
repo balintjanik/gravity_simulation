@@ -13,12 +13,13 @@ struct Particle {
     sf::Vector2f velocity;
     sf::Color color;
     std::deque<sf::Vector2f> trail;
-    double mass;
-    double radius;
+    const double mass;
+    const double radius;
     const int id;
+    const bool is_singularity;
 
-    Particle(const sf::Vector2f& pos, const sf::Vector2f& vel, const sf::Color& col, double rad, double m)
-        : position(pos), old_position(pos), velocity(vel), color(col), radius(rad), mass(m), id(id_counter){}
+    Particle(const sf::Vector2f& pos, const sf::Vector2f& vel, const sf::Color& col, double rad, double m, bool is_sin = false)
+        : position(pos), old_position(pos), velocity(vel), color(col), radius(rad), mass(m), id(id_counter), is_singularity(is_sin){}
 };
 
 #endif

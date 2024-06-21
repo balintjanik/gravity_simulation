@@ -19,20 +19,6 @@ void update_fps()
     FPS_TXT.setString(sf::String(std::to_string(M_FPS) + " FPS"));
 }
 
-void reload_sim()
-{
-    // Load new settings
-    settings = current_settings;
-    settings.update_dynamic_properties();
-
-    // Init particles
-    particles = generate_particles(settings.SPAWN_MARGIN, CANVAS_WIDTH - settings.SPAWN_MARGIN, settings.SPAWN_MARGIN, HEIGHT - settings.SPAWN_MARGIN);
-
-    // Init optimization grid
-    optim_grid = Grid(settings.COLLISION_CELL_SIZE);
-    init_optim_grid(optim_grid);
-}
-
 void recalc_sizes(int width, int height)
 {
     WIDTH = width;
@@ -146,10 +132,10 @@ void init_ui()
     PLACEMENT_TYPE_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    PLACEMENT_TYPE_CIRCULAR_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), true);
+    PLACEMENT_TYPE_CIRCULAR_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.PLACEMENT_TYPE == PlacementType::Circular);
     PLACEMENT_TYPE_CIRCULAR_BTN.set_button_label(FONT_SIZE, "CIRCULAR");
 
-    PLACEMENT_TYPE_FULLSCREEN_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), false);
+    PLACEMENT_TYPE_FULLSCREEN_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.PLACEMENT_TYPE == PlacementType::Fullscreen);
     PLACEMENT_TYPE_FULLSCREEN_BTN.set_button_label(FONT_SIZE, "FULLSCREEN");
     button_counter++;
     block_counter++;
@@ -162,18 +148,18 @@ void init_ui()
     SPEED_TYPE_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    SPEED_TYPE_ANGULAR_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), true);
+    SPEED_TYPE_ANGULAR_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.SPEED_TYPE == SpeedType::Angular);
     SPEED_TYPE_ANGULAR_BTN.set_button_label(FONT_SIZE, "ANGULAR");
 
-    SPEED_TYPE_RANDOM_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), false);
+    SPEED_TYPE_RANDOM_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.SPEED_TYPE == SpeedType::Random);
     SPEED_TYPE_RANDOM_BTN.set_button_label(FONT_SIZE, "RANDOM");
     button_counter++;
 
-    SPEED_TYPE_ZERO_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), false);
+    SPEED_TYPE_ZERO_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.SPEED_TYPE == SpeedType::Zero);
     SPEED_TYPE_ZERO_BTN.set_button_label(FONT_SIZE, "ZERO");
 
-    SPEED_TYPE_CENTRAL_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), false);
-    SPEED_TYPE_CENTRAL_BTN.set_button_label(FONT_SIZE, "CENTRAL");
+    SPEED_TYPE_GALAXY_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.SPEED_TYPE == SpeedType::Galaxy);
+    SPEED_TYPE_GALAXY_BTN.set_button_label(FONT_SIZE, "GALAXY");
     button_counter++;
     block_counter++;
 
@@ -235,6 +221,12 @@ void init_ui()
     DAMPING_COEFF_TB.set_button_label(FONT_SIZE, std::to_string(settings.DAMPING_COEFF));
     button_counter++;
     block_counter++;
+
+    if (!settings.HAS_DAMPING)
+    {
+        DAMPING_DIST_TB.is_active = false;
+        DAMPING_COEFF_TB.is_active = false;
+    }
 
     // Collision settings
     COLLISION_TXT.setString("COLLISION SETTINGS");
@@ -441,7 +433,7 @@ void draw_menu(sf::RenderWindow& window)
     SPEED_TYPE_ANGULAR_BTN.draw(window);
     SPEED_TYPE_RANDOM_BTN.draw(window);
     SPEED_TYPE_ZERO_BTN.draw(window);
-    SPEED_TYPE_CENTRAL_BTN.draw(window);
+    SPEED_TYPE_GALAXY_BTN.draw(window);
 
     window.draw(BORDER_TXT);
     HAS_BORDERS_BTN.draw(window);
@@ -585,7 +577,7 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     SPEED_TYPE_ANGULAR_BTN.get_button_status(window, event);
     SPEED_TYPE_RANDOM_BTN.get_button_status(window, event);
     SPEED_TYPE_ZERO_BTN.get_button_status(window, event);
-    SPEED_TYPE_CENTRAL_BTN.get_button_status(window, event);
+    SPEED_TYPE_GALAXY_BTN.get_button_status(window, event);
 
     HAS_BORDERS_BTN.get_button_status(window, event);
 
@@ -616,6 +608,23 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     VISUALIZE_COM_BTN.get_button_status(window, event);
 
     EXIT_BTN.get_button_status(window, event);
+}
+
+void reload_sim()
+{
+    // Load new settings
+    settings = current_settings;
+    settings.update_dynamic_properties();
+
+    // Init ui
+    init_ui();
+
+    // Init particles
+    particles = generate_particles(settings.SPAWN_MARGIN, CANVAS_WIDTH - settings.SPAWN_MARGIN, settings.SPAWN_MARGIN, HEIGHT - settings.SPAWN_MARGIN);
+
+    // Init optimization grid
+    optim_grid = Grid(settings.COLLISION_CELL_SIZE);
+    init_optim_grid(optim_grid);
 }
 
 void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
@@ -653,36 +662,33 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
         SPEED_TYPE_ANGULAR_BTN.set_toggle(true);
         SPEED_TYPE_RANDOM_BTN.set_toggle(false);
         SPEED_TYPE_ZERO_BTN.set_toggle(false);
-        SPEED_TYPE_CENTRAL_BTN.set_toggle(false);
+        SPEED_TYPE_GALAXY_BTN.set_toggle(false);
         current_settings.SPEED_TYPE = SpeedType::Angular;
-
     }
     else if (SPEED_TYPE_RANDOM_BTN.is_pressed)
     {
         SPEED_TYPE_ANGULAR_BTN.set_toggle(false);
         SPEED_TYPE_RANDOM_BTN.set_toggle(true);
         SPEED_TYPE_ZERO_BTN.set_toggle(false);
-        SPEED_TYPE_CENTRAL_BTN.set_toggle(false);
+        SPEED_TYPE_GALAXY_BTN.set_toggle(false);
         current_settings.SPEED_TYPE = SpeedType::Random;
-
     }
     else if (SPEED_TYPE_ZERO_BTN.is_pressed)
     {
         SPEED_TYPE_ANGULAR_BTN.set_toggle(false);
         SPEED_TYPE_RANDOM_BTN.set_toggle(false);
         SPEED_TYPE_ZERO_BTN.set_toggle(true);
-        SPEED_TYPE_CENTRAL_BTN.set_toggle(false);
+        SPEED_TYPE_GALAXY_BTN.set_toggle(false);
         current_settings.SPEED_TYPE = SpeedType::Zero;
-
     }
-    else if (SPEED_TYPE_CENTRAL_BTN.is_pressed)
+    else if (SPEED_TYPE_GALAXY_BTN.is_pressed)
     {
         SPEED_TYPE_ANGULAR_BTN.set_toggle(false);
         SPEED_TYPE_RANDOM_BTN.set_toggle(false);
         SPEED_TYPE_ZERO_BTN.set_toggle(false);
-        SPEED_TYPE_CENTRAL_BTN.set_toggle(true);
-        current_settings.SPEED_TYPE = SpeedType::Central;
-
+        SPEED_TYPE_GALAXY_BTN.set_toggle(true);
+        current_settings.SPEED_TYPE = SpeedType::Galaxy;
+        current_settings.HAS_DAMPING = false;
     }
 
     else if (HAS_BORDERS_BTN.is_pressed)
@@ -775,7 +781,10 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
         COLLISION_CELL_SIZE_TB.set_toggle(true);
 
     else if (RELOAD_BTN.is_pressed)
+    {
         reload_sim();
+        update_button_statuses(window, event);
+    }
 
     // Left menu
 

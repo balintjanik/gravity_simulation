@@ -73,7 +73,7 @@ static sf::Text SPEED_TYPE_TXT;
 static ToggleButton SPEED_TYPE_RANDOM_BTN;
 static ToggleButton SPEED_TYPE_ANGULAR_BTN;
 static ToggleButton SPEED_TYPE_ZERO_BTN;
-static ToggleButton SPEED_TYPE_CENTRAL_BTN;
+static ToggleButton SPEED_TYPE_GALAXY_BTN;
 
 static sf::Text BORDER_TXT;
 static ToggleButton HAS_BORDERS_BTN;
@@ -178,7 +178,10 @@ public:
 	int COLLISION_CELL_SIZE = 20;
 
 	// Max threads
-	unsigned int THREAD_NUM = 4;
+	unsigned int THREAD_NUM = 4; // TODO: textbox for this
+
+	// Singularity mass
+	double SINGULARITY_MASS = 10000; // TODO: textbox for this
 
 	void update_dynamic_properties()
 	{
