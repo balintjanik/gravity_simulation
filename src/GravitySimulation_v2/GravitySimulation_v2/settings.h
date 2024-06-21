@@ -152,7 +152,7 @@ public:
 	
 	// Trail settings
 	bool HAS_TRAIL = false;
-	int TRAIL_SIZE = 30;
+	int TRAIL_SIZE = 20;
 	double TRAIL_RADIUS = (RADIUS / 2 > 1 ? RADIUS / 2 : 1);
 	sf::Color TRAIL_COLOR = sf::Color(40,40,40);
 

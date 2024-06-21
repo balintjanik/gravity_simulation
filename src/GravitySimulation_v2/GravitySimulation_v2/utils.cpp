@@ -111,7 +111,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
         }
         sf::Vector2f initialVelocity(vx, vy);
 
-        // set color
+        // Set color
         sf::Color particleColor(sf::Color::Blue);
 
         particles.push_back(Particle(initialPosition, initialVelocity, particleColor, settings.RADIUS, settings.MASS));
