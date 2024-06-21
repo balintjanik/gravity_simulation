@@ -58,39 +58,47 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
 {
     vector<Particle> particles;
 
+    // Starting variables
     double x, y;
     double vx, vy;
     double r, theta;
     double ang_to_cent, angle, distance, speed, rand_x, rand_y;
     sf::Vector2f direction;
 
+    sf::Vector2f center = sf::Vector2f(WIDTH / 2, HEIGHT / 2);
+
+    // Singularity variables
+    sf::Vector2f sin_pos = sf::Vector2f(WIDTH / 2, HEIGHT / 2);
+    sf::Vector2f sin_vel = sf::Vector2f(0, 0);
+
     for (int i = 0; i < settings.N; i++)
     {
         // Add singularity
         if (settings.SPEED_TYPE == SpeedType::Galaxy && i == 0)
         {
-            particles.push_back(Particle(sf::Vector2f(WIDTH / 2, HEIGHT / 2), sf::Vector2f(0, 0), sf::Color::White, 5, settings.SINGULARITY_MASS, true));
+            particles.push_back(Particle(sin_pos, sin_vel, sf::Color(255,127,0), 6, settings.SINGULARITY_MASS, true));
+            center = sin_pos;
             id_counter++;
             continue;
         }
 
-        // set random position
+        // Set random position
         switch (settings.PLACEMENT_TYPE)
         {
             case PlacementType::Circular:
                 r = settings.R * sqrt(generate_random_double(0, 1));
                 theta = generate_random_double(0, 1) * 2 * PI;
-                x = CANVAS_WIDTH / 2 + r * cos(theta);
-                y = HEIGHT / 2 + r * sin(theta);
+                x = center.x + r * cos(theta);
+                y = center.y + r * sin(theta);
                 break;
             default: // FullScreen is default
                 x = generate_random_double(min_x, max_x);
                 y = generate_random_double(min_y, max_y);
                 break;
         }
-        sf::Vector2f initialPosition(x, y);
+        sf::Vector2f initial_position(x, y);
 
-        // set velocity
+        // Set velocity
         switch (settings.SPEED_TYPE)
         {
             case SpeedType::Random:
@@ -108,25 +116,27 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 vy = speed * sin(angle) * rand_y;
                 break;
             case SpeedType::Galaxy:
-                distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+                distance = v2f_distance(initial_position, sin_pos);
                 speed = 3 * sqrt(settings.SINGULARITY_MASS / distance);
-                angle = atan2(y - HEIGHT / 2, x - WIDTH / 2) + PI / 2;
+                angle = atan2(y - sin_pos.y, x - sin_pos.x) + PI / 2;
                 rand_x = generate_random_double(0.9, 1.1);
                 rand_y = generate_random_double(0.9, 1.1);
-                vx = speed * cos(angle) * rand_x;
-                vy = speed * sin(angle) * rand_y;
+                vx = sin_vel.x;
+                vy = sin_vel.y;
+                vx += speed * cos(angle) * rand_x;
+                vy += speed * sin(angle) * rand_y;
                 break;
             default: // Zero is default
                 vx = 0.0;
                 vy = 0.0;
                 break;
         }
-        sf::Vector2f initialVelocity(vx, vy);
+        sf::Vector2f initial_velocity(vx, vy);
 
         // Set color
-        sf::Color particleColor(sf::Color::Blue);
+        sf::Color particle_color(sf::Color::Blue);
 
-        particles.push_back(Particle(initialPosition, initialVelocity, particleColor, settings.RADIUS, settings.MASS));
+        particles.push_back(Particle(initial_position, initial_velocity, particle_color, settings.RADIUS, settings.MASS));
         id_counter++;
     }
 
@@ -182,6 +192,13 @@ void draw_particles(sf::RenderWindow& window)
         {
             sf::CircleShape circle(p.radius);
             circle.setFillColor(p.color);
+
+            if (p.is_singularity)
+            {
+                circle.setFillColor(sf::Color::Transparent);
+                circle.setOutlineThickness(3);
+                circle.setOutlineColor(p.color);
+            }
 
             // setPosition sets the coordinates of top left corner
             circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
