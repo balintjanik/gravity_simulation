@@ -12,8 +12,9 @@
 extern int WIDTH, HEIGHT, CANVAS_WIDTH;
 static int MENU_WIDTH = 500;
 
-// Threads
-const unsigned int MAX_THREAD_NUM = std::thread::hardware_concurrency();
+// Constants
+const unsigned int MAX_THREAD_NUM = std::thread::hardware_concurrency(); // Maximum threads available on device
+const double EPSYLON = 2.0; // Softening length to avoid singularities
 
 // Show/hide settings and hotkeys
 static sf::Keyboard::Key RELOAD_KEY = sf::Keyboard::R;

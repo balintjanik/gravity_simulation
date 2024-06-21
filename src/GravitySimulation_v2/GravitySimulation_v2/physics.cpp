@@ -25,7 +25,7 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
 
                     // Calculate gravitational force
                     double g = 1;
-                    double force = (g * p_1.mass * cell.total_mass) / pow(distance, 2);
+                    double force = (g * p_1.mass * cell.total_mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
                     // Update velocity
                     p_1.velocity.x -= force * cos(angle);
@@ -59,7 +59,7 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
 
                     // Calculate gravitational force
                     double g = 1;
-                    double force = (g * p_1.mass * p_2.mass) / pow(distance, 2);
+                    double force = (g * p_1.mass * p_2.mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
                     // Update velocity
                     p_1.velocity.x -= force * cos(angle);

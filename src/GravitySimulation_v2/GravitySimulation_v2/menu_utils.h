@@ -45,15 +45,15 @@ void recalc_sizes(int width, int height)
     else
         settings.R = 2 * CANVAS_WIDTH / 5;
 
-    BTN_HEIGHT = HEIGHT / 48;
-    TITLE_FONT_SIZE = 3 * BTN_HEIGHT / 4;
+    BTN_HEIGHT = HEIGHT / 50;
+    TITLE_FONT_SIZE = 5 * BTN_HEIGHT / 6;
     FONT_SIZE = 4 * BTN_HEIGHT / 7;
     MARGIN_TOP = 2 * BTN_HEIGHT / 3;
     MARGIN_LEFT = BTN_HEIGHT / 2;
     MARGIN_BOTTOM = BTN_HEIGHT;
     MARGIN_RIGHT = BTN_HEIGHT / 2;
     MARGIN_BETWEEN = (MARGIN_LEFT / 2 < 10 ? 10 : MARGIN_LEFT / 2);
-    MARGIN_BLOCK = BTN_HEIGHT;
+    MARGIN_BLOCK = 7 * BTN_HEIGHT / 8;
 }
 
 void init_ui()
