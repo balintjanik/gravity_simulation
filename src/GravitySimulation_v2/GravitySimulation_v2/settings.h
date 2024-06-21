@@ -179,7 +179,7 @@ public:
 	int COLLISION_CELL_SIZE = 20;
 
 	// Max threads
-	unsigned int THREAD_NUM = 2;
+	unsigned int THREAD_NUM = 4;
 
 	void update_dynamic_properties()
 	{

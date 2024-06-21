@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void update_gravity_range(Grid& optim_grid, size_t start, size_t end) {
+void update_gravity_range(Grid& optim_grid, int start, int end) {
     for (int i = start; i < end; i++) {
         auto& p_1 = particles[i];
         double all_force = 0.0;
@@ -81,14 +81,13 @@ void update_gravity(Grid& optim_grid)
     vector<thread> threads;
     int part_size = particles.size() / num_threads;
 
-    for (int i = 0; i < num_threads; ++i) {
+    for (int i = 0; i < num_threads; i++) {
         int start = i * part_size;
         int end = (i == num_threads - 1) ? particles.size() : (i + 1) * part_size;
 
-        threads.emplace_back(update_gravity_range, std::ref(optim_grid), start, end);
+        threads.emplace_back(update_gravity_range, ref(optim_grid), start, end);
     }
 
-    // Join threads
     for (auto& t : threads) {
         t.join();
     }
@@ -175,9 +174,9 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
     }
 }
 
-void update_collisions(Grid& optim_grid)
+void update_collisions_range(Grid& optim_grid, int start_col, int stride)
 {
-    for (int x = 0; x < optim_grid.width; x++)
+    for (int x = start_col; x < optim_grid.width; x+=stride)
     {
         for (int y = 0; y < optim_grid.height; y++)
         {
@@ -195,6 +194,19 @@ void update_collisions(Grid& optim_grid)
                 }
             }
         }
+    }
+}
+
+void update_collisions(Grid& optim_grid) {
+    const int num_threads = settings.THREAD_NUM;
+    vector<thread> threads;
+
+    for (int i = 0; i < num_threads; i++) {
+        threads.emplace_back(update_collisions_range, ref(optim_grid), i, num_threads);
+    }
+
+    for (auto& t : threads) {
+        t.join();
     }
 }
 
