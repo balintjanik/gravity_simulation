@@ -5,8 +5,9 @@
 
 using namespace std;
 
-void update_gravity(Grid& optim_grid) {
-    for (auto& p_1 : particles) {
+void update_gravity_range(Grid& optim_grid, size_t start, size_t end) {
+    for (int i = start; i < end; i++) {
+        auto& p_1 = particles[i];
         double all_force = 0.0;
         int p_1_x = std::floor(p_1.position.x / optim_grid.cell_size);
         int p_1_y = std::floor(p_1.position.y / optim_grid.cell_size);
@@ -71,6 +72,25 @@ void update_gravity(Grid& optim_grid) {
         // Update color based on amount of gravitational force
         sf::Color updated_color = map_forces_to_color(all_force);
         p_1.color = updated_color;
+    }
+}
+
+void update_gravity(Grid& optim_grid)
+{
+    const int num_threads = settings.THREAD_NUM;
+    vector<thread> threads;
+    int part_size = particles.size() / num_threads;
+
+    for (int i = 0; i < num_threads; ++i) {
+        int start = i * part_size;
+        int end = (i == num_threads - 1) ? particles.size() : (i + 1) * part_size;
+
+        threads.emplace_back(update_gravity_range, std::ref(optim_grid), start, end);
+    }
+
+    // Join threads
+    for (auto& t : threads) {
+        t.join();
     }
 }
 

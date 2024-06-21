@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include <SFML/Graphics.hpp>
+#include <thread>
 #include "simple_button.h"
 #include "toggle_button.h"
 #include "textbox.h"
@@ -10,6 +11,9 @@
 // We will automatically set width and height when the app starts
 extern int WIDTH, HEIGHT, CANVAS_WIDTH;
 static int MENU_WIDTH = 500;
+
+// Threads
+const unsigned int MAX_THREAD_NUM = std::thread::hardware_concurrency();
 
 // Show/hide settings and hotkeys
 static sf::Keyboard::Key RELOAD_KEY = sf::Keyboard::R;
@@ -174,11 +178,15 @@ public:
 	bool VISUALIZE_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 	int COLLISION_CELL_SIZE = 20;
 
+	// Max threads
+	unsigned int THREAD_NUM = 2;
+
 	void update_dynamic_properties()
 	{
 		MAX_FORCES = 3 * sqrt(MASS) * ((double)N / 700);
 		TRAIL_RADIUS = (RADIUS / 2 > 1 ? RADIUS / 2 : 1);
 		DAMPING_DIST = MASS * TIMESTEP / 5;
+		THREAD_NUM = (THREAD_NUM > MAX_THREAD_NUM ? MAX_THREAD_NUM : THREAD_NUM);
 	}
 };
 
