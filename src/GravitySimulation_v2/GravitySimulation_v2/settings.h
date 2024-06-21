@@ -14,7 +14,7 @@ static int MENU_WIDTH = 500;
 
 // Constants
 const unsigned int MAX_THREAD_NUM = std::thread::hardware_concurrency(); // Maximum threads available on device
-const double EPSYLON = 2.0; // Softening length to avoid singularities
+const double EPSYLON = 1.8; // Softening length to avoid singularities
 
 // Show/hide settings and hotkeys
 static sf::Keyboard::Key RELOAD_KEY = sf::Keyboard::R;
@@ -89,8 +89,7 @@ static sf::Text DAMPING_COEFF_TXT;
 static TextBox DAMPING_COEFF_TB;
 
 static sf::Text COLLISION_TXT;
-static ToggleButton HAS_OVERLAPCHECK_BTN;
-static ToggleButton HAS_BOUNCEOFF_BTN;
+static ToggleButton HAS_COLLISIONS_BTN;
 static sf::Text COLLISION_THRESHOLD_TXT;
 static TextBox COLLISION_THRESHOLD_TB;
 static sf::Text COLLISION_ITERATIONS_TXT;
@@ -159,9 +158,8 @@ public:
 	// Gravity settings
 	bool HAS_GRAVITY = true;
 	
-	// Collision settings (to fully turn off collision set both to false)
-	bool HAS_OVERLAPCHECK = true; // Turns on/off overlap avoidance
-	bool HAS_BOUNCEOFF = true; // Turns on/off bounce off when collide (conservation of momentum)
+	// Collision settings
+	bool HAS_COLLISIONS = true;
 	double COLLISION_THRESHOLD = 0.5; // Amount of space left between particles
 	int COLLISION_ITERATIONS = 3; // Amount of collision handles per frame (higher is more accurate handling but more expensive)
 	double COLLISION_IMPULSE_COEFF = 1.0; // Strength of bounceoff (0.0-2.0)

@@ -125,7 +125,7 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
             // Check collision
             if (distance < min_distance)
             {
-                if (settings.HAS_OVERLAPCHECK)
+                if (settings.HAS_COLLISIONS)
                 {
                     double displacement_x = (dx / distance) * (min_distance - distance) / 2.0;
                     double displacement_y = (dy / distance) * (min_distance - distance) / 2.0;
@@ -135,10 +135,7 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                     p_1.position.y -= displacement_y;
                     p_2.position.x += displacement_x;
                     p_2.position.y += displacement_y;
-                }
 
-                if (settings.HAS_BOUNCEOFF)
-                {
                     // Calculate relative velocity
                     double relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
                     double relative_velocity_y = p_2.velocity.y - p_1.velocity.y;
@@ -158,7 +155,7 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                 }
 
                 // Update color based on collision if gravity is off and collision is on
-                if (settings.HAS_OVERLAPCHECK && settings.HAS_BOUNCEOFF && !settings.HAS_GRAVITY)
+                if (settings.HAS_COLLISIONS && !settings.HAS_GRAVITY)
                 {
                     p_1.color = sf::Color(255, 0, 0);
                     p_2.color = sf::Color(255, 0, 0);

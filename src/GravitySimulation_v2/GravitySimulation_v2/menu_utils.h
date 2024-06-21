@@ -244,12 +244,8 @@ void init_ui()
     COLLISION_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    HAS_OVERLAPCHECK_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_OVERLAPCHECK);
-    HAS_OVERLAPCHECK_BTN.set_button_label(FONT_SIZE, "OVERLAP CHECK ON/OFF");
-    button_counter++;
-
-    HAS_BOUNCEOFF_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_BOUNCEOFF);
-    HAS_BOUNCEOFF_BTN.set_button_label(FONT_SIZE, "BOUNCE ON/OFF");
+    HAS_COLLISIONS_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_COLLISIONS);
+    HAS_COLLISIONS_BTN.set_button_label(FONT_SIZE, "COLLISIONS ON/OFF");
     button_counter++;
     
     COLLISION_THRESHOLD_TXT.setString("THRESHOLD");
@@ -461,8 +457,7 @@ void draw_menu(sf::RenderWindow& window)
     DAMPING_COEFF_TB.draw(window);
 
     window.draw(COLLISION_TXT);
-    HAS_OVERLAPCHECK_BTN.draw(window);
-    HAS_BOUNCEOFF_BTN.draw(window);
+    HAS_COLLISIONS_BTN.draw(window);
     window.draw(COLLISION_THRESHOLD_TXT);
     COLLISION_THRESHOLD_TB.draw(window);
     window.draw(COLLISION_ITERATIONS_TXT);
@@ -600,8 +595,7 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     DAMPING_DIST_TB.get_button_status(window, event);
     DAMPING_COEFF_TB.get_button_status(window, event);
 
-    HAS_OVERLAPCHECK_BTN.get_button_status(window, event);
-    HAS_BOUNCEOFF_BTN.get_button_status(window, event);
+    HAS_COLLISIONS_BTN.get_button_status(window, event);
     COLLISION_THRESHOLD_TB.get_button_status(window, event);
     COLLISION_ITERATIONS_TB.get_button_status(window, event);
     COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
@@ -751,30 +745,17 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
         DAMPING_COEFF_TB.set_toggle(true);
     }
 
-    else if (HAS_OVERLAPCHECK_BTN.is_pressed)
+    else if (HAS_COLLISIONS_BTN.is_pressed)
     {
-        if (current_settings.HAS_OVERLAPCHECK)
+        if (current_settings.HAS_COLLISIONS)
         {
-            current_settings.HAS_OVERLAPCHECK = false;
-            settings.HAS_OVERLAPCHECK = false;
+            current_settings.HAS_COLLISIONS = false;
+            settings.HAS_COLLISIONS = false;
         }
         else
         {
-            current_settings.HAS_OVERLAPCHECK = true;
-            settings.HAS_OVERLAPCHECK = true;
-        }
-    }
-    else if (HAS_BOUNCEOFF_BTN.is_pressed)
-    {
-        if (current_settings.HAS_BOUNCEOFF)
-        {
-            current_settings.HAS_BOUNCEOFF = false;
-            settings.HAS_BOUNCEOFF = false;
-        }
-        else
-        {
-            current_settings.HAS_BOUNCEOFF = true;
-            settings.HAS_BOUNCEOFF = true;
+            current_settings.HAS_COLLISIONS = true;
+            settings.HAS_COLLISIONS = true;
         }
     }
     else if (COLLISION_THRESHOLD_TB.is_pressed)
