@@ -50,7 +50,7 @@ void init_ui()
 
     // FPS counter
     FPS_TXT.setFillColor(sf::Color::White);
-    FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
+    FPS_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, MARGIN_TOP);
     FPS_TXT.setFont(FONT);
     FPS_TXT.setCharacterSize(TITLE_FONT_SIZE);
 

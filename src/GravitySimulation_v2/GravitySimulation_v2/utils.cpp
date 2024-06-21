@@ -69,7 +69,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
         // Add singularity
         if (settings.SPEED_TYPE == SpeedType::Galaxy && i == 0)
         {
-            particles.push_back(Particle(sf::Vector2f(WIDTH / 2, HEIGHT / 2), sf::Vector2f(0, 0), sf::Color::White, 2, settings.SINGULARITY_MASS, true));
+            particles.push_back(Particle(sf::Vector2f(WIDTH / 2, HEIGHT / 2), sf::Vector2f(0, 0), sf::Color::White, 5, settings.SINGULARITY_MASS, true));
             id_counter++;
             continue;
         }
