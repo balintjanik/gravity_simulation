@@ -55,11 +55,12 @@ void init_ui()
     FPS_TXT.setCharacterSize(TITLE_FONT_SIZE);
 
     // Help text
-    HELP_TXT.setString(key_to_string(RELOAD_KEY) + ": RELOAD\t\t"
-        + key_to_string(SHOW_MENU_KEY) + ": SHOW/HIDE MENU\t\t"
-        + key_to_string(SHOW_HELP_KEY) + ": SHOW/HIDE HELP\t\t"
-        + key_to_string(SHOW_FPS_KEY) + ": SHOW/HIDE FPS\t\t"
-        + key_to_string(SHOW_ALL_KEY) + ": SHOW/HIDE EVERYTHING\t\t"
+    HELP_TXT.setString(key_to_string(RELOAD_KEY) + ": RELOAD\t"
+        + key_to_string(SINGULARITY_KEY) + ": PLACE BLACK HOLE\t"
+        + key_to_string(SHOW_MENU_KEY) + ": SHOW/HIDE MENU\t"
+        + key_to_string(SHOW_HELP_KEY) + ": SHOW/HIDE HELP\t"
+        + key_to_string(SHOW_FPS_KEY) + ": SHOW/HIDE FPS\t"
+        + key_to_string(SHOW_ALL_KEY) + ": SHOW/HIDE EVERYTHING\t"
         + key_to_string(EXIT_KEY) + ": EXIT");
     HELP_TXT.setFillColor(sf::Color::White);
     HELP_TXT.setFont(FONT);
@@ -137,6 +138,18 @@ void init_ui()
 
     PLACEMENT_TYPE_FULLSCREEN_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.PLACEMENT_TYPE == PlacementType::Fullscreen);
     PLACEMENT_TYPE_FULLSCREEN_BTN.set_button_label(FONT_SIZE, "FULLSCREEN");
+    button_counter++;
+
+    PLACEMENT_RADIUS_TXT.setString("RADIUS");
+    PLACEMENT_RADIUS_TXT.setFillColor(sf::Color::White);
+    PLACEMENT_RADIUS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    PLACEMENT_RADIUS_TXT.setFont(FONT);
+    PLACEMENT_RADIUS_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    PLACEMENT_RADIUS_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.R, "int");
+    PLACEMENT_RADIUS_TB.set_button_label(FONT_SIZE, std::to_string(settings.R));
+    PLACEMENT_RADIUS_TB.is_active = settings.PLACEMENT_TYPE == PlacementType::Circular;
     button_counter++;
     block_counter++;
 
@@ -397,8 +410,9 @@ void init_ui()
 
 bool check_reload_required()
 {
-    if (settings.PLACEMENT_TYPE != current_settings.PLACEMENT_TYPE || settings.SPEED_TYPE != current_settings.SPEED_TYPE
-        || settings.N != current_settings.N || settings.RADIUS != current_settings.RADIUS || settings.MASS != current_settings.MASS
+    if (settings.PLACEMENT_TYPE != current_settings.PLACEMENT_TYPE || settings.R != current_settings.R
+        || settings.SPEED_TYPE != current_settings.SPEED_TYPE || settings.N != current_settings.N
+        || settings.RADIUS != current_settings.RADIUS || settings.MASS != current_settings.MASS
         || settings.COLLISION_CELL_SIZE != current_settings.COLLISION_CELL_SIZE)
         return true;
 
@@ -428,6 +442,8 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(PLACEMENT_TYPE_TXT);
     PLACEMENT_TYPE_CIRCULAR_BTN.draw(window);
     PLACEMENT_TYPE_FULLSCREEN_BTN.draw(window);
+    window.draw(PLACEMENT_RADIUS_TXT);
+    PLACEMENT_RADIUS_TB.draw(window);
 
     window.draw(SPEED_TYPE_TXT);
     SPEED_TYPE_ANGULAR_BTN.draw(window);
@@ -514,6 +530,9 @@ void untoggle_textboxes(sf::RenderWindow& window)
     PARTICLE_MASS_TB.set_toggle(false);
     current_settings.MASS = PARTICLE_MASS_TB.value;
 
+    PLACEMENT_RADIUS_TB.set_toggle(false);
+    current_settings.R = PLACEMENT_RADIUS_TB.value;
+
     COLLISION_THRESHOLD_TB.set_toggle(false);
     current_settings.COLLISION_THRESHOLD = COLLISION_THRESHOLD_TB.value;
     settings.COLLISION_THRESHOLD = COLLISION_THRESHOLD_TB.value;
@@ -549,6 +568,8 @@ void handle_textbox_input(const sf::Event& event)
     PARTICLE_RADIUS_TB.handle_input(event);
     PARTICLE_MASS_TB.handle_input(event);
 
+    PLACEMENT_RADIUS_TB.handle_input(event);
+
     COLLISION_THRESHOLD_TB.handle_input(event);
     COLLISION_ITERATIONS_TB.handle_input(event);
     COLLISION_IMPULSE_COEFF_TB.handle_input(event);
@@ -573,6 +594,7 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
 
     PLACEMENT_TYPE_CIRCULAR_BTN.get_button_status(window, event);
     PLACEMENT_TYPE_FULLSCREEN_BTN.get_button_status(window, event);
+    PLACEMENT_RADIUS_TB.get_button_status(window, event);
 
     SPEED_TYPE_ANGULAR_BTN.get_button_status(window, event);
     SPEED_TYPE_RANDOM_BTN.get_button_status(window, event);
@@ -649,12 +671,20 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
         PLACEMENT_TYPE_CIRCULAR_BTN.set_toggle(true);
         PLACEMENT_TYPE_FULLSCREEN_BTN.set_toggle(false);
         current_settings.PLACEMENT_TYPE = PlacementType::Circular;
+        PLACEMENT_RADIUS_TB.is_active = true;
+        PLACEMENT_RADIUS_TB.get_button_status(window, event);
     }
     else if (PLACEMENT_TYPE_FULLSCREEN_BTN.is_pressed)
     {
         PLACEMENT_TYPE_CIRCULAR_BTN.set_toggle(false);
         PLACEMENT_TYPE_FULLSCREEN_BTN.set_toggle(true);
         current_settings.PLACEMENT_TYPE = PlacementType::Fullscreen;
+        PLACEMENT_RADIUS_TB.is_active = false;
+        PLACEMENT_RADIUS_TB.get_button_status(window, event);
+    }
+    else if (PLACEMENT_RADIUS_TB.is_pressed)
+    {
+        PLACEMENT_RADIUS_TB.set_toggle(true);
     }
 
     else if (SPEED_TYPE_ANGULAR_BTN.is_pressed)

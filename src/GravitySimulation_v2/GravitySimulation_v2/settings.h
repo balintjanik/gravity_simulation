@@ -19,6 +19,8 @@ const double EPSYLON = 1.8; // Softening length to avoid singularities
 // Show/hide settings and hotkeys
 static sf::Keyboard::Key RELOAD_KEY = sf::Keyboard::R;
 
+static sf::Keyboard::Key SINGULARITY_KEY = sf::Keyboard::P;
+
 static bool SHOW_MENU = true;
 static sf::Keyboard::Key SHOW_MENU_KEY = sf::Keyboard::M;
 
@@ -68,6 +70,8 @@ static TextBox PARTICLE_MASS_TB;
 static sf::Text PLACEMENT_TYPE_TXT;
 static ToggleButton PLACEMENT_TYPE_FULLSCREEN_BTN;
 static ToggleButton PLACEMENT_TYPE_CIRCULAR_BTN;
+static sf::Text PLACEMENT_RADIUS_TXT;
+static TextBox PLACEMENT_RADIUS_TB;
 
 static sf::Text SPEED_TYPE_TXT;
 static ToggleButton SPEED_TYPE_RANDOM_BTN;
@@ -182,6 +186,7 @@ public:
 
 	// Singularity mass
 	double SINGULARITY_MASS = 10000; // TODO: textbox for this
+	sf::Color SINGULARITY_COLOR = sf::Color(255, 127, 0);
 
 	void update_dynamic_properties()
 	{

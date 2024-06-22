@@ -76,7 +76,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
         // Add singularity
         if (settings.SPEED_TYPE == SpeedType::Galaxy && i == 0)
         {
-            particles.push_back(Particle(sin_pos, sin_vel, sf::Color(255,127,0), 6, settings.SINGULARITY_MASS, true));
+            particles.push_back(Particle(sin_pos, sin_vel, settings.SINGULARITY_COLOR, 6, settings.SINGULARITY_MASS, true));
             center = sin_pos;
             id_counter++;
             continue;
@@ -143,6 +143,17 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
     return particles;
 }
 
+void add_singularity(Grid& optim_grid)
+{
+    Particle singularity = Particle(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y), sf::Vector2f(0, 0), settings.SINGULARITY_COLOR, 6, settings.SINGULARITY_MASS, true);
+    particles.push_back(singularity);
+    optim_grid.add_particle(particles.back());
+    
+    settings.N++;
+    
+    id_counter++;
+}
+
 void init_optim_grid(Grid& optim_grid)
 {
     for (auto& p : particles)
@@ -195,7 +206,7 @@ void draw_particles(sf::RenderWindow& window)
 
             if (p.is_singularity)
             {
-                circle.setFillColor(sf::Color::Transparent);
+                circle.setFillColor(sf::Color::Black);
                 circle.setOutlineThickness(3);
                 circle.setOutlineColor(p.color);
             }
@@ -259,9 +270,25 @@ void draw_particles(sf::RenderWindow& window)
 
                     // Set color based on custom settings
                     if (settings.VISUALIZE_PARTICLE_CELL)
+                    {
                         circle.setFillColor(col);
+                        if (p.is_singularity)
+                        {
+                            circle.setFillColor(sf::Color::Black);
+                            circle.setOutlineThickness(3);
+                            circle.setOutlineColor(col);
+                        }
+                    }
                     else
+                    {
                         circle.setFillColor(p.color);
+                        if (p.is_singularity)
+                        {
+                            circle.setFillColor(sf::Color::Black);
+                            circle.setOutlineThickness(3);
+                            circle.setOutlineColor(p.color);
+                        }
+                    }
 
                     circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
                     window.draw(circle);

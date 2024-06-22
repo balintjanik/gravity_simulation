@@ -62,9 +62,7 @@ void TextBox::set_toggle(bool value)
         if (type == "int")
             set_button_label(font_size, std::to_string((int)this->value));
         else
-        {
             set_button_label(font_size, std::to_string(this->value));
-        }
     }
 }
 
