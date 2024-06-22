@@ -14,7 +14,12 @@ static int MENU_WIDTH = 500;
 
 // Constants
 const unsigned int MAX_THREAD_NUM = std::thread::hardware_concurrency(); // Maximum threads available on device
+
 const double EPSYLON = 1.8; // Softening length to avoid singularities
+
+const sf::Color SINGULARITY_COLOR = sf::Color(255, 127, 0);
+const int SINGULARITY_RADIUS = 9;
+const int SINGULARITY_OUTLINE_THICKNESS = 3;
 
 // Show/hide settings and hotkeys
 static sf::Keyboard::Key RELOAD_KEY = sf::Keyboard::R;
@@ -186,7 +191,6 @@ public:
 
 	// Singularity mass
 	double SINGULARITY_MASS = 10000; // TODO: textbox for this
-	sf::Color SINGULARITY_COLOR = sf::Color(255, 127, 0);
 
 	void update_dynamic_properties()
 	{

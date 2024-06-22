@@ -92,6 +92,7 @@ int main()
                         FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
                     }
                 }
+                // Add singularity
                 else if (event.key.code == sf::Keyboard::P)
                     add_singularity(optim_grid);
                 // Exit

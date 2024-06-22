@@ -76,7 +76,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
         // Add singularity
         if (settings.SPEED_TYPE == SpeedType::Galaxy && i == 0)
         {
-            particles.push_back(Particle(sin_pos, sin_vel, settings.SINGULARITY_COLOR, 6, settings.SINGULARITY_MASS, true));
+            particles.push_back(Particle(sin_pos, sin_vel, SINGULARITY_COLOR, SINGULARITY_RADIUS, settings.SINGULARITY_MASS, true));
             center = sin_pos;
             id_counter++;
             continue;
@@ -145,11 +145,9 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
 
 void add_singularity(Grid& optim_grid)
 {
-    Particle singularity = Particle(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y), sf::Vector2f(0, 0), settings.SINGULARITY_COLOR, 6, settings.SINGULARITY_MASS, true);
+    Particle singularity = Particle(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y), sf::Vector2f(0, 0), SINGULARITY_COLOR, SINGULARITY_RADIUS, settings.SINGULARITY_MASS, true);
     particles.push_back(singularity);
     optim_grid.add_particle(particles.back());
-    
-    settings.N++;
     
     id_counter++;
 }
@@ -165,11 +163,11 @@ void init_optim_grid(Grid& optim_grid)
 int get_idx_by_id(int id)
 {
     int i = 0;
-    while (i < settings.N && particles[i].id != id)
+    while (i < particles.size() && particles[i].id != id)
     {
         i++;
     }
-    if (i < settings.N)
+    if (i < particles.size())
     {
         return i;
     }
@@ -201,13 +199,13 @@ void draw_particles(sf::RenderWindow& window)
     {
         for (auto& p : particles)
         {
-            sf::CircleShape circle(p.radius);
+            sf::CircleShape circle(p.radius - (p.is_singularity ? SINGULARITY_OUTLINE_THICKNESS : 0));
             circle.setFillColor(p.color);
 
             if (p.is_singularity)
             {
                 circle.setFillColor(sf::Color::Black);
-                circle.setOutlineThickness(3);
+                circle.setOutlineThickness(SINGULARITY_OUTLINE_THICKNESS);
                 circle.setOutlineColor(p.color);
             }
 
@@ -266,7 +264,7 @@ void draw_particles(sf::RenderWindow& window)
 
                     Particle& p = particles[idx];
 
-                    sf::CircleShape circle(p.radius);
+                    sf::CircleShape circle(p.radius - (p.is_singularity ? SINGULARITY_OUTLINE_THICKNESS : 0));
 
                     // Set color based on custom settings
                     if (settings.VISUALIZE_PARTICLE_CELL)
@@ -285,7 +283,7 @@ void draw_particles(sf::RenderWindow& window)
                         if (p.is_singularity)
                         {
                             circle.setFillColor(sf::Color::Black);
-                            circle.setOutlineThickness(3);
+                            circle.setOutlineThickness(SINGULARITY_OUTLINE_THICKNESS);
                             circle.setOutlineColor(p.color);
                         }
                     }
