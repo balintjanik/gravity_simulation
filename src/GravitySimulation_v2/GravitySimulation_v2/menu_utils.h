@@ -603,8 +603,11 @@ void untoggle_textboxes(sf::RenderWindow& window)
     FPS_LIMIT_TB.set_toggle(false);
     window.setFramerateLimit(FPS_LIMIT_TB.value);
 
-    SOUND_VOLUME_TB.set_toggle(false);
-    set_sound_volume(SOUND_VOLUME_TB.value);
+    if (settings.HAS_SOUND)
+    {
+        SOUND_VOLUME_TB.set_toggle(false);
+        set_sound_volume(SOUND_VOLUME_TB.value);
+    }
 }
 
 void handle_textbox_input(const sf::Event& event)
