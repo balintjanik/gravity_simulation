@@ -414,6 +414,33 @@ void init_ui()
         VISUALIZE_COM_BTN.is_active = false;
     }
 
+    // Audio title
+    AUDIO_TITLE.setString("AUDIO");
+    AUDIO_TITLE.setFillColor(sf::Color::White);
+    AUDIO_TITLE.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    AUDIO_TITLE.setFont(FONT);
+    AUDIO_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
+    title_counter++;
+    label_counter++;
+    block_counter++;
+
+    // Sound settings
+    SOUND_TXT.setString("SOUNDS");
+    SOUND_TXT.setFillColor(sf::Color::White);
+    SOUND_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    SOUND_TXT.setFont(FONT);
+    SOUND_TXT.setCharacterSize(TITLE_FONT_SIZE);
+    title_counter++;
+
+    SOUND_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_SOUND);
+    SOUND_BTN.set_button_label(FONT_SIZE, "SOUNDS ON/OFF");
+
+    SOUND_VOLUME_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.SOUND_VOLUME, "int");
+    SOUND_VOLUME_TB.set_button_label(FONT_SIZE, std::to_string(settings.SOUND_VOLUME));
+    SOUND_VOLUME_TB.is_active = settings.HAS_SOUND;
+    button_counter++;
+    block_counter++;
+
     // Exit
     EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
     EXIT_BTN.set_button_label(FONT_SIZE, "EXIT");
@@ -517,6 +544,11 @@ void draw_menu(sf::RenderWindow& window)
     VISUALIZE_CELL_MASS_BTN.draw(window);
     VISUALIZE_COM_BTN.draw(window);
 
+    window.draw(AUDIO_TITLE);
+    window.draw(SOUND_TXT);
+    SOUND_BTN.draw(window);
+    SOUND_VOLUME_TB.draw(window);
+
     EXIT_BTN.draw(window);
 }
 
@@ -570,6 +602,9 @@ void untoggle_textboxes(sf::RenderWindow& window)
     settings.TIMESTEP = TIMESTEP_TB.value;
     FPS_LIMIT_TB.set_toggle(false);
     window.setFramerateLimit(FPS_LIMIT_TB.value);
+
+    SOUND_VOLUME_TB.set_toggle(false);
+    set_sound_volume(SOUND_VOLUME_TB.value);
 }
 
 void handle_textbox_input(const sf::Event& event)
@@ -593,6 +628,8 @@ void handle_textbox_input(const sf::Event& event)
     // Right menu
     TIMESTEP_TB.handle_input(event);
     FPS_LIMIT_TB.handle_input(event);
+
+    SOUND_VOLUME_TB.handle_input(event);
 }
 
 void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
@@ -639,6 +676,9 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
     VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
     VISUALIZE_COM_BTN.get_button_status(window, event);
+
+    SOUND_BTN.get_button_status(window, event);
+    SOUND_VOLUME_TB.get_button_status(window, event);
 
     EXIT_BTN.get_button_status(window, event);
 }
@@ -841,7 +881,7 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
         update_button_statuses(window, event);
     }
 
-    // Left menu
+    // Right menu
 
     else if (TIMESTEP_TB.is_pressed)
         TIMESTEP_TB.set_toggle(true);
@@ -925,6 +965,32 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
             current_settings.VISUALIZE_COM = true;
         }
     }
+
+    else if (SOUND_BTN.is_pressed)
+    {
+        if (settings.HAS_SOUND)
+        {
+            settings.HAS_SOUND = false;
+            current_settings.HAS_SOUND = false;
+
+            set_sound_volume(0);
+
+            SOUND_VOLUME_TB.is_active = false;
+            SOUND_VOLUME_TB.get_button_status(window, event);
+        }
+        else
+        {
+            settings.HAS_SOUND = true;
+            current_settings.HAS_SOUND = true;
+
+            set_sound_volume(SOUND_VOLUME_TB.value);
+
+            SOUND_VOLUME_TB.is_active = true;
+            SOUND_VOLUME_TB.get_button_status(window, event);
+        }
+    }
+    else if (SOUND_VOLUME_TB.is_pressed)
+        SOUND_VOLUME_TB.set_toggle(true);
 
     else if (EXIT_BTN.is_pressed)
         window.close();

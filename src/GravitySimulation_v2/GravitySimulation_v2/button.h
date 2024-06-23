@@ -30,6 +30,7 @@
 #define BUTTON_H
 
 #include <SFML/Graphics.hpp>
+#include "sound_manager.h"
 
 const sf::Color defult_color = sf::Color(0, 100, 200);
 const sf::Color default_toggle = sf::Color::White;

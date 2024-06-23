@@ -26,10 +26,15 @@ TextBox::~TextBox()
 
 void TextBox::handle_input(const sf::Event& event) {
     if (event.type == sf::Event::TextEntered && is_toggle) {
-        if (event.text.unicode == '\b' && !label.empty() && label != default_text) {
+
+        if (event.text.unicode == '\b' && !label.empty() && label != default_text)
+        {
+            type_sound.play();
             label.pop_back();
         }
-        else if (std::isdigit(static_cast<char>(event.text.unicode)) && (label.size() < 9 || label == default_text)) {
+        else if (std::isdigit(static_cast<char>(event.text.unicode)) && (label.size() < 9 || label == default_text)) 
+        {
+            type_sound.play();
             if (label == default_text)
                 label.clear();
             label += static_cast<char>(event.text.unicode);
@@ -37,6 +42,7 @@ void TextBox::handle_input(const sf::Event& event) {
         else if (type == "double" && (static_cast<char>(event.text.unicode) == '.' && label.find('.') == std::string::npos)
             && label.size() > 0 && label.size() < 9)
         {
+            type_sound.play();
             label += static_cast<char>(event.text.unicode);
         }
         set_button_label(font_size, label);
@@ -71,6 +77,7 @@ void TextBox::get_button_status(sf::RenderWindow& window, sf::Event& event)
     this->mouse_pos_window = sf::Mouse::getPosition(window);
     this->mouse_pos_view = window.mapPixelToCoords(this->mouse_pos_window);
 
+    bool play_sound = !this->is_hover;
     this->is_hover = false;
     this->is_pressed = false;
 
@@ -80,13 +87,16 @@ void TextBox::get_button_status(sf::RenderWindow& window, sf::Event& event)
         button_label.setFillColor(label_colorset.color);
         if (button.getGlobalBounds().contains(this->mouse_pos_view))
         {
+            if (play_sound)
+                hover_sound.play();
             this->is_hover = true;
         }
 
         if (button.getGlobalBounds().contains(this->mouse_pos_view))
         {
-            if (event.type == sf::Event::MouseButtonReleased)
+            if (event.type == sf::Event::MouseButtonPressed)
             {
+                click_sound.play();
                 this->is_pressed = true;
             }
         }

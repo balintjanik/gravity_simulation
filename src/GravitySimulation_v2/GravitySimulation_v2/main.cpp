@@ -9,6 +9,7 @@
 #include "physics.h"
 #include "grid.h"
 #include "menu_utils.h"
+#include "sound_manager.h"
 
 int main()
 {
@@ -19,6 +20,7 @@ int main()
     // Initialize
     recalc_sizes(screen.width, screen.height);
     init_ui();
+    init_sounds();
     reload_sim();
 
     while (window.isOpen()) {
@@ -103,7 +105,7 @@ int main()
             if (SHOW_MENU)
             {
                 // Untoggle textboxes on any click
-                if (event.type == sf::Event::MouseButtonReleased)
+                if (event.type == sf::Event::MouseButtonPressed)
                     untoggle_textboxes(window);
 
                 // Update button statuses
@@ -114,7 +116,7 @@ int main()
                     handle_textbox_input(event);
 
                 // Handle button clicks
-                if (event.type == sf::Event::MouseButtonReleased)
+                if (event.type == sf::Event::MouseButtonPressed)
                     handle_button_clicks(window, event);
             }
         }

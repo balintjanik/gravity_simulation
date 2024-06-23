@@ -132,6 +132,14 @@ static ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
 static ToggleButton VISUALIZE_CELL_MASS_BTN;
 static ToggleButton VISUALIZE_COM_BTN;
 
+static sf::Text AUDIO_TITLE;
+static sf::Text SOUND_TXT;
+static ToggleButton SOUND_BTN;
+static TextBox SOUND_VOLUME_TB;
+static sf::Text MUSIC_TXT;
+static ToggleButton MUSIC_BTN;
+static TextBox MUSIC_VOLUME_TB;
+
 static SimpleButton EXIT_BTN;
 
 class Settings {
@@ -191,6 +199,12 @@ public:
 
 	// Singularity mass
 	double SINGULARITY_MASS = 10000; // TODO: textbox for this
+
+	// Sound and music settings
+	bool HAS_SOUND = true;
+	int SOUND_VOLUME = 100;
+	bool HAS_MUSIC = true;
+	int MUSIC_VOLUME = 100;
 
 	void update_dynamic_properties()
 	{

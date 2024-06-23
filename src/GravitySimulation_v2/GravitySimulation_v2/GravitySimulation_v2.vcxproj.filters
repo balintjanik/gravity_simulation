@@ -48,6 +48,9 @@
     <ClCompile Include="textbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sound_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="utils.h">
@@ -95,6 +98,9 @@
     <ClInclude Include="key_conversion.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="sound_manager.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GravitySimulation_v2.rc">
@@ -103,5 +109,22 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="Poppins-Bold.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="click.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="hover.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="click_sharp.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="hover_original.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="hover_medium.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

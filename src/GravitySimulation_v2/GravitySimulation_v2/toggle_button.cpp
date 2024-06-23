@@ -34,6 +34,7 @@ void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
     this->mouse_pos_window = sf::Mouse::getPosition(window);
     this->mouse_pos_view = window.mapPixelToCoords(this->mouse_pos_window);
 
+    bool play_sound = !this->is_hover;
     this->is_hover = false;
     this->is_pressed = false;
 
@@ -43,13 +44,16 @@ void ToggleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
         button_label.setFillColor(label_colorset.color);
         if (button.getGlobalBounds().contains(this->mouse_pos_view))
         {
+            if (play_sound)
+                hover_sound.play();
             this->is_hover = true;
         }
 
         if (button.getGlobalBounds().contains(this->mouse_pos_view))
         {
-            if (event.type == sf::Event::MouseButtonReleased)
+            if (event.type == sf::Event::MouseButtonPressed)
             {
+                click_sound.play();
                 this->is_pressed = true;
 
                 if (is_toggle)
