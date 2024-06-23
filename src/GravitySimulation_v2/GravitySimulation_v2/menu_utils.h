@@ -82,7 +82,7 @@ void init_ui()
     LEFT_TITLE.setFont(FONT);
     LEFT_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
     title_counter++;
-    title_counter++;
+    label_counter++;
     block_counter++;
 
     // Particle properties settings
@@ -285,6 +285,13 @@ void init_ui()
     button_counter++;
     block_counter++;
 
+    if (!settings.HAS_COLLISIONS)
+    {
+        COLLISION_THRESHOLD_TB.is_active = false;
+        COLLISION_ITERATIONS_TB.is_active = false;
+        COLLISION_IMPULSE_COEFF_TB.is_active = false;
+    }
+
     // Optimization grid settings
     GRID_TXT.setString("OPTIMIZATION GRID SETTINGS");
     GRID_TXT.setFillColor(sf::Color::White);
@@ -329,7 +336,7 @@ void init_ui()
     RIGHT_TITLE.setFont(FONT);
     RIGHT_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
     title_counter++;
-    title_counter++;
+    label_counter++;
     block_counter++;
 
     // Animation settings
@@ -394,14 +401,18 @@ void init_ui()
 
     VISUALIZE_CELL_MASS_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_CELL_MASS);
     VISUALIZE_CELL_MASS_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' MASS ON/OFF");
-    VISUALIZE_CELL_MASS_BTN.is_active = false;
     button_counter++;
 
     VISUALIZE_COM_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_COM);
     VISUALIZE_COM_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' CENTER OF MASS ON/OFF");
-    VISUALIZE_COM_BTN.is_active = false;
     button_counter++;
     block_counter++;
+
+    if (!settings.VISUALIZE_SPATIAL_GRID)
+    {
+        VISUALIZE_CELL_MASS_BTN.is_active = false;
+        VISUALIZE_COM_BTN.is_active = false;
+    }
 
     // Exit
     EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
@@ -787,11 +798,25 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
         {
             current_settings.HAS_COLLISIONS = false;
             settings.HAS_COLLISIONS = false;
+
+            COLLISION_THRESHOLD_TB.is_active = false;
+            COLLISION_THRESHOLD_TB.get_button_status(window, event);
+            COLLISION_ITERATIONS_TB.is_active = false;
+            COLLISION_ITERATIONS_TB.get_button_status(window, event);
+            COLLISION_IMPULSE_COEFF_TB.is_active = false;
+            COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
         }
         else
         {
             current_settings.HAS_COLLISIONS = true;
             settings.HAS_COLLISIONS = true;
+
+            COLLISION_THRESHOLD_TB.is_active = true;
+            COLLISION_THRESHOLD_TB.get_button_status(window, event);
+            COLLISION_ITERATIONS_TB.is_active = true;
+            COLLISION_ITERATIONS_TB.get_button_status(window, event);
+            COLLISION_IMPULSE_COEFF_TB.is_active = true;
+            COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
         }
     }
     else if (COLLISION_THRESHOLD_TB.is_pressed)
