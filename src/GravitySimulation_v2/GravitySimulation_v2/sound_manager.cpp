@@ -9,6 +9,9 @@ sf::Sound type_sound;
 sf::SoundBuffer blackhole_buffer;
 sf::Sound blackhole_sound;
 
+sf::SoundBuffer music_buffer;
+sf::Sound music_sound;
+
 void init_sounds()
 {
     if (!hover_buffer.loadFromFile(hover_path))
@@ -40,10 +43,27 @@ void init_sounds()
     blackhole_sound.setBuffer(blackhole_buffer);
 }
 
+void init_music()
+{
+    if (!music_buffer.loadFromFile(music_path))
+    {
+        std::cout << "Error loading music." << std::endl;
+        // TODO: Error loading sounds
+    }
+    music_sound.setBuffer(music_buffer);
+    music_sound.play();
+    music_sound.setLoop(true);
+}
+
 void set_sound_volume(int value)
 {
     hover_sound.setVolume(value);
     click_sound.setVolume(value);
     type_sound.setVolume(value);
     blackhole_sound.setVolume(value);
+}
+
+void set_music_volume(int value)
+{
+    music_sound.setVolume(value);
 }

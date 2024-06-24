@@ -21,6 +21,7 @@ int main()
     recalc_sizes(screen.width, screen.height);
     init_ui();
     init_sounds();
+    init_music();
     reload_sim();
 
     while (window.isOpen()) {

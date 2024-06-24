@@ -183,6 +183,7 @@ xcopy /y "$(ProjectDir)openal32.dll" "$(TargetDir)"</Command>
     <Media Include="blackhole_hit1.wav" />
     <Media Include="click.wav" />
     <Media Include="hover_medium.wav" />
+    <Media Include="resources\music\ambient_space_music_1.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

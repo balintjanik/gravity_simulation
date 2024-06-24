@@ -459,6 +459,23 @@ void init_ui()
     button_counter++;
     block_counter++;
 
+    // Music settings
+    MUSIC_TXT.setString("MUSIC");
+    MUSIC_TXT.setFillColor(sf::Color::White);
+    MUSIC_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    MUSIC_TXT.setFont(FONT);
+    MUSIC_TXT.setCharacterSize(TITLE_FONT_SIZE);
+    title_counter++;
+
+    MUSIC_BTN = ToggleButton(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.HAS_MUSIC);
+    MUSIC_BTN.set_button_label(FONT_SIZE, "MUSIC ON/OFF");
+
+    MUSIC_VOLUME_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.MUSIC_VOLUME, "int");
+    MUSIC_VOLUME_TB.set_button_label(FONT_SIZE, std::to_string(settings.MUSIC_VOLUME));
+    MUSIC_VOLUME_TB.is_active = settings.HAS_MUSIC;
+    button_counter++;
+    block_counter++;
+
     // Exit
     EXIT_BTN = SimpleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, HEIGHT - BTN_HEIGHT - MARGIN_BOTTOM));
     EXIT_BTN.set_button_label(FONT_SIZE, "EXIT");
@@ -563,9 +580,14 @@ void draw_menu(sf::RenderWindow& window)
     VISUALIZE_COM_BTN.draw(window);
 
     window.draw(AUDIO_TITLE);
+
     window.draw(SOUND_TXT);
     SOUND_BTN.draw(window);
     SOUND_VOLUME_TB.draw(window);
+
+    window.draw(MUSIC_TXT);
+    MUSIC_BTN.draw(window);
+    MUSIC_VOLUME_TB.draw(window);
 
     EXIT_BTN.draw(window);
 }
@@ -633,6 +655,11 @@ void untoggle_textboxes(sf::RenderWindow& window)
         SOUND_VOLUME_TB.set_toggle(false);
         set_sound_volume(SOUND_VOLUME_TB.value);
     }
+    if (settings.HAS_MUSIC)
+    {
+        MUSIC_VOLUME_TB.set_toggle(false);
+        set_music_volume(MUSIC_VOLUME_TB.value);
+    }
 }
 
 void handle_textbox_input(const sf::Event& event)
@@ -658,6 +685,7 @@ void handle_textbox_input(const sf::Event& event)
     FPS_LIMIT_TB.handle_input(event);
 
     SOUND_VOLUME_TB.handle_input(event);
+    MUSIC_VOLUME_TB.handle_input(event);
 }
 
 void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
@@ -707,6 +735,8 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
 
     SOUND_BTN.get_button_status(window, event);
     SOUND_VOLUME_TB.get_button_status(window, event);
+    MUSIC_BTN.get_button_status(window, event);
+    MUSIC_VOLUME_TB.get_button_status(window, event);
 
     EXIT_BTN.get_button_status(window, event);
 }
@@ -1019,6 +1049,32 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
     }
     else if (SOUND_VOLUME_TB.is_pressed)
         SOUND_VOLUME_TB.set_toggle(true);
+
+    else if (MUSIC_BTN.is_pressed)
+    {
+        if (settings.HAS_MUSIC)
+        {
+            settings.HAS_MUSIC = false;
+            current_settings.HAS_MUSIC = false;
+
+            set_music_volume(0);
+
+            MUSIC_VOLUME_TB.is_active = false;
+            MUSIC_VOLUME_TB.get_button_status(window, event);
+        }
+        else
+        {
+            settings.HAS_MUSIC = true;
+            current_settings.HAS_MUSIC = true;
+
+            set_music_volume(MUSIC_VOLUME_TB.value);
+
+            MUSIC_VOLUME_TB.is_active = true;
+            MUSIC_VOLUME_TB.get_button_status(window, event);
+        }
+        }
+    else if (MUSIC_VOLUME_TB.is_pressed)
+        MUSIC_VOLUME_TB.set_toggle(true);
 
     else if (EXIT_BTN.is_pressed)
         window.close();
