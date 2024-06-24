@@ -24,7 +24,7 @@ const int SINGULARITY_OUTLINE_THICKNESS = 3;
 // Show/hide settings and hotkeys
 static sf::Keyboard::Key RELOAD_KEY = sf::Keyboard::R;
 
-static sf::Keyboard::Key SINGULARITY_KEY = sf::Keyboard::P;
+static sf::Keyboard::Key SINGULARITY_KEY = sf::Keyboard::B;
 
 static bool SHOW_MENU = true;
 static sf::Keyboard::Key SHOW_MENU_KEY = sf::Keyboard::M;
@@ -32,8 +32,8 @@ static sf::Keyboard::Key SHOW_MENU_KEY = sf::Keyboard::M;
 static bool SHOW_HELP = true;
 static sf::Keyboard::Key SHOW_HELP_KEY = sf::Keyboard::H;
 
-static bool SHOW_FPS = true;
-static sf::Keyboard::Key SHOW_FPS_KEY = sf::Keyboard::F;
+static bool SHOW_PERFORMANCE = true;
+static sf::Keyboard::Key SHOW_PERFORMANCE_KEY = sf::Keyboard::P;
 
 static sf::Keyboard::Key SHOW_ALL_KEY = sf::Keyboard::A;
 
@@ -41,12 +41,19 @@ static sf::Keyboard::Key EXIT_KEY = sf::Keyboard::Escape;
 
 // Help settings
 static sf::Text HELP_TXT;
+static sf::Text HELP2_TXT;
 
 // FPS settings
 static unsigned int M_FRAME = 0;
 static unsigned int M_FPS;
 static sf::Clock M_CLOCK;
 static sf::Text FPS_TXT;
+
+// Performance
+extern unsigned int GRAV_CALC_COUNT;
+static sf::Text GRAV_COUNT_TXT;
+extern unsigned int COLL_CALC_COUNT;
+static sf::Text COLL_COUNT_TXT;
 
 // Menu settings
 static sf::Font FONT;

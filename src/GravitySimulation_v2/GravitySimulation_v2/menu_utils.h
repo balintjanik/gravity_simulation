@@ -54,20 +54,38 @@ void init_ui()
     FPS_TXT.setFont(FONT);
     FPS_TXT.setCharacterSize(TITLE_FONT_SIZE);
 
+    // Performance
+    GRAV_COUNT_TXT.setFillColor(sf::Color::White);
+    GRAV_COUNT_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
+    GRAV_COUNT_TXT.setFont(FONT);
+    GRAV_COUNT_TXT.setCharacterSize(FONT_SIZE);
+
+    COLL_COUNT_TXT.setFillColor(sf::Color::White);
+    COLL_COUNT_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + FONT_SIZE + 2 * MARGIN_BETWEEN);
+    COLL_COUNT_TXT.setFont(FONT);
+    COLL_COUNT_TXT.setCharacterSize(FONT_SIZE);
+
     // Help text
     HELP_TXT.setString(key_to_string(RELOAD_KEY) + ": RELOAD\t"
         + key_to_string(SINGULARITY_KEY) + ": PLACE BLACK HOLE\t"
         + key_to_string(SHOW_MENU_KEY) + ": SHOW/HIDE MENU\t"
-        + key_to_string(SHOW_HELP_KEY) + ": SHOW/HIDE HELP\t"
-        + key_to_string(SHOW_FPS_KEY) + ": SHOW/HIDE FPS\t"
-        + key_to_string(SHOW_ALL_KEY) + ": SHOW/HIDE EVERYTHING\t"
-        + key_to_string(EXIT_KEY) + ": EXIT");
+        + key_to_string(SHOW_HELP_KEY) + ": SHOW/HIDE HELP");
     HELP_TXT.setFillColor(sf::Color::White);
     HELP_TXT.setFont(FONT);
     HELP_TXT.setCharacterSize(TITLE_FONT_SIZE);
     sf::FloatRect help_txt_rect = HELP_TXT.getLocalBounds();
     HELP_TXT.setOrigin(help_txt_rect.width / 2.0f, help_txt_rect.height / 2.0f);
     HELP_TXT.setPosition(WIDTH / 2, HEIGHT - FONT_SIZE - MARGIN_BOTTOM);
+
+    HELP2_TXT.setString(key_to_string(SHOW_PERFORMANCE_KEY) + ": SHOW/HIDE PERFORMANCE\t"
+        + key_to_string(SHOW_ALL_KEY) + ": SHOW/HIDE EVERYTHING\t"
+        + key_to_string(EXIT_KEY) + ": EXIT");
+    HELP2_TXT.setFillColor(sf::Color::White);
+    HELP2_TXT.setFont(FONT);
+    HELP2_TXT.setCharacterSize(TITLE_FONT_SIZE);
+    help_txt_rect = HELP2_TXT.getLocalBounds();
+    HELP2_TXT.setOrigin(help_txt_rect.width / 2.0f, help_txt_rect.height / 2.0f);
+    HELP2_TXT.setPosition(WIDTH / 2, HEIGHT - FONT_SIZE);
 
     // LEFT MENU
     int button_counter = 0;
@@ -556,11 +574,18 @@ void draw_fps(sf::RenderWindow& window)
 {
     // FPS
     window.draw(FPS_TXT);
+
+    // Performance
+    GRAV_COUNT_TXT.setString("GRAVITATION CALCULATION PER FRAME " + std::to_string(GRAV_CALC_COUNT));
+    window.draw(GRAV_COUNT_TXT);
+    COLL_COUNT_TXT.setString("COLLISION CALCULATION PER FRAME " + std::to_string(COLL_CALC_COUNT));
+    window.draw(COLL_COUNT_TXT);
 }
 
 void draw_help(sf::RenderWindow& window)
 {
     window.draw(HELP_TXT);
+    window.draw(HELP2_TXT);
 }
 
 void untoggle_textboxes(sf::RenderWindow& window)

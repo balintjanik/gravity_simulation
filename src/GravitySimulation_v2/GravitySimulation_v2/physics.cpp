@@ -17,6 +17,8 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
                 if (abs(p_1_x - x) <= 1 && abs(p_1_y - y) <= 1)
                     continue;
 
+                GRAV_CALC_COUNT++;
+
                 const Cell& cell = optim_grid.get(x,y);
                 if (cell.total_mass > 0.0) {
                     // Calculate distance and angle
@@ -42,6 +44,8 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
                 if (p_1_x + dx < 0 || p_1_x + dx >= optim_grid.width
                     || p_1_y + dy < 0 || p_1_y + dy >= optim_grid.height)
                     continue;
+
+                GRAV_CALC_COUNT++;
 
                 const Cell& cell = optim_grid.get(p_1_x + dx, p_1_y + dy);
                 for (int particle_id : cell.particle_indices) {
@@ -111,6 +115,8 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
             idx_2 = get_idx_by_id(ids_2);
             if (idx_2 < 0)
                 continue;
+
+            COLL_CALC_COUNT++;
 
             Particle& p_2 = particles[idx_2];
 
@@ -235,6 +241,9 @@ void update_trails()
 
 void update_positions(Grid& optim_grid)
 {
+    GRAV_CALC_COUNT = 0;
+    COLL_CALC_COUNT = 0;
+
     // Update center of mass
     for (int i = 0; i < optim_grid.width; i++)
     {

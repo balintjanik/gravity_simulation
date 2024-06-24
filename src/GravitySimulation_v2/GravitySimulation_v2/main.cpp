@@ -56,11 +56,15 @@ int main()
                     {
                         SHOW_MENU = false;
                         FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
+                        GRAV_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
+                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + FONT_SIZE + 2 * MARGIN_BETWEEN);
                     }
                     else
                     {
                         SHOW_MENU = true;
                         FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
+                        GRAV_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
+                        COLL_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + FONT_SIZE + 2 * MARGIN_BETWEEN);
                     }
 
                     click_sound.play();
@@ -76,37 +80,41 @@ int main()
                     click_sound.play();
                 }
                 // Show/hide FPS
-                else if (event.key.code == SHOW_FPS_KEY)
+                else if (event.key.code == SHOW_PERFORMANCE_KEY)
                 {
-                    if (SHOW_FPS)
-                        SHOW_FPS = false;
+                    if (SHOW_PERFORMANCE)
+                        SHOW_PERFORMANCE = false;
                     else
-                        SHOW_FPS = true;
+                        SHOW_PERFORMANCE = true;
 
                     click_sound.play();
                 }
                 // Show/hide everything
                 else if (event.key.code == SHOW_ALL_KEY)
                 {
-                    if (SHOW_MENU || SHOW_HELP || SHOW_FPS)
+                    if (SHOW_MENU || SHOW_HELP || SHOW_PERFORMANCE)
                     {
                         SHOW_MENU = false;
                         SHOW_HELP = false;
-                        SHOW_FPS = false;
+                        SHOW_PERFORMANCE = false;
                         FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
+                        GRAV_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
+                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + 2* TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
                     }
                     else
                     {
                         SHOW_MENU = true;
                         SHOW_HELP = true;
-                        SHOW_FPS = true;
+                        SHOW_PERFORMANCE = true;
                         FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
+                        GRAV_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
+                        COLL_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + 2 * TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
                     }
 
                     click_sound.play();
                 }
                 // Add singularity
-                else if (event.key.code == sf::Keyboard::P)
+                else if (event.key.code == SINGULARITY_KEY)
                 {
                     add_singularity(optim_grid);
                     blackhole_sound.play();
@@ -152,7 +160,7 @@ int main()
             draw_menu(window);
 
         // Draw fps
-        if (SHOW_FPS)
+        if (SHOW_PERFORMANCE)
             draw_fps(window);
 
         // Draw help
