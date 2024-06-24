@@ -4,9 +4,10 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
-static std::string hover_path = "hover_medium.wav";
-static std::string click_path = "click.wav";
-static std::string type_path = "hover_medium.wav";
+static std::string hover_path = "resources/sounds/hover_medium.wav";
+static std::string click_path = "resources/sounds/click.wav";
+static std::string type_path = "resources/sounds/hover_medium.wav";
+static std::string blackhole_path = "resources/sounds/blackhole_hit1.wav";
 
 extern sf::SoundBuffer hover_buffer;
 extern sf::Sound hover_sound;
@@ -14,6 +15,8 @@ extern sf::SoundBuffer click_buffer;
 extern sf::Sound click_sound;
 extern sf::SoundBuffer type_buffer;
 extern sf::Sound type_sound;
+extern sf::SoundBuffer blackhole_buffer;
+extern sf::Sound blackhole_sound;
 
 void init_sounds();
 

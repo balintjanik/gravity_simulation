@@ -45,7 +45,10 @@ int main()
             {
                 // Reload simulation
                 if (event.key.code == RELOAD_KEY)
+                {
                     reload_sim();
+                    click_sound.play();
+                }
                 // Show/hide menu
                 else if (event.key.code == SHOW_MENU_KEY)
                 {
@@ -59,6 +62,8 @@ int main()
                         SHOW_MENU = true;
                         FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
                     }
+
+                    click_sound.play();
                 }
                 // Show/hide help
                 else if (event.key.code == SHOW_HELP_KEY)
@@ -67,6 +72,8 @@ int main()
                         SHOW_HELP = false;
                     else
                         SHOW_HELP = true;
+
+                    click_sound.play();
                 }
                 // Show/hide FPS
                 else if (event.key.code == SHOW_FPS_KEY)
@@ -75,6 +82,8 @@ int main()
                         SHOW_FPS = false;
                     else
                         SHOW_FPS = true;
+
+                    click_sound.play();
                 }
                 // Show/hide everything
                 else if (event.key.code == SHOW_ALL_KEY)
@@ -93,10 +102,15 @@ int main()
                         SHOW_FPS = true;
                         FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
                     }
+
+                    click_sound.play();
                 }
                 // Add singularity
                 else if (event.key.code == sf::Keyboard::P)
+                {
                     add_singularity(optim_grid);
+                    blackhole_sound.play();
+                }
                 // Exit
                 else if (event.key.code == EXIT_KEY)
                     window.close();

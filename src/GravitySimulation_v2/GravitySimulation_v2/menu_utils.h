@@ -46,7 +46,7 @@ void init_ui()
 {
     // BASIC STUFF
 
-    FONT.loadFromFile("Poppins-Bold.ttf");
+    FONT.loadFromFile("resources/fonts/Poppins-Bold.ttf");
 
     // FPS counter
     FPS_TXT.setFillColor(sf::Color::White);

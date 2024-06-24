@@ -134,10 +134,8 @@
       <AdditionalDependencies>winmm.lib;opengl32.lib;freetype.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(ProjectDir)Poppins-Bold.ttf" "$(TargetDir)"
-xcopy /y "$(ProjectDir)openal32.dll" "$(TargetDir)"
-xcopy /y "$(ProjectDir)hover_medium.wav" "$(TargetDir)"
-xcopy /y "$(ProjectDir)click.wav" "$(TargetDir)"</Command>
+      <Command>xcopy /y /s /i "$(ProjectDir)resources" "$(TargetDir)resources"
+xcopy /y "$(ProjectDir)openal32.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -182,6 +180,8 @@ xcopy /y "$(ProjectDir)click.wav" "$(TargetDir)"</Command>
     </Font>
   </ItemGroup>
   <ItemGroup>
+    <Media Include="blackhole_hit1.wav" />
+    <Media Include="blackhole_hit2.wav" />
     <Media Include="click.wav" />
     <Media Include="click_sharp.mp3" />
     <Media Include="hover.wav" />
