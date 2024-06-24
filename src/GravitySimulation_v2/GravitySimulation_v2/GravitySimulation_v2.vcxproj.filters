@@ -69,7 +69,7 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="grid.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="double_vector_ops.h">
       <Filter>Source Files</Filter>
@@ -114,22 +114,10 @@
     <Media Include="click.wav">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="hover.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="click_sharp.mp3">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="hover_original.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
     <Media Include="hover_medium.wav">
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="blackhole_hit1.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="blackhole_hit2.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>
