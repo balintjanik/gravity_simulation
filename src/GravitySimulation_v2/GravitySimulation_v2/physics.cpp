@@ -273,8 +273,11 @@ void update_positions(Grid& optim_grid)
     {
         for (auto& p : particles)
         {
-            int new_val = (p.color.g > 255 - 10 ? 255 : p.color.g + 10);
-            p.color = sf::Color(255, new_val, new_val);
+            if (!p.is_singularity)
+            {
+                int new_val = (p.color.g > 255 - 10 ? 255 : p.color.g + 10);
+                p.color = sf::Color(255, new_val, new_val);
+            }
         }
     }
 

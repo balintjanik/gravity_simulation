@@ -383,8 +383,8 @@ void init_ui()
     FPS_LIMIT_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
 
-    FPS_LIMIT_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), DEFAULT_FPS_LIMIT, "int");
-    FPS_LIMIT_TB.set_button_label(FONT_SIZE, std::to_string(DEFAULT_FPS_LIMIT));
+    FPS_LIMIT_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.FPS_LIMIT, "int");
+    FPS_LIMIT_TB.set_button_label(FONT_SIZE, std::to_string(settings.FPS_LIMIT));
     button_counter++;
     block_counter++;
 
@@ -648,17 +648,24 @@ void untoggle_textboxes(sf::RenderWindow& window)
     current_settings.TIMESTEP = TIMESTEP_TB.value;
     settings.TIMESTEP = TIMESTEP_TB.value;
     FPS_LIMIT_TB.set_toggle(false);
+    settings.FPS_LIMIT = FPS_LIMIT_TB.value;
+    current_settings.FPS_LIMIT = FPS_LIMIT_TB.value;
     window.setFramerateLimit(FPS_LIMIT_TB.value);
 
+    SOUND_VOLUME_TB.set_toggle(false);
     if (settings.HAS_SOUND)
     {
-        SOUND_VOLUME_TB.set_toggle(false);
         set_sound_volume(SOUND_VOLUME_TB.value);
+        current_settings.SOUND_VOLUME = SOUND_VOLUME_TB.value;
+        settings.SOUND_VOLUME = SOUND_VOLUME_TB.value;
     }
+
+    MUSIC_VOLUME_TB.set_toggle(false);
     if (settings.HAS_MUSIC)
     {
-        MUSIC_VOLUME_TB.set_toggle(false);
         set_music_volume(MUSIC_VOLUME_TB.value);
+        current_settings.MUSIC_VOLUME = MUSIC_VOLUME_TB.value;
+        settings.MUSIC_VOLUME = MUSIC_VOLUME_TB.value;
     }
 }
 
@@ -832,54 +839,25 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
 
     else if (HAS_BORDERS_BTN.is_pressed)
     {
-        if (current_settings.HAS_BORDERS)
-        {
-            current_settings.HAS_BORDERS = false;
-            settings.HAS_BORDERS = false;
-        }
-        else
-        {
-            current_settings.HAS_BORDERS = true;
-            settings.HAS_BORDERS = true;
-        }
+        current_settings.HAS_BORDERS = !current_settings.HAS_BORDERS;
+        settings.HAS_BORDERS = current_settings.HAS_BORDERS;
     }
 
     else if (HAS_GRAVITY_BTN.is_pressed)
     {
-        if (current_settings.HAS_GRAVITY)
-        {
-            current_settings.HAS_GRAVITY = false;
-            settings.HAS_GRAVITY = false;
-        }
-        else
-        {
-            current_settings.HAS_GRAVITY = true;
-            settings.HAS_GRAVITY = true;
-        }
+        current_settings.HAS_GRAVITY = !current_settings.HAS_GRAVITY;
+        settings.HAS_GRAVITY = current_settings.HAS_GRAVITY;
     }
 
     else if (HAS_DAMPING_BTN.is_pressed)
     {
-        if (current_settings.HAS_DAMPING)
-        {
-            current_settings.HAS_DAMPING = false;
-            settings.HAS_DAMPING = false;
+        current_settings.HAS_DAMPING = !current_settings.HAS_DAMPING;
+        settings.HAS_DAMPING = current_settings.HAS_DAMPING;
 
-            DAMPING_DIST_TB.is_active = false;
-            DAMPING_DIST_TB.get_button_status(window, event);
-            DAMPING_COEFF_TB.is_active = false;
-            DAMPING_COEFF_TB.get_button_status(window, event);
-        }
-        else
-        {
-            current_settings.HAS_DAMPING = true;
-            settings.HAS_DAMPING = true;
-
-            DAMPING_DIST_TB.is_active = true;
-            DAMPING_DIST_TB.get_button_status(window, event);
-            DAMPING_COEFF_TB.is_active = true;
-            DAMPING_COEFF_TB.get_button_status(window, event);
-        }
+        DAMPING_DIST_TB.is_active = current_settings.HAS_DAMPING;
+        DAMPING_DIST_TB.get_button_status(window, event);
+        DAMPING_COEFF_TB.is_active = current_settings.HAS_DAMPING;
+        DAMPING_COEFF_TB.get_button_status(window, event);
     }
     else if (DAMPING_DIST_TB.is_pressed)
     {
@@ -892,30 +870,15 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
 
     else if (HAS_COLLISIONS_BTN.is_pressed)
     {
-        if (current_settings.HAS_COLLISIONS)
-        {
-            current_settings.HAS_COLLISIONS = false;
-            settings.HAS_COLLISIONS = false;
+        current_settings.HAS_COLLISIONS = !current_settings.HAS_COLLISIONS;
+        settings.HAS_COLLISIONS = current_settings.HAS_COLLISIONS;
 
-            COLLISION_THRESHOLD_TB.is_active = false;
-            COLLISION_THRESHOLD_TB.get_button_status(window, event);
-            COLLISION_ITERATIONS_TB.is_active = false;
-            COLLISION_ITERATIONS_TB.get_button_status(window, event);
-            COLLISION_IMPULSE_COEFF_TB.is_active = false;
-            COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
-        }
-        else
-        {
-            current_settings.HAS_COLLISIONS = true;
-            settings.HAS_COLLISIONS = true;
-
-            COLLISION_THRESHOLD_TB.is_active = true;
-            COLLISION_THRESHOLD_TB.get_button_status(window, event);
-            COLLISION_ITERATIONS_TB.is_active = true;
-            COLLISION_ITERATIONS_TB.get_button_status(window, event);
-            COLLISION_IMPULSE_COEFF_TB.is_active = true;
-            COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
-        }
+        COLLISION_THRESHOLD_TB.is_active = current_settings.HAS_COLLISIONS;
+        COLLISION_THRESHOLD_TB.get_button_status(window, event);
+        COLLISION_ITERATIONS_TB.is_active = current_settings.HAS_COLLISIONS;
+        COLLISION_ITERATIONS_TB.get_button_status(window, event);
+        COLLISION_IMPULSE_COEFF_TB.is_active = current_settings.HAS_COLLISIONS;
+        COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
     }
     else if (COLLISION_THRESHOLD_TB.is_pressed)
     {
@@ -949,130 +912,59 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
 
     else if (HAS_TRAIL_BTN.is_pressed)
     {
-        if (current_settings.HAS_TRAIL)
-        {
-            current_settings.HAS_TRAIL = false;
-            settings.HAS_TRAIL = false;
-        }
-        else
-        {
-            current_settings.HAS_TRAIL = true;
-            settings.HAS_TRAIL = true;
-        }
+        current_settings.HAS_TRAIL = !current_settings.HAS_TRAIL;
+        settings.HAS_TRAIL = current_settings.HAS_TRAIL;
     }
 
     else if (VISUALIZE_GRID_BTN.is_pressed)
     {
-        if (settings.VISUALIZE_SPATIAL_GRID)
-        {
-            settings.VISUALIZE_SPATIAL_GRID = false;
-            current_settings.VISUALIZE_SPATIAL_GRID = false;
+        current_settings.VISUALIZE_SPATIAL_GRID = !current_settings.VISUALIZE_SPATIAL_GRID;
+        settings.VISUALIZE_SPATIAL_GRID = current_settings.VISUALIZE_SPATIAL_GRID;
 
-            VISUALIZE_CELL_MASS_BTN.is_active = false;
-            VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
-            VISUALIZE_COM_BTN.is_active = false;
-            VISUALIZE_COM_BTN.get_button_status(window, event);
-        }
-        else
-        {
-            settings.VISUALIZE_SPATIAL_GRID = true;
-            current_settings.VISUALIZE_SPATIAL_GRID = true;
-
-            VISUALIZE_CELL_MASS_BTN.is_active = true;
-            VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
-            VISUALIZE_COM_BTN.is_active = true;
-            VISUALIZE_COM_BTN.get_button_status(window, event);
-        }
+        VISUALIZE_CELL_MASS_BTN.is_active = current_settings.VISUALIZE_SPATIAL_GRID;
+        VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
+        VISUALIZE_COM_BTN.is_active = current_settings.VISUALIZE_SPATIAL_GRID;
+        VISUALIZE_COM_BTN.get_button_status(window, event);
     }
     else if (VISUALIZE_PARTICLE_CELL_BTN.is_pressed)
     {
-        if (settings.VISUALIZE_PARTICLE_CELL)
-        {
-            settings.VISUALIZE_PARTICLE_CELL = false;
-            current_settings.VISUALIZE_PARTICLE_CELL = false;
-        }
-        else
-        {
-            settings.VISUALIZE_PARTICLE_CELL = true;
-            current_settings.VISUALIZE_PARTICLE_CELL = true;
-        }
+        current_settings.VISUALIZE_PARTICLE_CELL = !current_settings.VISUALIZE_PARTICLE_CELL;
+        settings.VISUALIZE_PARTICLE_CELL = current_settings.VISUALIZE_PARTICLE_CELL;
     }
     else if (VISUALIZE_CELL_MASS_BTN.is_pressed)
     {
-        if (settings.VISUALIZE_CELL_MASS)
-        {
-            settings.VISUALIZE_CELL_MASS = false;
-            current_settings.VISUALIZE_CELL_MASS = false;
-        }
-        else
-        {
-            settings.VISUALIZE_CELL_MASS = true;
-            current_settings.VISUALIZE_CELL_MASS = true;
-        }
+        current_settings.VISUALIZE_CELL_MASS = !current_settings.VISUALIZE_CELL_MASS;
+        settings.VISUALIZE_CELL_MASS = current_settings.VISUALIZE_CELL_MASS;
     }
     else if (VISUALIZE_COM_BTN.is_pressed)
     {
-        if (settings.VISUALIZE_COM)
-        {
-            settings.VISUALIZE_COM = false;
-            current_settings.VISUALIZE_COM = false;
-        }
-        else
-        {
-            settings.VISUALIZE_COM = true;
-            current_settings.VISUALIZE_COM = true;
-        }
+        current_settings.VISUALIZE_COM = !current_settings.VISUALIZE_COM;
+        settings.VISUALIZE_COM = current_settings.VISUALIZE_COM;
     }
 
     else if (SOUND_BTN.is_pressed)
     {
-        if (settings.HAS_SOUND)
-        {
-            settings.HAS_SOUND = false;
-            current_settings.HAS_SOUND = false;
+        current_settings.HAS_SOUND = !current_settings.HAS_SOUND;
+        settings.HAS_SOUND = current_settings.HAS_SOUND;
 
-            set_sound_volume(0);
+        set_sound_volume(current_settings.HAS_SOUND ? SOUND_VOLUME_TB.value : 0);
 
-            SOUND_VOLUME_TB.is_active = false;
-            SOUND_VOLUME_TB.get_button_status(window, event);
-        }
-        else
-        {
-            settings.HAS_SOUND = true;
-            current_settings.HAS_SOUND = true;
-
-            set_sound_volume(SOUND_VOLUME_TB.value);
-
-            SOUND_VOLUME_TB.is_active = true;
-            SOUND_VOLUME_TB.get_button_status(window, event);
-        }
+        SOUND_VOLUME_TB.is_active = current_settings.HAS_SOUND;
+        SOUND_VOLUME_TB.get_button_status(window, event);
     }
     else if (SOUND_VOLUME_TB.is_pressed)
         SOUND_VOLUME_TB.set_toggle(true);
 
     else if (MUSIC_BTN.is_pressed)
     {
-        if (settings.HAS_MUSIC)
-        {
-            settings.HAS_MUSIC = false;
-            current_settings.HAS_MUSIC = false;
+        current_settings.HAS_MUSIC = !current_settings.HAS_MUSIC;
+        settings.HAS_MUSIC = current_settings.HAS_MUSIC;
 
-            set_music_volume(0);
+        set_music_volume(current_settings.HAS_MUSIC ? MUSIC_VOLUME_TB.value : 0);
 
-            MUSIC_VOLUME_TB.is_active = false;
-            MUSIC_VOLUME_TB.get_button_status(window, event);
-        }
-        else
-        {
-            settings.HAS_MUSIC = true;
-            current_settings.HAS_MUSIC = true;
-
-            set_music_volume(MUSIC_VOLUME_TB.value);
-
-            MUSIC_VOLUME_TB.is_active = true;
-            MUSIC_VOLUME_TB.get_button_status(window, event);
-        }
-        }
+        MUSIC_VOLUME_TB.is_active = current_settings.HAS_MUSIC;
+        MUSIC_VOLUME_TB.get_button_status(window, event);
+    }
     else if (MUSIC_VOLUME_TB.is_pressed)
         MUSIC_VOLUME_TB.set_toggle(true);
 

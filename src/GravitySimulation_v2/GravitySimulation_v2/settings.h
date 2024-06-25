@@ -207,6 +207,9 @@ public:
 	// Singularity mass
 	double SINGULARITY_MASS = 10000; // TODO: textbox for this
 
+	// FPS limit
+	int FPS_LIMIT = DEFAULT_FPS_LIMIT;
+
 	// Sound and music settings
 	bool HAS_SOUND = true;
 	int SOUND_VOLUME = 100;
