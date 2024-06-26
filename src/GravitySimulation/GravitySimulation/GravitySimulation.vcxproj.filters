@@ -103,7 +103,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="GravitySimulation_v2.rc">
+    <ResourceCompile Include="GravitySimulation.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
