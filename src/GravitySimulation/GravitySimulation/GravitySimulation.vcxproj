@@ -145,6 +145,7 @@ xcopy /y "$(ProjectDir)openal32.dll" "$(TargetDir)"</Command>
     <ClCompile Include="grid\grid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics\physics.cpp" />
+    <ClCompile Include="quadtree\node.cpp" />
     <ClCompile Include="sound\sound_manager.cpp" />
     <ClCompile Include="ui\button.cpp" />
     <ClCompile Include="ui\simple_button.cpp" />
@@ -160,6 +161,8 @@ xcopy /y "$(ProjectDir)openal32.dll" "$(TargetDir)"</Command>
     <ClInclude Include="grid\grid.h" />
     <ClInclude Include="physics\particle.h" />
     <ClInclude Include="physics\physics.h" />
+    <ClInclude Include="quadtree\node.h" />
+    <ClInclude Include="quadtree\quadtree.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="sound\sound_manager.h" />
     <ClInclude Include="ui\button.h" />

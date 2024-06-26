@@ -147,11 +147,11 @@ int main()
         // Update fps
         update_fps();
 
-        // Update positions
-        update_positions(optim_grid);
-
         // Display
         window.clear();
+
+        // Update positions
+        update_positions(optim_grid, window);
 
         // Draw particles
         draw_particles(window);

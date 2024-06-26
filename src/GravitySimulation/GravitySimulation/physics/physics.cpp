@@ -3,7 +3,44 @@
 #include "../globals/globals.h"
 #include "physics.h"
 
+#include <iostream>
+
 using namespace std;
+
+void update_gravity_quadtree(sf::RenderWindow& window)
+{
+    /* DYNAMIC CENTERING
+    // Determine the center of the region
+    double region_center_x = 0.0;
+    double region_center_y = 0.0;
+    for (const auto& p : particles) {
+        region_center_x += p.position.x;
+        region_center_y += p.position.y;
+    }
+    region_center_x /= particles.size();
+    region_center_y /= particles.size();*/
+
+    // Create the tree
+    QuadTree optim_tree(WIDTH / 2, HEIGHT / 2, WIDTH, settings.THETA);
+
+    // Insert all particles into the tree
+    for (const auto& p : particles) {
+        optim_tree.insert(p);
+    }
+
+    optim_tree.draw(window);
+
+    // Calculate forces and update positions and velocities
+    for (auto& p : particles) {
+        double all_force = 0.0;
+        optim_tree.calculate_forces(p, all_force);
+
+        // Update color
+        sf::Color updated_color = map_forces_to_color(all_force);
+        if (!p.is_singularity)
+            p.color = updated_color;
+    }
+}
 
 void update_gravity_range(Grid& optim_grid, int start, int end) {
     for (int i = start; i < end; i++) {
@@ -132,47 +169,44 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
             // Check collision
             if (distance < min_distance)
             {
-                if (settings.HAS_COLLISIONS)
+                double displacement_x = (dx / distance) * (min_distance - distance) / 2.0;
+                double displacement_y = (dy / distance) * (min_distance - distance) / 2.0;
+
+                // Update position directly to avoid overlaps
+                if (p_1.is_singularity)
                 {
-                    double displacement_x = (dx / distance) * (min_distance - distance) / 2.0;
-                    double displacement_y = (dy / distance) * (min_distance - distance) / 2.0;
-
-                    // Update position directly to avoid overlaps
-                    if (p_1.is_singularity)
-                    {
-                        p_2.position.x += 2 * displacement_x;
-                        p_2.position.y += 2 * displacement_y;
-                    }
-                    else if (p_2.is_singularity)
-                    {
-                        p_1.position.x -= 2 * displacement_x;
-                        p_1.position.y -= 2 * displacement_y;
-                    }
-                    else
-                    {
-                        p_1.position.x -= displacement_x;
-                        p_1.position.y -= displacement_y;
-                        p_2.position.x += displacement_x;
-                        p_2.position.y += displacement_y;
-                    }
-
-                    // Calculate relative velocity
-                    double relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
-                    double relative_velocity_y = p_2.velocity.y - p_1.velocity.y;
-
-                    // Calculate normal vector
-                    double normal_x = dx / distance;
-                    double normal_y = dy / distance;
-
-                    // Calculate impulse (change in velocity)
-                    double impulse = settings.COLLISION_IMPULSE_COEFF * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
-
-                    // Update velocities based on impulse (conservation of momentum)
-                    p_1.velocity.x += impulse * normal_x * p_2.mass;
-                    p_1.velocity.y += impulse * normal_y * p_2.mass;
-                    p_2.velocity.x -= impulse * normal_x * p_1.mass;
-                    p_2.velocity.y -= impulse * normal_y * p_1.mass;
+                    p_2.position.x += 2 * displacement_x;
+                    p_2.position.y += 2 * displacement_y;
                 }
+                else if (p_2.is_singularity)
+                {
+                    p_1.position.x -= 2 * displacement_x;
+                    p_1.position.y -= 2 * displacement_y;
+                }
+                else
+                {
+                    p_1.position.x -= displacement_x;
+                    p_1.position.y -= displacement_y;
+                    p_2.position.x += displacement_x;
+                    p_2.position.y += displacement_y;
+                }
+
+                // Calculate relative velocity
+                double relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
+                double relative_velocity_y = p_2.velocity.y - p_1.velocity.y;
+
+                // Calculate normal vector
+                double normal_x = dx / distance;
+                double normal_y = dy / distance;
+
+                // Calculate impulse (change in velocity)
+                double impulse = settings.COLLISION_IMPULSE_COEFF * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
+
+                // Update velocities based on impulse (conservation of momentum)
+                p_1.velocity.x += impulse * normal_x * p_2.mass;
+                p_1.velocity.y += impulse * normal_y * p_2.mass;
+                p_2.velocity.x -= impulse * normal_x * p_1.mass;
+                p_2.velocity.y -= impulse * normal_y * p_1.mass;
 
                 // Update color based on collision if gravity is off and collision is on
                 if (settings.HAS_COLLISIONS && !settings.HAS_GRAVITY)
@@ -239,7 +273,7 @@ void update_trails()
     }
 }
 
-void update_positions(Grid& optim_grid)
+void update_positions(Grid& optim_grid, sf::RenderWindow& window)
 {
     GRAV_CALC_COUNT = 0;
     COLL_CALC_COUNT = 0;
@@ -260,15 +294,21 @@ void update_positions(Grid& optim_grid)
     }
 
     // Calculate collisions
-    for (int i = 0; i < settings.COLLISION_ITERATIONS; i++)
+    if (settings.HAS_COLLISIONS)
     {
-        update_collisions(optim_grid);
+        for (int i = 0; i < settings.COLLISION_ITERATIONS; i++)
+        {
+            update_collisions(optim_grid);
+        }
     }
 
 
     // Calculate gravitational forces
     if (settings.HAS_GRAVITY)
-        update_gravity(optim_grid);
+    {
+        // update_gravity(optim_grid);
+        update_gravity_quadtree(window);
+    }
     else // Update default coloring
     {
         for (auto& p : particles)

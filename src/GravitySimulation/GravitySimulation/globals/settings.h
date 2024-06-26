@@ -201,6 +201,9 @@ public:
 	bool VISUALIZE_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 	int COLLISION_CELL_SIZE = 20;
 
+	// Quadtree settings
+	double THETA = 0.5;
+
 	// Max threads
 	unsigned int THREAD_NUM = 4; // TODO: textbox for this
 
