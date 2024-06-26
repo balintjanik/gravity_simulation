@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <unordered_set>
+#include <cmath>
 #include "globals.h"
 #include "utils.h"
 #include "double_vector_ops.h"
@@ -21,10 +22,18 @@ class Grid {
 public:
     int width, height;
     double cell_size;
+    double overflow_x, overflow_y;
 
     Grid(double cell_size)
-        : width(WIDTH / cell_size), height(HEIGHT / cell_size), cell_size(cell_size) {
-        cells.resize((WIDTH / cell_size) * (HEIGHT / cell_size));
+        : width(CANVAS_WIDTH / cell_size), height(HEIGHT / cell_size), cell_size(cell_size)
+    {
+        overflow_x = std::fmod(CANVAS_WIDTH, cell_size);
+        overflow_y = std::fmod(HEIGHT, cell_size);
+        if (overflow_x != 0)
+            width++;
+        if (overflow_y != 0)
+            height++;
+        cells.resize(width * height);
     }
 
     Cell& get(int x, int y)

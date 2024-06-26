@@ -8,141 +8,165 @@
 #include "utils.h"
 #include "physics.h"
 #include "grid.h"
+#include "menu_utils.h"
+#include "sound_manager.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Gravitational Force Simulation");
+    sf::VideoMode screen = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window(screen, "Gravitational Force Simulation", sf::Style::Fullscreen);
+    window.setFramerateLimit(DEFAULT_FPS_LIMIT);
 
-    // Init particles
-    particles = generate_particles(SPAWN_MARGIN, WIDTH - SPAWN_MARGIN, SPAWN_MARGIN, HEIGHT - SPAWN_MARGIN);
-    Grid collision_grid(COLLISION_CELL_SIZE);
-    init_collision_grid(collision_grid);
+    // Initialize
+    recalc_sizes(screen.width, screen.height);
+    init_ui();
+    init_sounds();
+    init_music();
+    reload_sim();
 
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            // Handle resize
+            if (event.type == sf::Event::Resized)
+            {
+                sf::Vector2u new_size = window.getSize();
+                sf::View view(sf::FloatRect(0, 0, static_cast<float>(new_size.x), static_cast<float>(new_size.y)));
+                window.setView(view);
+                recalc_sizes(new_size.x, new_size.y);
+                init_ui();
+                reload_sim();
+            }
+
+            // Show/hide UI elements
+            if (event.type == sf::Event::KeyPressed)
+            {
+                // Reload simulation
+                if (event.key.code == RELOAD_KEY)
+                {
+                    reload_sim();
+                    click_sound.play();
+                }
+                // Show/hide menu
+                else if (event.key.code == SHOW_MENU_KEY)
+                {
+                    if (SHOW_MENU)
+                    {
+                        SHOW_MENU = false;
+                        FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
+                        GRAV_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
+                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + FONT_SIZE + 2 * MARGIN_BETWEEN);
+                    }
+                    else
+                    {
+                        SHOW_MENU = true;
+                        FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
+                        GRAV_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
+                        COLL_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + FONT_SIZE + 2 * MARGIN_BETWEEN);
+                    }
+
+                    click_sound.play();
+                }
+                // Show/hide help
+                else if (event.key.code == SHOW_HELP_KEY)
+                {
+                    if (SHOW_HELP)
+                        SHOW_HELP = false;
+                    else
+                        SHOW_HELP = true;
+
+                    click_sound.play();
+                }
+                // Show/hide FPS
+                else if (event.key.code == SHOW_PERFORMANCE_KEY)
+                {
+                    if (SHOW_PERFORMANCE)
+                        SHOW_PERFORMANCE = false;
+                    else
+                        SHOW_PERFORMANCE = true;
+
+                    click_sound.play();
+                }
+                // Show/hide everything
+                else if (event.key.code == SHOW_ALL_KEY)
+                {
+                    if (SHOW_MENU || SHOW_HELP || SHOW_PERFORMANCE)
+                    {
+                        SHOW_MENU = false;
+                        SHOW_HELP = false;
+                        SHOW_PERFORMANCE = false;
+                        FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
+                        GRAV_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
+                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + 2* TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
+                    }
+                    else
+                    {
+                        SHOW_MENU = true;
+                        SHOW_HELP = true;
+                        SHOW_PERFORMANCE = true;
+                        FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
+                        GRAV_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
+                        COLL_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + 2 * TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
+                    }
+
+                    click_sound.play();
+                }
+                // Add singularity
+                else if (event.key.code == SINGULARITY_KEY)
+                {
+                    add_singularity(optim_grid);
+                    blackhole_sound.play();
+                }
+                // Exit
+                else if (event.key.code == EXIT_KEY)
+                    window.close();
+            }
+
+            if (SHOW_MENU)
+            {
+                // Untoggle textboxes on any click
+                if (event.type == sf::Event::MouseButtonPressed)
+                    untoggle_textboxes(window);
+
+                // Update button statuses
+                update_button_statuses(window, event);
+
+                // Handle text input
+                if (event.type == sf::Event::TextEntered)
+                    handle_textbox_input(event);
+
+                // Handle button clicks
+                if (event.type == sf::Event::MouseButtonPressed)
+                    handle_button_clicks(window, event);
+            }
         }
 
+        // Update fps
+        update_fps();
+
         // Update positions
-        update_positions(collision_grid);
+        update_positions(optim_grid);
 
         // Display
         window.clear();
 
-        // Draw trails first to avoid trails covering particles
-        if (HAS_TRAIL)
-        {
-            for (auto& p : particles)
-            {
-                sf::Color current_trail_color = TRAIL_COLOR;
-                for (int i = 0; i < p.trail.size(); i++)
-                {
-                    sf::CircleShape circle(TRAIL_RADIUS);
-                    current_trail_color.a = ((255 * i) / TRAIL_SIZE);
-                    circle.setFillColor(current_trail_color);
-                    circle.setPosition(p.trail[i].x, p.trail[i].y);
-                    window.draw(circle);
-                }
-            }
-        }
-
         // Draw particles
-        // If not set otherwise, draw them the most effective way
-        if (!(VISUALIZE_SPATIAL_GRID || VISUALIZE_PARTICLE_CELL))
-        {
-            for (auto& p : particles)
-            {
-                sf::CircleShape circle(p.radius);
-                circle.setFillColor(p.color);
+        draw_particles(window);
 
-                // setPosition sets the coordinates of top left corner
-                circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
+        // Draw menu
+        if (SHOW_MENU)
+            draw_menu(window);
 
-                window.draw(circle);
-            }
-        }
-        // If set, draw grid and color particles accordingly
-        else
-        {
-            // Draw grid
-            if (VISUALIZE_SPATIAL_GRID)
-            {
-                for (int x = 0; x < collision_grid.width; x++)
-                {
-                    for (int y = 0; y < collision_grid.height; y++)
-                    {
-                        sf::Vector2f c_size(COLLISION_CELL_SIZE, COLLISION_CELL_SIZE);
-                        sf::RectangleShape cell(c_size);
+        // Draw fps
+        if (SHOW_PERFORMANCE)
+            draw_fps(window);
 
-                        sf::Color fill_col = sf::Color::Transparent;
-                        if (VISUALIZE_CELL_MASS)
-                        {
-                            fill_col = map_forces_to_color(collision_grid.get(x, y).total_mass/COLLISION_CELL_SIZE);
-                            fill_col.a = 140;
-                        }
-                        cell.setFillColor(fill_col);
-                        
-                        cell.setOutlineColor(sf::Color(20, 20, 20));
-                        cell.setOutlineThickness(0.5f);
-                        cell.setPosition(x * COLLISION_CELL_SIZE, y * COLLISION_CELL_SIZE);
-                        window.draw(cell);
-                    }
-                }
-            }
-
-            // Draw particles of cells
-            int idx;
-            for (int x = 0; x < collision_grid.width; x++)
-            {
-                for (int y = 0; y < collision_grid.height; y++)
-                {
-                    // Calculate color based on grid position
-                    sf::Color col = sf::Color::Green;
-                    if ((y % 2 == 0 && x % 2 == 1) || (y % 2 == 1 && x % 2 == 0))
-                        col = sf::Color::Magenta;
-
-                    auto& current_cell = collision_grid.get(x, y);
-                    for (auto it1 = current_cell.particle_indices.begin(); it1 != current_cell.particle_indices.end(); ++it1)
-                    {
-                        idx = get_idx_by_id(*it1);
-                        if (idx < 0)
-                            continue;
-
-                        Particle& p = particles[idx];
-
-                        sf::CircleShape circle(p.radius);
-
-                        // Set color based on custom settings
-                        if (VISUALIZE_PARTICLE_CELL)
-                            circle.setFillColor(col);
-                        else
-                            circle.setFillColor(p.color);
-
-                        circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
-                        window.draw(circle);
-                    }
-
-                    // draw center of mass
-                    if (VISUALIZE_COM)
-                    {
-                        sf::CircleShape com(5,3);
-                        com.setFillColor(sf::Color::Red);
-                        sf::Vector2f com_pos = collision_grid.get(x, y).center_of_mass;
-                        if (com_pos.x == 0 && com_pos.y == 0)
-                        {
-                            com.setPosition(x * COLLISION_CELL_SIZE + COLLISION_CELL_SIZE / 2 - 5, y * COLLISION_CELL_SIZE + COLLISION_CELL_SIZE / 2 - 5);
-                        }
-                        else
-                        {
-                            com.setPosition(com_pos.x - 5, com_pos.y - 5);
-                        }
-                        window.draw(com);
-                    }
-                }
-            }
-        }
+        // Draw help
+        if (SHOW_HELP)
+            draw_help(window);
         
         window.display();
     }

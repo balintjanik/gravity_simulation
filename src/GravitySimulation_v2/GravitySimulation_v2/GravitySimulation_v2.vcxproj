@@ -110,7 +110,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Data\1_Installers\SFML\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib; sfml-window-d.lib; sfml-system-d.lib; sfml-audio-d.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-s.lib
+;sfml-system-s.lib
+;sfml-audio-d.lib;sfml-system-s.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,8 +131,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Data\1_Installers\SFML\SFML-2.6.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>winmm.lib;opengl32.lib;freetype.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;opengl32.lib;freetype.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-audio-s.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /s /i "$(ProjectDir)resources" "$(TargetDir)resources"
+xcopy /y "$(ProjectDir)openal32.dll" "$(TargetDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="double_vector_ops.cpp" />
@@ -138,17 +144,46 @@
     <ClCompile Include="grid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="physics.cpp" />
+    <ClCompile Include="settings.cpp" />
+    <ClCompile Include="sound_manager.cpp" />
+    <ClCompile Include="textbox.cpp" />
+    <ClCompile Include="toggle_button.cpp" />
     <ClCompile Include="utils.cpp" />
+    <ClCompile Include="button.cpp" />
+    <ClCompile Include="simple_button.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="key_conversion.h" />
+    <ClInclude Include="menu_utils.h" />
     <ClInclude Include="double_vector_ops.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="grid.h" />
     <ClInclude Include="particle.h" />
     <ClInclude Include="physics.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="setup_type.h" />
+    <ClInclude Include="sound_manager.h" />
+    <ClInclude Include="textbox.h" />
+    <ClInclude Include="toggle_button.h" />
     <ClInclude Include="utils.h" />
+    <ClInclude Include="button.h" />
+    <ClInclude Include="simple_button.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GravitySimulation_v2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Poppins-Bold.ttf">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="blackhole_hit1.wav" />
+    <Media Include="click.wav" />
+    <Media Include="hover_medium.wav" />
+    <Media Include="resources\music\ambient_space_music_1.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

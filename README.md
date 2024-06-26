@@ -12,6 +12,12 @@ Some snapshots will be uploaded once the project is finished.
 
 ## Progress
 
+### 2024.05.26 - Release v2.4.0 [IN PROGRESS]
+ - Added menu
+ - In progress: add textboxes for settings with numeric values
+ 
+<img src="data/sample_v2.4.0.png" alt="screenshot of menu">
+
 ### 2024.05.21 - Release v2.3.2
  - Fixed uneven damping forces
 
