@@ -2,7 +2,7 @@
 #define GLOBALS_H
 
 #include <vector>
-#include "particle.h"
+#include "../physics/particle.h"
 
 class Grid;
 

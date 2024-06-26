@@ -4,8 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <random>
 #include <vector>
-#include "globals.h"
-#include "particle.h"
+#include "../globals/globals.h"
+#include "../physics/particle.h"
 
 class Grid;
 

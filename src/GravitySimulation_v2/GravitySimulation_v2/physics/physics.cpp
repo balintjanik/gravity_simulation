@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "globals.h"
+#include "../globals/globals.h"
 #include "physics.h"
 
 using namespace std;

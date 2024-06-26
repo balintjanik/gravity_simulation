@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "grid.h"
+#include "../grid/grid.h"
 
 using namespace std;
 

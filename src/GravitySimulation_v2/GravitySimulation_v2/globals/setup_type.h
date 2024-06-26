@@ -1,8 +1,6 @@
 #ifndef SETUPTYPE_H
 #define SETUPTYPE_H
 
-#include "settings.h"
-
 enum class PlacementType
 {
     Fullscreen,

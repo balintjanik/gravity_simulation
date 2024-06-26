@@ -1,10 +1,10 @@
 #ifndef MENU_UTILS_H
 #define MENU_UTILS_H
 
-#include "settings.h"
-#include "globals.h"
-#include "utils.h"
-#include "key_conversion.h"
+#include "../globals/settings.h"
+#include "../globals/globals.h"
+#include "../utils/utils.h"
+#include "../utils/key_conversion.h"
 
 void update_fps()
 {

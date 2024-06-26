@@ -4,11 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_set>
 #include <cmath>
-#include "globals.h"
-#include "utils.h"
-#include "double_vector_ops.h"
-#include "settings.h"
-#include "particle.h"
+#include "../globals/globals.h"
+#include "../utils/utils.h"
+#include "../utils/double_vector_ops.h"
+#include "../globals/settings.h"
+#include "../physics/particle.h"
 
 class Cell {
 public:

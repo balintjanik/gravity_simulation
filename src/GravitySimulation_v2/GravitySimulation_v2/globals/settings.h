@@ -3,9 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <thread>
-#include "simple_button.h"
-#include "toggle_button.h"
-#include "textbox.h"
+#include "../ui/simple_button.h"
+#include "../ui/toggle_button.h"
+#include "../ui/textbox.h"
 #include "setup_type.h"
 
 // We will automatically set width and height when the app starts

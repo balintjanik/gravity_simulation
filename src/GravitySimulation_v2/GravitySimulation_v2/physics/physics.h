@@ -7,8 +7,8 @@
 #include <thread>
 
 #include "particle.h"
-#include "grid.h"
-#include "double_vector_ops.h"
+#include "../grid/grid.h"
+#include "../utils/double_vector_ops.h"
 
 void update_positions(Grid& optim_grid);
 

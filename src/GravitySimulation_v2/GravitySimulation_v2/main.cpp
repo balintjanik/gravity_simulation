@@ -3,13 +3,13 @@
 #include <vector>
 #include <random>
 
-#include "globals.h"
-#include "settings.h"
-#include "utils.h"
-#include "physics.h"
-#include "grid.h"
-#include "menu_utils.h"
-#include "sound_manager.h"
+#include "globals/globals.h"
+#include "globals/settings.h"
+#include "utils/utils.h"
+#include "physics/physics.h"
+#include "grid/grid.h"
+#include "ui/menu_utils.h"
+#include "sound/sound_manager.h"
 
 int main()
 {

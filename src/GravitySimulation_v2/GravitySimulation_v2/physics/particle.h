@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <deque>
-#include "settings.h"
+#include "../globals/settings.h"
 
 static int id_counter = 0;
 

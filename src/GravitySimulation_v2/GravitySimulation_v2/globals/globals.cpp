@@ -1,5 +1,5 @@
 #include "globals.h"
-#include "grid.h"
+#include "../grid/grid.h"
 
 std::vector<Particle> particles;
 

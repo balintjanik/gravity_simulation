@@ -18,88 +18,88 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils.cpp">
+    <ClCompile Include="globals\settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="physics.cpp">
+    <ClCompile Include="grid\grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="settings.cpp">
+    <ClCompile Include="physics\physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="grid.cpp">
+    <ClCompile Include="sound\sound_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="double_vector_ops.cpp">
+    <ClCompile Include="ui\button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="globals.cpp">
+    <ClCompile Include="ui\simple_button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="button.cpp">
+    <ClCompile Include="ui\textbox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="simple_button.cpp">
+    <ClCompile Include="ui\toggle_button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="toggle_button.cpp">
+    <ClCompile Include="utils\double_vector_ops.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="textbox.cpp">
+    <ClCompile Include="utils\utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sound_manager.cpp">
+    <ClCompile Include="globals\globals.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="utils.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="particle.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="physics.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="settings.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="setup_type.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="grid.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="double_vector_ops.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="globals.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="button.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="simple_button.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="toggle_button.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="globals\settings.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="textbox.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="globals\setup_type.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="menu_utils.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="grid\grid.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="key_conversion.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="physics\particle.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sound_manager.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="physics\physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sound\sound_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\menu_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\simple_button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\textbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\toggle_button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\double_vector_ops.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\key_conversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="globals\globals.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -140,36 +140,36 @@ xcopy /y "$(ProjectDir)openal32.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="double_vector_ops.cpp" />
-    <ClCompile Include="globals.cpp" />
-    <ClCompile Include="grid.cpp" />
+    <ClCompile Include="globals\globals.cpp" />
+    <ClCompile Include="globals\settings.cpp" />
+    <ClCompile Include="grid\grid.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="physics.cpp" />
-    <ClCompile Include="settings.cpp" />
-    <ClCompile Include="sound_manager.cpp" />
-    <ClCompile Include="textbox.cpp" />
-    <ClCompile Include="toggle_button.cpp" />
-    <ClCompile Include="utils.cpp" />
-    <ClCompile Include="button.cpp" />
-    <ClCompile Include="simple_button.cpp" />
+    <ClCompile Include="physics\physics.cpp" />
+    <ClCompile Include="sound\sound_manager.cpp" />
+    <ClCompile Include="ui\button.cpp" />
+    <ClCompile Include="ui\simple_button.cpp" />
+    <ClCompile Include="ui\textbox.cpp" />
+    <ClCompile Include="ui\toggle_button.cpp" />
+    <ClCompile Include="utils\double_vector_ops.cpp" />
+    <ClCompile Include="utils\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="key_conversion.h" />
-    <ClInclude Include="menu_utils.h" />
-    <ClInclude Include="double_vector_ops.h" />
-    <ClInclude Include="globals.h" />
-    <ClInclude Include="grid.h" />
-    <ClInclude Include="particle.h" />
-    <ClInclude Include="physics.h" />
+    <ClInclude Include="globals\globals.h" />
+    <ClInclude Include="globals\settings.h" />
+    <ClInclude Include="globals\setup_type.h" />
+    <ClInclude Include="grid\grid.h" />
+    <ClInclude Include="physics\particle.h" />
+    <ClInclude Include="physics\physics.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="settings.h" />
-    <ClInclude Include="setup_type.h" />
-    <ClInclude Include="sound_manager.h" />
-    <ClInclude Include="textbox.h" />
-    <ClInclude Include="toggle_button.h" />
-    <ClInclude Include="utils.h" />
-    <ClInclude Include="button.h" />
-    <ClInclude Include="simple_button.h" />
+    <ClInclude Include="sound\sound_manager.h" />
+    <ClInclude Include="ui\button.h" />
+    <ClInclude Include="ui\menu_utils.h" />
+    <ClInclude Include="ui\simple_button.h" />
+    <ClInclude Include="ui\textbox.h" />
+    <ClInclude Include="ui\toggle_button.h" />
+    <ClInclude Include="utils\double_vector_ops.h" />
+    <ClInclude Include="utils\key_conversion.h" />
+    <ClInclude Include="utils\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GravitySimulation_v2.rc" />
