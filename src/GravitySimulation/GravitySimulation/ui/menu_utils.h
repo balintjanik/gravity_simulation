@@ -24,7 +24,6 @@ void recalc_sizes(int width, int height)
     WIDTH = width;
     HEIGHT = height;
     MENU_WIDTH = WIDTH / 6;
-    // CANVAS_WIDTH = WIDTH - MENU_WIDTH;
     CANVAS_WIDTH = width;
     if (CANVAS_WIDTH > HEIGHT)
         settings.R = 2 * HEIGHT / 5;
@@ -93,12 +92,12 @@ void init_ui()
     int label_counter = 0;
     int block_counter = 0;
 
-    // Left title
-    LEFT_TITLE.setString("SIMULATION");
-    LEFT_TITLE.setFillColor(sf::Color::White);
-    LEFT_TITLE.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
-    LEFT_TITLE.setFont(FONT);
-    LEFT_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
+    // Simulation title
+    SIMULATION_TITLE.setString("SIMULATION");
+    SIMULATION_TITLE.setFillColor(sf::Color::White);
+    SIMULATION_TITLE.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    SIMULATION_TITLE.setFont(FONT);
+    SIMULATION_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
     title_counter++;
     label_counter++;
     block_counter++;
@@ -310,26 +309,6 @@ void init_ui()
         COLLISION_IMPULSE_COEFF_TB.is_active = false;
     }
 
-    // Optimization grid settings
-    GRID_TXT.setString("OPTIMIZATION GRID SETTINGS");
-    GRID_TXT.setFillColor(sf::Color::White);
-    GRID_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
-    GRID_TXT.setFont(FONT);
-    GRID_TXT.setCharacterSize(TITLE_FONT_SIZE);
-    title_counter++;
-
-    COLLISION_CELL_SIZE_TXT.setString("CELL SIZE");
-    COLLISION_CELL_SIZE_TXT.setFillColor(sf::Color::White);
-    COLLISION_CELL_SIZE_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
-    COLLISION_CELL_SIZE_TXT.setFont(FONT);
-    COLLISION_CELL_SIZE_TXT.setCharacterSize(FONT_SIZE);
-    label_counter++;
-
-    COLLISION_CELL_SIZE_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.COLLISION_CELL_SIZE, "int");
-    COLLISION_CELL_SIZE_TB.set_button_label(FONT_SIZE, std::to_string(settings.COLLISION_CELL_SIZE));
-    button_counter++;
-    block_counter++;
-
     // Restart simulation
     RELOAD_REQUIRED_TXT.setString("RELOAD REQUIRED");
     RELOAD_REQUIRED_TXT.setFillColor(sf::Color::Red);
@@ -347,12 +326,12 @@ void init_ui()
     label_counter = 0;
     block_counter = 0;
 
-    // Right title
-    RIGHT_TITLE.setString("VISUALIZATION");
-    RIGHT_TITLE.setFillColor(sf::Color::White);
-    RIGHT_TITLE.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
-    RIGHT_TITLE.setFont(FONT);
-    RIGHT_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
+    // Display title
+    DISPLAY_TITLE.setString("DISPLAY");
+    DISPLAY_TITLE.setFillColor(sf::Color::White);
+    DISPLAY_TITLE.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    DISPLAY_TITLE.setFont(FONT);
+    DISPLAY_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
     title_counter++;
     label_counter++;
     block_counter++;
@@ -401,12 +380,22 @@ void init_ui()
     button_counter++;
     block_counter++;
 
-    // Grid visualization settings
-    GRID_VIS_TXT.setString("GRID VISUALIZATION SETTINGS");
-    GRID_VIS_TXT.setFillColor(sf::Color::White);
-    GRID_VIS_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
-    GRID_VIS_TXT.setFont(FONT);
-    GRID_VIS_TXT.setCharacterSize(TITLE_FONT_SIZE);
+    // Optimization title
+    OPTIMIZATION_TITLE.setString("OPTIMIZATION");
+    OPTIMIZATION_TITLE.setFillColor(sf::Color::White);
+    OPTIMIZATION_TITLE.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    OPTIMIZATION_TITLE.setFont(FONT);
+    OPTIMIZATION_TITLE.setCharacterSize(2 * TITLE_FONT_SIZE);
+    title_counter++;
+    label_counter++;
+    block_counter++;
+
+    // Collision optimization settings
+    COLLISION_OPTIMIZATION_TXT.setString("COLLISION OPTIMIZATION");
+    COLLISION_OPTIMIZATION_TXT.setFillColor(sf::Color::White);
+    COLLISION_OPTIMIZATION_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    COLLISION_OPTIMIZATION_TXT.setFont(FONT);
+    COLLISION_OPTIMIZATION_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
     VISUALIZE_GRID_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_SPATIAL_GRID);
@@ -423,6 +412,17 @@ void init_ui()
 
     VISUALIZE_COM_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_COM);
     VISUALIZE_COM_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' CENTER OF MASS ON/OFF");
+    button_counter++;
+
+    COLLISION_CELL_SIZE_TXT.setString("CELL SIZE");
+    COLLISION_CELL_SIZE_TXT.setFillColor(sf::Color::White);
+    COLLISION_CELL_SIZE_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    COLLISION_CELL_SIZE_TXT.setFont(FONT);
+    COLLISION_CELL_SIZE_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    COLLISION_CELL_SIZE_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.COLLISION_CELL_SIZE, "int");
+    COLLISION_CELL_SIZE_TB.set_button_label(FONT_SIZE, std::to_string(settings.COLLISION_CELL_SIZE));
     button_counter++;
     block_counter++;
 
@@ -500,8 +500,8 @@ void draw_menu(sf::RenderWindow& window)
     menu_left_background.setFillColor(sf::Color(12, 12, 12, 200));
     window.draw(menu_left_background);
 
-    // Left menu elements
-    window.draw(LEFT_TITLE);
+    // Simulation settings elements
+    window.draw(SIMULATION_TITLE);
 
     window.draw(PARTICLE_NUM_TXT);
     PARTICLE_NUM_TB.draw(window);
@@ -546,10 +546,6 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(COLLISION_IMPULSE_COEFF_TXT);
     COLLISION_IMPULSE_COEFF_TB.draw(window);
 
-    window.draw(GRID_TXT);
-    window.draw(COLLISION_CELL_SIZE_TXT);
-    COLLISION_CELL_SIZE_TB.draw(window);
-
     if (check_reload_required())
         window.draw(RELOAD_REQUIRED_TXT);
 
@@ -561,8 +557,8 @@ void draw_menu(sf::RenderWindow& window)
     menu_right_background.setFillColor(sf::Color(12, 12, 12, 200));
     window.draw(menu_right_background);
 
-    // Right menu elements
-    window.draw(RIGHT_TITLE);
+    // Display settings elements
+    window.draw(DISPLAY_TITLE);
 
     window.draw(ANIMATION_SETTINGS_TXT);
     window.draw(TIMESTEP_TXT);
@@ -573,11 +569,18 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(TRAIL_TXT);
     HAS_TRAIL_BTN.draw(window);
 
-    window.draw(GRID_VIS_TXT);
+    // Optimization settings elements
+    window.draw(OPTIMIZATION_TITLE);
+
+    window.draw(COLLISION_OPTIMIZATION_TXT);
     VISUALIZE_GRID_BTN.draw(window);
     VISUALIZE_PARTICLE_CELL_BTN.draw(window);
     VISUALIZE_CELL_MASS_BTN.draw(window);
     VISUALIZE_COM_BTN.draw(window);
+    window.draw(COLLISION_CELL_SIZE_TXT);
+    COLLISION_CELL_SIZE_TB.draw(window);
+
+    // Audio settings elements
 
     window.draw(AUDIO_TITLE);
 
@@ -612,7 +615,7 @@ void draw_help(sf::RenderWindow& window)
 
 void untoggle_textboxes(sf::RenderWindow& window)
 {
-    // Left menu
+    // Simulation settings
     PARTICLE_NUM_TB.set_toggle(false);
     current_settings.N = (int)PARTICLE_NUM_TB.value;
     PARTICLE_RADIUS_TB.set_toggle(false);
@@ -640,10 +643,7 @@ void untoggle_textboxes(sf::RenderWindow& window)
     current_settings.DAMPING_COEFF = DAMPING_COEFF_TB.value;
     settings.DAMPING_COEFF = DAMPING_COEFF_TB.value;
 
-    COLLISION_CELL_SIZE_TB.set_toggle(false);
-    current_settings.COLLISION_CELL_SIZE = COLLISION_CELL_SIZE_TB.value;
-
-    // Right menu
+    // Display settings
     TIMESTEP_TB.set_toggle(false);
     current_settings.TIMESTEP = TIMESTEP_TB.value;
     settings.TIMESTEP = TIMESTEP_TB.value;
@@ -652,6 +652,11 @@ void untoggle_textboxes(sf::RenderWindow& window)
     current_settings.FPS_LIMIT = FPS_LIMIT_TB.value;
     window.setFramerateLimit(FPS_LIMIT_TB.value);
 
+    // Optimization settings
+    COLLISION_CELL_SIZE_TB.set_toggle(false);
+    current_settings.COLLISION_CELL_SIZE = COLLISION_CELL_SIZE_TB.value;
+
+    // Audio settings
     SOUND_VOLUME_TB.set_toggle(false);
     if (settings.HAS_SOUND)
     {
@@ -671,7 +676,7 @@ void untoggle_textboxes(sf::RenderWindow& window)
 
 void handle_textbox_input(const sf::Event& event)
 {
-    // Left menu
+    // Simulation settings
     PARTICLE_NUM_TB.handle_input(event);
     PARTICLE_RADIUS_TB.handle_input(event);
     PARTICLE_MASS_TB.handle_input(event);
@@ -685,19 +690,21 @@ void handle_textbox_input(const sf::Event& event)
     DAMPING_DIST_TB.handle_input(event);
     DAMPING_COEFF_TB.handle_input(event);
 
-    COLLISION_CELL_SIZE_TB.handle_input(event);
-
-    // Right menu
+    // Display settings
     TIMESTEP_TB.handle_input(event);
     FPS_LIMIT_TB.handle_input(event);
 
+    // Optimization settings
+    COLLISION_CELL_SIZE_TB.handle_input(event);
+
+    // Audio settings
     SOUND_VOLUME_TB.handle_input(event);
     MUSIC_VOLUME_TB.handle_input(event);
 }
 
 void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
 {
-    // Left menu
+    // Simulation settings
     PARTICLE_NUM_TB.get_button_status(window, event);
 
     PARTICLE_RADIUS_TB.get_button_status(window, event);
@@ -725,21 +732,22 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     COLLISION_ITERATIONS_TB.get_button_status(window, event);
     COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
 
-    COLLISION_CELL_SIZE_TB.get_button_status(window, event);
-
     RELOAD_BTN.get_button_status(window, event);
 
-    // Right menu
+    // Display settings
     TIMESTEP_TB.get_button_status(window, event);
     FPS_LIMIT_TB.get_button_status(window, event);
 
     HAS_TRAIL_BTN.get_button_status(window, event);
 
+    // Optimization settings
     VISUALIZE_GRID_BTN.get_button_status(window, event);
     VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
     VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
     VISUALIZE_COM_BTN.get_button_status(window, event);
+    COLLISION_CELL_SIZE_TB.get_button_status(window, event);
 
+    // Audio settings
     SOUND_BTN.get_button_status(window, event);
     SOUND_VOLUME_TB.get_button_status(window, event);
     MUSIC_BTN.get_button_status(window, event);
@@ -767,7 +775,7 @@ void reload_sim(Grid& optim_grid)
 
 void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& optim_grid)
 {
-    // Left menu
+    // Simulation settings
 
     if (PARTICLE_NUM_TB.is_pressed)
     {
@@ -893,16 +901,13 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         COLLISION_IMPULSE_COEFF_TB.set_toggle(true);
     }
 
-    else if (COLLISION_CELL_SIZE_TB.is_pressed)
-        COLLISION_CELL_SIZE_TB.set_toggle(true);
-
     else if (RELOAD_BTN.is_pressed)
     {
         reload_sim(optim_grid);
         update_button_statuses(window, event);
     }
 
-    // Right menu
+    // Display settings
 
     else if (TIMESTEP_TB.is_pressed)
         TIMESTEP_TB.set_toggle(true);
@@ -916,6 +921,7 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         settings.HAS_TRAIL = current_settings.HAS_TRAIL;
     }
 
+    // Optimization settings
     else if (VISUALIZE_GRID_BTN.is_pressed)
     {
         current_settings.VISUALIZE_SPATIAL_GRID = !current_settings.VISUALIZE_SPATIAL_GRID;
@@ -942,6 +948,10 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         settings.VISUALIZE_COM = current_settings.VISUALIZE_COM;
     }
 
+    else if (COLLISION_CELL_SIZE_TB.is_pressed)
+        COLLISION_CELL_SIZE_TB.set_toggle(true);
+
+    // Audio settings
     else if (SOUND_BTN.is_pressed)
     {
         current_settings.HAS_SOUND = !current_settings.HAS_SOUND;

@@ -68,7 +68,7 @@ static int MARGIN_BLOCK = 20;
 static int BTN_HEIGHT = 30;
 
 // Left menu
-static sf::Text LEFT_TITLE;
+static sf::Text SIMULATION_TITLE;
 
 static sf::Text PARTICLE_NUM_TXT;
 static TextBox PARTICLE_NUM_TB;
@@ -113,15 +113,11 @@ static TextBox COLLISION_ITERATIONS_TB;
 static sf::Text COLLISION_IMPULSE_COEFF_TXT;
 static TextBox COLLISION_IMPULSE_COEFF_TB;
 
-static sf::Text GRID_TXT;
-static sf::Text COLLISION_CELL_SIZE_TXT;
-static TextBox COLLISION_CELL_SIZE_TB;
-
 static sf::Text RELOAD_REQUIRED_TXT;
 static SimpleButton RELOAD_BTN;
 
 // Right menu
-static sf::Text RIGHT_TITLE;
+static sf::Text DISPLAY_TITLE;
 
 static sf::Text ANIMATION_SETTINGS_TXT;
 static sf::Text TIMESTEP_TXT;
@@ -133,11 +129,14 @@ static TextBox FPS_LIMIT_TB;
 static sf::Text TRAIL_TXT;
 static ToggleButton HAS_TRAIL_BTN;
 
-static sf::Text GRID_VIS_TXT;
+static sf::Text OPTIMIZATION_TITLE;
+static sf::Text COLLISION_OPTIMIZATION_TXT;
 static ToggleButton VISUALIZE_GRID_BTN;
 static ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
 static ToggleButton VISUALIZE_CELL_MASS_BTN;
 static ToggleButton VISUALIZE_COM_BTN;
+static sf::Text COLLISION_CELL_SIZE_TXT;
+static TextBox COLLISION_CELL_SIZE_TB;
 
 static sf::Text AUDIO_TITLE;
 static sf::Text SOUND_TXT;
