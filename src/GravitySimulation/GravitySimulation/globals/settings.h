@@ -79,6 +79,9 @@ static TextBox PARTICLE_RADIUS_TB;
 static sf::Text PARTICLE_MASS_TXT;
 static TextBox PARTICLE_MASS_TB;
 
+static sf::Text SINGULARITY_MASS_TXT;
+static TextBox SINGULARITY_MASS_TB;
+
 static sf::Text PLACEMENT_TYPE_TXT;
 static ToggleButton PLACEMENT_TYPE_FULLSCREEN_BTN;
 static ToggleButton PLACEMENT_TYPE_CIRCULAR_BTN;
@@ -207,7 +210,7 @@ public:
 	unsigned int THREAD_NUM = 4; // TODO: textbox for this
 
 	// Singularity mass
-	double SINGULARITY_MASS = 10000; // TODO: textbox for this
+	double SINGULARITY_MASS = 10000;
 
 	// FPS limit
 	int FPS_LIMIT = DEFAULT_FPS_LIMIT;

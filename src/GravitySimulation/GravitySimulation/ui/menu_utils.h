@@ -140,6 +140,17 @@ void init_ui()
     PARTICLE_MASS_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.MASS, "double");
     PARTICLE_MASS_TB.set_button_label(FONT_SIZE, std::to_string(settings.MASS));
     button_counter++;
+
+    SINGULARITY_MASS_TXT.setString("BLACK HOLE MASS");
+    SINGULARITY_MASS_TXT.setFillColor(sf::Color::White);
+    SINGULARITY_MASS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    SINGULARITY_MASS_TXT.setFont(FONT);
+    SINGULARITY_MASS_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    SINGULARITY_MASS_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.SINGULARITY_MASS, "double");
+    SINGULARITY_MASS_TB.set_button_label(FONT_SIZE, std::to_string(settings.SINGULARITY_MASS));
+    button_counter++;
     block_counter++;
 
     // Placement type settings
@@ -486,6 +497,7 @@ bool check_reload_required()
     if (settings.PLACEMENT_TYPE != current_settings.PLACEMENT_TYPE || settings.R != current_settings.R
         || settings.SPEED_TYPE != current_settings.SPEED_TYPE || settings.N != current_settings.N
         || settings.RADIUS != current_settings.RADIUS || settings.MASS != current_settings.MASS
+        || settings.SINGULARITY_MASS != current_settings.SINGULARITY_MASS
         || settings.COLLISION_CELL_SIZE != current_settings.COLLISION_CELL_SIZE)
         return true;
 
@@ -511,6 +523,9 @@ void draw_menu(sf::RenderWindow& window)
     PARTICLE_RADIUS_TB.draw(window);
     window.draw(PARTICLE_MASS_TXT);
     PARTICLE_MASS_TB.draw(window);
+
+    window.draw(SINGULARITY_MASS_TXT);
+    SINGULARITY_MASS_TB.draw(window);
 
     window.draw(PLACEMENT_TYPE_TXT);
     PLACEMENT_TYPE_CIRCULAR_BTN.draw(window);
@@ -618,10 +633,14 @@ void untoggle_textboxes(sf::RenderWindow& window)
     // Simulation settings
     PARTICLE_NUM_TB.set_toggle(false);
     current_settings.N = (int)PARTICLE_NUM_TB.value;
+
     PARTICLE_RADIUS_TB.set_toggle(false);
     current_settings.RADIUS = (int)PARTICLE_RADIUS_TB.value;
     PARTICLE_MASS_TB.set_toggle(false);
     current_settings.MASS = PARTICLE_MASS_TB.value;
+
+    SINGULARITY_MASS_TB.set_toggle(false);
+    current_settings.SINGULARITY_MASS = SINGULARITY_MASS_TB.value;
 
     PLACEMENT_RADIUS_TB.set_toggle(false);
     current_settings.R = PLACEMENT_RADIUS_TB.value;
@@ -680,6 +699,7 @@ void handle_textbox_input(const sf::Event& event)
     PARTICLE_NUM_TB.handle_input(event);
     PARTICLE_RADIUS_TB.handle_input(event);
     PARTICLE_MASS_TB.handle_input(event);
+    SINGULARITY_MASS_TB.handle_input(event);
 
     PLACEMENT_RADIUS_TB.handle_input(event);
 
@@ -709,6 +729,8 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
 
     PARTICLE_RADIUS_TB.get_button_status(window, event);
     PARTICLE_MASS_TB.get_button_status(window, event);
+
+    SINGULARITY_MASS_TB.get_button_status(window, event);
 
     PLACEMENT_TYPE_CIRCULAR_BTN.get_button_status(window, event);
     PLACEMENT_TYPE_FULLSCREEN_BTN.get_button_status(window, event);
@@ -788,6 +810,10 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
     else if (PARTICLE_MASS_TB.is_pressed)
     {
         PARTICLE_MASS_TB.set_toggle(true);
+    }
+    else if (SINGULARITY_MASS_TB.is_pressed)
+    {
+        SINGULARITY_MASS_TB.set_toggle(true);
     }
 
     else if (PLACEMENT_TYPE_CIRCULAR_BTN.is_pressed)
