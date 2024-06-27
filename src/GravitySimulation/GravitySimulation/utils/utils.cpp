@@ -143,20 +143,20 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
     return particles;
 }
 
-void add_singularity(Grid& optim_grid)
+void add_singularity(Grid& collision_grid)
 {
     Particle singularity = Particle(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y), sf::Vector2f(0, 0), SINGULARITY_COLOR, SINGULARITY_RADIUS, settings.SINGULARITY_MASS, true);
     particles.push_back(singularity);
-    optim_grid.add_particle(particles.back());
+    collision_grid.add_particle(particles.back());
     
     id_counter++;
 }
 
-void init_optim_grid(Grid& optim_grid)
+void init_optim_grid(Grid& collision_grid)
 {
     for (auto& p : particles)
     {
-        optim_grid.add_particle(p);
+        collision_grid.add_particle(p);
     }
 }
 
@@ -174,7 +174,7 @@ int get_idx_by_id(int id)
     return -1;
 }
 
-void draw_particles(sf::RenderWindow& window)
+void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
 {
     // Draw trails first to avoid trails covering particles
     if (settings.HAS_TRAIL)
@@ -221,9 +221,9 @@ void draw_particles(sf::RenderWindow& window)
         // Draw grid
         if (settings.VISUALIZE_SPATIAL_GRID)
         {
-            for (int x = 0; x < optim_grid.width; x++)
+            for (int x = 0; x < collision_grid.width; x++)
             {
-                for (int y = 0; y < optim_grid.height; y++)
+                for (int y = 0; y < collision_grid.height; y++)
                 {
                     sf::Vector2f c_size(settings.COLLISION_CELL_SIZE, settings.COLLISION_CELL_SIZE);
                     sf::RectangleShape cell(c_size);
@@ -231,14 +231,14 @@ void draw_particles(sf::RenderWindow& window)
                     sf::Color fill_col = sf::Color::Transparent;
                     if (settings.VISUALIZE_CELL_MASS)
                     {
-                        fill_col = map_forces_to_color(optim_grid.get(x, y).total_mass / settings.COLLISION_CELL_SIZE);
+                        fill_col = map_forces_to_color(collision_grid.get(x, y).total_mass / settings.COLLISION_CELL_SIZE);
                         fill_col.a = 140;
                     }
                     cell.setFillColor(fill_col);
 
                     cell.setOutlineColor(sf::Color(20, 20, 20));
                     cell.setOutlineThickness(0.5f);
-                    cell.setPosition(x * settings.COLLISION_CELL_SIZE - optim_grid.overflow_x / 2, y * settings.COLLISION_CELL_SIZE - optim_grid.overflow_y / 2);
+                    cell.setPosition(x * settings.COLLISION_CELL_SIZE - collision_grid.overflow_x / 2, y * settings.COLLISION_CELL_SIZE - collision_grid.overflow_y / 2);
                     window.draw(cell);
                 }
             }
@@ -246,16 +246,16 @@ void draw_particles(sf::RenderWindow& window)
 
         // Draw particles of cells
         int idx;
-        for (int x = 0; x < optim_grid.width; x++)
+        for (int x = 0; x < collision_grid.width; x++)
         {
-            for (int y = 0; y < optim_grid.height; y++)
+            for (int y = 0; y < collision_grid.height; y++)
             {
                 // Calculate color based on grid position
                 sf::Color col = sf::Color::Green;
                 if ((y % 2 == 0 && x % 2 == 1) || (y % 2 == 1 && x % 2 == 0))
                     col = sf::Color::Magenta;
 
-                auto& current_cell = optim_grid.get(x, y);
+                auto& current_cell = collision_grid.get(x, y);
                 for (auto it1 = current_cell.particle_indices.begin(); it1 != current_cell.particle_indices.end(); ++it1)
                 {
                     idx = get_idx_by_id(*it1);
@@ -297,12 +297,12 @@ void draw_particles(sf::RenderWindow& window)
                 {
                     sf::CircleShape com(5, 3);
                     com.setFillColor(sf::Color::Red);
-                    sf::Vector2f com_pos = optim_grid.get(x, y).center_of_mass;
+                    sf::Vector2f com_pos = collision_grid.get(x, y).center_of_mass;
                     if (com_pos.x == 0 && com_pos.y == 0)
                     {
                         int to_center = settings.COLLISION_CELL_SIZE / 2;
-                        int correct_overflow_x = optim_grid.overflow_x / 2;
-                        int correct_overflow_y = optim_grid.overflow_y / 2;
+                        int correct_overflow_x = collision_grid.overflow_x / 2;
+                        int correct_overflow_y = collision_grid.overflow_y / 2;
                         com.setPosition(x * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_x, y * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_y);
                     }
                     else

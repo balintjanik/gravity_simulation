@@ -11,6 +11,4 @@ extern std::vector<Particle> particles;
 extern Settings settings;
 extern Settings current_settings;
 
-extern Grid optim_grid;
-
 #endif

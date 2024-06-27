@@ -23,8 +23,10 @@ public:
 
     ~Node() {
         delete particle;
+        particle = nullptr;
         for (int i = 0; i < 4; ++i) {
             delete children[i];
+            children[i] = nullptr;
         }
     }
 

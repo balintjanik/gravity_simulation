@@ -9,17 +9,6 @@ using namespace std;
 
 void update_gravity_quadtree(sf::RenderWindow& window)
 {
-    /* DYNAMIC CENTERING
-    // Determine the center of the region
-    double region_center_x = 0.0;
-    double region_center_y = 0.0;
-    for (const auto& p : particles) {
-        region_center_x += p.position.x;
-        region_center_y += p.position.y;
-    }
-    region_center_x /= particles.size();
-    region_center_y /= particles.size();*/
-
     // Create the tree
     QuadTree optim_tree(WIDTH / 2, HEIGHT / 2, WIDTH, settings.THETA);
 
@@ -227,22 +216,22 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
     }
 }
 
-void update_collisions_range(Grid& optim_grid, int start_col, int stride)
+void update_collisions_range(Grid& collision_grid, int start_col, int stride)
 {
-    for (int x = start_col; x < optim_grid.width; x+=stride)
+    for (int x = start_col; x < collision_grid.width; x+=stride)
     {
-        for (int y = 0; y < optim_grid.height; y++)
+        for (int y = 0; y < collision_grid.height; y++)
         {
-            auto& current_cell = optim_grid.get(x, y);
+            auto& current_cell = collision_grid.get(x, y);
             for (int dx = -1; dx <= 1; dx++)
             {
                 for (int dy = -1; dy <= 1; dy++)
                 {
-                    if (x + dx < 0 || x + dx >= optim_grid.width
-                        || y + dy < 0 || y + dy >= optim_grid.height)
+                    if (x + dx < 0 || x + dx >= collision_grid.width
+                        || y + dy < 0 || y + dy >= collision_grid.height)
                         continue;
 
-                    auto& other_cell = optim_grid.get(x + dx, y + dy);
+                    auto& other_cell = collision_grid.get(x + dx, y + dy);
                     check_cells_collision(current_cell, other_cell);
                 }
             }
@@ -250,12 +239,12 @@ void update_collisions_range(Grid& optim_grid, int start_col, int stride)
     }
 }
 
-void update_collisions(Grid& optim_grid) {
+void update_collisions(Grid& collision_grid) {
     const int num_threads = settings.THREAD_NUM;
     vector<thread> threads;
 
     for (int i = 0; i < num_threads; i++) {
-        threads.emplace_back(update_collisions_range, ref(optim_grid), i, num_threads);
+        threads.emplace_back(update_collisions_range, ref(collision_grid), i, num_threads);
     }
 
     for (auto& t : threads) {
@@ -273,17 +262,17 @@ void update_trails()
     }
 }
 
-void update_positions(Grid& optim_grid, sf::RenderWindow& window)
+void update_positions(Grid& collision_grid, sf::RenderWindow& window)
 {
     GRAV_CALC_COUNT = 0;
     COLL_CALC_COUNT = 0;
 
     // Update center of mass
-    for (int i = 0; i < optim_grid.width; i++)
+    for (int i = 0; i < collision_grid.width; i++)
     {
-        for (int j = 0; j < optim_grid.height; j++)
+        for (int j = 0; j < collision_grid.height; j++)
         {
-            optim_grid.update_cell_mass_and_com(j * optim_grid.width + i);
+            collision_grid.update_cell_mass_and_com(j * collision_grid.width + i);
         }
     }
 
@@ -298,7 +287,7 @@ void update_positions(Grid& optim_grid, sf::RenderWindow& window)
     {
         for (int i = 0; i < settings.COLLISION_ITERATIONS; i++)
         {
-            update_collisions(optim_grid);
+            update_collisions(collision_grid);
         }
     }
 
@@ -306,7 +295,7 @@ void update_positions(Grid& optim_grid, sf::RenderWindow& window)
     // Calculate gravitational forces
     if (settings.HAS_GRAVITY)
     {
-        // update_gravity(optim_grid);
+        // update_gravity(collision_grid);
         update_gravity_quadtree(window);
     }
     else // Update default coloring
@@ -356,6 +345,6 @@ void update_positions(Grid& optim_grid, sf::RenderWindow& window)
         }
 
         // Reassign to new cell in optimization grid if necessary
-        optim_grid.update_particle_cell(p);
+        collision_grid.update_particle_cell(p);
     }
 }

@@ -22,7 +22,8 @@ int main()
     init_ui();
     init_sounds();
     init_music();
-    reload_sim();
+    Grid collision_grid(settings.COLLISION_CELL_SIZE);
+    reload_sim(collision_grid);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -38,7 +39,7 @@ int main()
                 window.setView(view);
                 recalc_sizes(new_size.x, new_size.y);
                 init_ui();
-                reload_sim();
+                reload_sim(collision_grid);
             }
 
             // Show/hide UI elements
@@ -47,7 +48,7 @@ int main()
                 // Reload simulation
                 if (event.key.code == RELOAD_KEY)
                 {
-                    reload_sim();
+                    reload_sim(collision_grid);
                     click_sound.play();
                 }
                 // Show/hide menu
@@ -117,7 +118,7 @@ int main()
                 // Add singularity
                 else if (event.key.code == SINGULARITY_KEY)
                 {
-                    add_singularity(optim_grid);
+                    add_singularity(collision_grid);
                     blackhole_sound.play();
                 }
                 // Exit
@@ -140,7 +141,7 @@ int main()
 
                 // Handle button clicks
                 if (event.type == sf::Event::MouseButtonPressed)
-                    handle_button_clicks(window, event);
+                    handle_button_clicks(window, event, collision_grid);
             }
         }
 
@@ -151,10 +152,10 @@ int main()
         window.clear();
 
         // Update positions
-        update_positions(optim_grid, window);
+        update_positions(collision_grid, window);
 
         // Draw particles
-        draw_particles(window);
+        draw_particles(window, collision_grid);
 
         // Draw menu
         if (SHOW_MENU)

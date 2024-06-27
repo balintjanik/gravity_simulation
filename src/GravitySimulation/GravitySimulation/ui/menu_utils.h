@@ -748,7 +748,7 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     EXIT_BTN.get_button_status(window, event);
 }
 
-void reload_sim()
+void reload_sim(Grid& optim_grid)
 {
     // Load new settings
     settings = current_settings;
@@ -765,7 +765,7 @@ void reload_sim()
     init_optim_grid(optim_grid);
 }
 
-void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
+void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& optim_grid)
 {
     // Left menu
 
@@ -898,7 +898,7 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event)
 
     else if (RELOAD_BTN.is_pressed)
     {
-        reload_sim();
+        reload_sim(optim_grid);
         update_button_statuses(window, event);
     }
 
