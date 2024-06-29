@@ -439,9 +439,44 @@ void init_ui()
 
     if (!settings.VISUALIZE_SPATIAL_GRID)
     {
-        VISUALIZE_CELL_MASS_BTN.is_active = false;
-        VISUALIZE_COM_BTN.is_active = false;
+        VISUALIZE_PARTICLE_CELL_BTN.is_active = settings.VISUALIZE_SPATIAL_GRID;
+        VISUALIZE_CELL_MASS_BTN.is_active = settings.VISUALIZE_SPATIAL_GRID;
+        VISUALIZE_COM_BTN.is_active = settings.VISUALIZE_SPATIAL_GRID;
     }
+
+    // Gravity optimization settings
+    GRAVITY_OPTIMIZATION_TXT.setString("GRAVITY OPTIMIZATION");
+    GRAVITY_OPTIMIZATION_TXT.setFillColor(sf::Color::White);
+    GRAVITY_OPTIMIZATION_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    GRAVITY_OPTIMIZATION_TXT.setFont(FONT);
+    GRAVITY_OPTIMIZATION_TXT.setCharacterSize(TITLE_FONT_SIZE);
+    title_counter++;
+
+    VISUALIZE_GRAVITY_TREE_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_GRAVITY_TREE);
+    VISUALIZE_GRAVITY_TREE_BTN.set_button_label(FONT_SIZE, "VISUALIZE QUADTREE ON/OFF");
+    button_counter++;
+    block_counter++;
+
+    // Multithreading
+    MULTITHREADING_TXT.setString("MULTITHREADING SETTINGS");
+    MULTITHREADING_TXT.setFillColor(sf::Color::White);
+    MULTITHREADING_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    MULTITHREADING_TXT.setFont(FONT);
+    MULTITHREADING_TXT.setCharacterSize(TITLE_FONT_SIZE);
+    title_counter++;
+
+    // Thread number
+    THREAD_NUM_TXT.setString("NUMBER OF THREADS");
+    THREAD_NUM_TXT.setFillColor(sf::Color::White);
+    THREAD_NUM_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    THREAD_NUM_TXT.setFont(FONT);
+    THREAD_NUM_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    THREAD_NUM_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.THREAD_NUM, "int");
+    THREAD_NUM_TB.set_button_label(FONT_SIZE, std::to_string(settings.THREAD_NUM));
+    button_counter++;
+    block_counter++;
 
     // Audio title
     AUDIO_TITLE.setString("AUDIO");
@@ -595,8 +630,15 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(COLLISION_CELL_SIZE_TXT);
     COLLISION_CELL_SIZE_TB.draw(window);
 
-    // Audio settings elements
+    window.draw(GRAVITY_OPTIMIZATION_TXT);
+    VISUALIZE_GRAVITY_TREE_BTN.draw(window);
 
+    // Multithreading settings elements
+    window.draw(MULTITHREADING_TXT);
+    window.draw(THREAD_NUM_TXT);
+    THREAD_NUM_TB.draw(window);
+
+    // Audio settings elements
     window.draw(AUDIO_TITLE);
 
     window.draw(SOUND_TXT);
@@ -675,6 +717,11 @@ void untoggle_textboxes(sf::RenderWindow& window)
     COLLISION_CELL_SIZE_TB.set_toggle(false);
     current_settings.COLLISION_CELL_SIZE = COLLISION_CELL_SIZE_TB.value;
 
+    // Thread number setting
+    THREAD_NUM_TB.set_toggle(false);
+    current_settings.THREAD_NUM = THREAD_NUM_TB.value;
+    settings.THREAD_NUM = THREAD_NUM_TB.value;
+
     // Audio settings
     SOUND_VOLUME_TB.set_toggle(false);
     if (settings.HAS_SOUND)
@@ -716,6 +763,9 @@ void handle_textbox_input(const sf::Event& event)
 
     // Optimization settings
     COLLISION_CELL_SIZE_TB.handle_input(event);
+    
+    // Thread number setting
+    THREAD_NUM_TB.handle_input(event);
 
     // Audio settings
     SOUND_VOLUME_TB.handle_input(event);
@@ -768,6 +818,11 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
     VISUALIZE_COM_BTN.get_button_status(window, event);
     COLLISION_CELL_SIZE_TB.get_button_status(window, event);
+
+    VISUALIZE_GRAVITY_TREE_BTN.get_button_status(window, event);
+
+    // Thread number setting
+    THREAD_NUM_TB.get_button_status(window, event);
 
     // Audio settings
     SOUND_BTN.get_button_status(window, event);
@@ -953,6 +1008,8 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         current_settings.VISUALIZE_SPATIAL_GRID = !current_settings.VISUALIZE_SPATIAL_GRID;
         settings.VISUALIZE_SPATIAL_GRID = current_settings.VISUALIZE_SPATIAL_GRID;
 
+        VISUALIZE_PARTICLE_CELL_BTN.is_active = current_settings.VISUALIZE_SPATIAL_GRID;
+        VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
         VISUALIZE_CELL_MASS_BTN.is_active = current_settings.VISUALIZE_SPATIAL_GRID;
         VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
         VISUALIZE_COM_BTN.is_active = current_settings.VISUALIZE_SPATIAL_GRID;
@@ -976,6 +1033,17 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
 
     else if (COLLISION_CELL_SIZE_TB.is_pressed)
         COLLISION_CELL_SIZE_TB.set_toggle(true);
+
+    else if (VISUALIZE_GRAVITY_TREE_BTN.is_pressed)
+    {
+        current_settings.VISUALIZE_GRAVITY_TREE = !current_settings.VISUALIZE_GRAVITY_TREE;
+        settings.VISUALIZE_GRAVITY_TREE = current_settings.VISUALIZE_GRAVITY_TREE;
+    }
+
+    // Thread number setting
+    else if (THREAD_NUM_TB.is_pressed)
+        THREAD_NUM_TB.set_toggle(true);
+    
 
     // Audio settings
     else if (SOUND_BTN.is_pressed)

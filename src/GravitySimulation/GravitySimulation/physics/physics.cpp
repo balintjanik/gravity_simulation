@@ -7,27 +7,49 @@
 
 using namespace std;
 
-void update_gravity_quadtree(sf::RenderWindow& window)
+void update_gravity_quadtree_region(QuadTree& gravity_tree, int start, int end)
 {
-    // Create the tree
-    QuadTree optim_tree(WIDTH / 2, HEIGHT / 2, WIDTH, settings.THETA);
-
-    // Insert all particles into the tree
-    for (const auto& p : particles) {
-        optim_tree.insert(p);
-    }
-
-    optim_tree.draw(window);
-
     // Calculate forces and update positions and velocities
-    for (auto& p : particles) {
+    for (int i = start; i < end; i++) {
+        Particle& p = particles[i];
         double all_force = 0.0;
-        optim_tree.calculate_forces(p, all_force);
+        gravity_tree.calculate_forces(p, all_force);
 
         // Update color
         sf::Color updated_color = map_forces_to_color(all_force);
         if (!p.is_singularity)
             p.color = updated_color;
+    }
+}
+
+void update_gravity_quadtree(sf::RenderWindow& window)
+{
+    // Create the tree
+    QuadTree gravity_tree(WIDTH / 2, HEIGHT / 2, WIDTH, settings.THETA);
+
+    // Insert all particles into the tree
+    for (const auto& p : particles) {
+        gravity_tree.insert(p);
+    }
+
+    // Draw quadtree if set
+    if (settings.VISUALIZE_GRAVITY_TREE)
+        gravity_tree.draw(window);
+
+    // Calculate gravitational forces parallelly on multiple threads
+    const int num_threads = settings.THREAD_NUM;
+    vector<thread> threads;
+    int part_size = particles.size() / num_threads;
+
+    for (int i = 0; i < num_threads; i++) {
+        int start = i * part_size;
+        int end = (i == num_threads - 1) ? particles.size() : (i + 1) * part_size;
+
+        threads.emplace_back(update_gravity_quadtree_region, ref(gravity_tree), start, end);
+    }
+
+    for (auto& t : threads) {
+        t.join();
     }
 }
 
@@ -223,6 +245,9 @@ void update_collisions_range(Grid& collision_grid, int start_col, int stride)
         for (int y = 0; y < collision_grid.height; y++)
         {
             auto& current_cell = collision_grid.get(x, y);
+            if (current_cell.particle_indices.empty())
+                continue;
+
             for (int dx = -1; dx <= 1; dx++)
             {
                 for (int dy = -1; dy <= 1; dy++)
@@ -232,6 +257,10 @@ void update_collisions_range(Grid& collision_grid, int start_col, int stride)
                         continue;
 
                     auto& other_cell = collision_grid.get(x + dx, y + dy);
+
+                    if (other_cell.particle_indices.empty())
+                        continue;
+
                     check_cells_collision(current_cell, other_cell);
                 }
             }

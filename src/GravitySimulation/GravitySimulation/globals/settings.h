@@ -141,6 +141,13 @@ static ToggleButton VISUALIZE_COM_BTN;
 static sf::Text COLLISION_CELL_SIZE_TXT;
 static TextBox COLLISION_CELL_SIZE_TB;
 
+static sf::Text GRAVITY_OPTIMIZATION_TXT;
+static ToggleButton VISUALIZE_GRAVITY_TREE_BTN;
+
+static sf::Text MULTITHREADING_TXT;
+static sf::Text THREAD_NUM_TXT;
+static TextBox THREAD_NUM_TB;
+
 static sf::Text AUDIO_TITLE;
 static sf::Text SOUND_TXT;
 static ToggleButton SOUND_BTN;
@@ -202,6 +209,9 @@ public:
 	bool VISUALIZE_CELL_MASS = false; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 	bool VISUALIZE_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
 	int COLLISION_CELL_SIZE = 20;
+
+	// Gravity optimization settings
+	bool VISUALIZE_GRAVITY_TREE = false;
 
 	// Quadtree settings
 	double THETA = 0.5;
