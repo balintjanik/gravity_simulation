@@ -237,8 +237,13 @@ public:
 	{
 		MAX_FORCES = 3 * sqrt(MASS) * ((double)N / 700);
 		TRAIL_RADIUS = (RADIUS / 2 > 1 ? RADIUS / 2 : 1);
-		DAMPING_COEFF = MASS * TIMESTEP / 20;
+		update_damping_coeff();
 		THREAD_NUM = (THREAD_NUM > MAX_THREAD_NUM ? MAX_THREAD_NUM : THREAD_NUM);
+	}
+
+	void update_damping_coeff()
+	{
+		DAMPING_COEFF = MASS * TIMESTEP / 20;
 	}
 };
 

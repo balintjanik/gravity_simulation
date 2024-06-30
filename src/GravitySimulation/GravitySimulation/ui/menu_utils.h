@@ -719,6 +719,10 @@ void untoggle_textboxes(sf::RenderWindow& window)
     TIMESTEP_TB.set_toggle(false);
     current_settings.TIMESTEP = TIMESTEP_TB.value;
     settings.TIMESTEP = TIMESTEP_TB.value;
+    current_settings.update_damping_coeff();
+    settings.update_damping_coeff();
+    DAMPING_COEFF_TB.value = settings.DAMPING_COEFF;
+    DAMPING_COEFF_TB.set_button_label(FONT_SIZE, std::to_string(settings.DAMPING_COEFF));
     FPS_LIMIT_TB.set_toggle(false);
     settings.FPS_LIMIT = FPS_LIMIT_TB.value;
     current_settings.FPS_LIMIT = FPS_LIMIT_TB.value;
