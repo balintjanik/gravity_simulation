@@ -66,8 +66,8 @@ void Node::calculate_force(Particle& p, double theta, double& all_force)
 			double force = (g * mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
 			// Update velocity
-			p.velocity.x -= force * cos(angle);
-			p.velocity.y -= force * sin(angle);
+			p.velocity.x -= force * cos(angle) * settings.TIMESTEP;
+			p.velocity.y -= force * sin(angle) * settings.TIMESTEP;
 			all_force += force;
 		}
 	}
@@ -83,8 +83,8 @@ void Node::calculate_force(Particle& p, double theta, double& all_force)
 			double force = (g * mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
 			// Update velocity
-			p.velocity.x -= force * cos(angle);
-			p.velocity.y -= force * sin(angle);
+			p.velocity.x -= force * cos(angle) * settings.TIMESTEP;
+			p.velocity.y -= force * sin(angle) * settings.TIMESTEP;
 			all_force += force;
 		}
 		else {

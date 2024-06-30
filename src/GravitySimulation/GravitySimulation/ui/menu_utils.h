@@ -354,26 +354,24 @@ void init_ui()
     ANIMATION_SETTINGS_TXT.setFont(FONT);
     ANIMATION_SETTINGS_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
-
+    
     TIMESTEP_TXT.setString("TIMESTEP");
     TIMESTEP_TXT.setFillColor(sf::Color::White);
     TIMESTEP_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     TIMESTEP_TXT.setFont(FONT);
     TIMESTEP_TXT.setCharacterSize(FONT_SIZE);
-    label_counter++;
-
-    TIMESTEP_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.TIMESTEP, "double");
-    TIMESTEP_TB.set_button_label(FONT_SIZE, std::to_string(settings.TIMESTEP));
-    button_counter++;
 
     FPS_LIMIT_TXT.setString("FPS LIMIT");
     FPS_LIMIT_TXT.setFillColor(sf::Color::White);
-    FPS_LIMIT_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    FPS_LIMIT_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
     FPS_LIMIT_TXT.setFont(FONT);
     FPS_LIMIT_TXT.setCharacterSize(FONT_SIZE);
     label_counter++;
 
-    FPS_LIMIT_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.FPS_LIMIT, "int");
+    TIMESTEP_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.TIMESTEP, "double");
+    TIMESTEP_TB.set_button_label(FONT_SIZE, std::to_string(settings.TIMESTEP));
+
+    FPS_LIMIT_TB = TextBox(FONT, sf::Vector2f((MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 - MARGIN_BETWEEN, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT + (MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT) / 2 + MARGIN_BETWEEN, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.FPS_LIMIT, "int");
     FPS_LIMIT_TB.set_button_label(FONT_SIZE, std::to_string(settings.FPS_LIMIT));
     button_counter++;
     block_counter++;
@@ -454,6 +452,17 @@ void init_ui()
 
     VISUALIZE_GRAVITY_TREE_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_GRAVITY_TREE);
     VISUALIZE_GRAVITY_TREE_BTN.set_button_label(FONT_SIZE, "VISUALIZE QUADTREE ON/OFF");
+    button_counter++;
+
+    QUADTREE_THETA_TXT.setString("COEFFICIENT (THETA)");
+    QUADTREE_THETA_TXT.setFillColor(sf::Color::White);
+    QUADTREE_THETA_TXT.setPosition(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    QUADTREE_THETA_TXT.setFont(FONT);
+    QUADTREE_THETA_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    QUADTREE_THETA_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.THETA, "double");
+    QUADTREE_THETA_TB.set_button_label(FONT_SIZE, std::to_string(settings.THETA));
     button_counter++;
     block_counter++;
 
@@ -632,6 +641,8 @@ void draw_menu(sf::RenderWindow& window)
 
     window.draw(GRAVITY_OPTIMIZATION_TXT);
     VISUALIZE_GRAVITY_TREE_BTN.draw(window);
+    window.draw(QUADTREE_THETA_TXT);
+    QUADTREE_THETA_TB.draw(window);
 
     // Multithreading settings elements
     window.draw(MULTITHREADING_TXT);
@@ -717,6 +728,10 @@ void untoggle_textboxes(sf::RenderWindow& window)
     COLLISION_CELL_SIZE_TB.set_toggle(false);
     current_settings.COLLISION_CELL_SIZE = COLLISION_CELL_SIZE_TB.value;
 
+    QUADTREE_THETA_TB.set_toggle(false);
+    current_settings.THETA = QUADTREE_THETA_TB.value;
+    settings.THETA = QUADTREE_THETA_TB.value;
+
     // Thread number setting
     THREAD_NUM_TB.set_toggle(false);
     current_settings.THREAD_NUM = THREAD_NUM_TB.value;
@@ -763,6 +778,7 @@ void handle_textbox_input(const sf::Event& event)
 
     // Optimization settings
     COLLISION_CELL_SIZE_TB.handle_input(event);
+    QUADTREE_THETA_TB.handle_input(event);
     
     // Thread number setting
     THREAD_NUM_TB.handle_input(event);
@@ -820,6 +836,7 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     COLLISION_CELL_SIZE_TB.get_button_status(window, event);
 
     VISUALIZE_GRAVITY_TREE_BTN.get_button_status(window, event);
+    QUADTREE_THETA_TB.get_button_status(window, event);
 
     // Thread number setting
     THREAD_NUM_TB.get_button_status(window, event);
@@ -1039,6 +1056,8 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         current_settings.VISUALIZE_GRAVITY_TREE = !current_settings.VISUALIZE_GRAVITY_TREE;
         settings.VISUALIZE_GRAVITY_TREE = current_settings.VISUALIZE_GRAVITY_TREE;
     }
+    else if (QUADTREE_THETA_TB.is_pressed)
+        QUADTREE_THETA_TB.set_toggle(true);
 
     // Thread number setting
     else if (THREAD_NUM_TB.is_pressed)

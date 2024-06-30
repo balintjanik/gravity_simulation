@@ -117,7 +117,7 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 break;
             case SpeedType::Galaxy:
                 distance = v2f_distance(initial_position, sin_pos);
-                speed = 3 * sqrt(settings.SINGULARITY_MASS / distance);
+                speed = sqrt(settings.SINGULARITY_MASS / distance);
                 angle = atan2(y - sin_pos.y, x - sin_pos.x) + PI / 2;
                 rand_x = 1; // generate_random_double(0.9, 1.1);
                 rand_y = 1; // generate_random_double(0.9, 1.1);

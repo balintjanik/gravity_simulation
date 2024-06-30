@@ -143,6 +143,8 @@ static TextBox COLLISION_CELL_SIZE_TB;
 
 static sf::Text GRAVITY_OPTIMIZATION_TXT;
 static ToggleButton VISUALIZE_GRAVITY_TREE_BTN;
+static sf::Text QUADTREE_THETA_TXT;
+static TextBox QUADTREE_THETA_TB;
 
 static sf::Text MULTITHREADING_TXT;
 static sf::Text THREAD_NUM_TXT;
