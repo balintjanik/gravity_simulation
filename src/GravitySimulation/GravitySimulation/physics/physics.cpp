@@ -214,10 +214,10 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
                 double impulse = settings.COLLISION_IMPULSE_COEFF * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
 
                 // Update velocities based on impulse (conservation of momentum)
-                p_1.velocity.x += impulse * normal_x * p_2.mass * settings.TIMESTEP;
-                p_1.velocity.y += impulse * normal_y * p_2.mass * settings.TIMESTEP;
-                p_2.velocity.x -= impulse * normal_x * p_1.mass * settings.TIMESTEP;
-                p_2.velocity.y -= impulse * normal_y * p_1.mass * settings.TIMESTEP;
+                p_1.velocity.x += impulse * normal_x * p_2.mass;
+                p_1.velocity.y += impulse * normal_y * p_2.mass;
+                p_2.velocity.x -= impulse * normal_x * p_1.mass;
+                p_2.velocity.y -= impulse * normal_y * p_1.mass;
 
                 // Update color based on collision if gravity is off and collision is on
                 if (settings.HAS_COLLISIONS && !settings.HAS_GRAVITY)

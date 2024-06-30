@@ -163,7 +163,7 @@ static SimpleButton EXIT_BTN;
 class Settings {
 public:
 	// Timestep (speed of animation)
-	double TIMESTEP = 0.1;
+	double TIMESTEP = 0.5;
 	
 	// Setup type
 	PlacementType PLACEMENT_TYPE = PlacementType::Circular;
@@ -237,7 +237,7 @@ public:
 	{
 		MAX_FORCES = 3 * sqrt(MASS) * ((double)N / 700);
 		TRAIL_RADIUS = (RADIUS / 2 > 1 ? RADIUS / 2 : 1);
-		DAMPING_COEFF = MASS * TIMESTEP / 5;
+		DAMPING_COEFF = MASS * TIMESTEP / 20;
 		THREAD_NUM = (THREAD_NUM > MAX_THREAD_NUM ? MAX_THREAD_NUM : THREAD_NUM);
 	}
 };
