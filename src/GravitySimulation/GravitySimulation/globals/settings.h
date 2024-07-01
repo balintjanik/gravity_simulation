@@ -52,6 +52,12 @@ static sf::Text FPS_TXT;
 // Performance
 extern unsigned int GRAV_CALC_COUNT;
 static sf::Text GRAV_COUNT_TXT;
+extern unsigned int QUADTREE_DEPTH;
+static sf::Text QUADTREE_DEPTH_TXT;
+extern unsigned int QUADTREE_NODES;
+static sf::Text QUADTREE_NODES_TXT;
+extern unsigned int QUADTREE_LEAVES;
+static sf::Text QUADTREE_LEAVES_TXT;
 extern unsigned int COLL_CALC_COUNT;
 static sf::Text COLL_COUNT_TXT;
 
@@ -206,16 +212,15 @@ public:
 	double DAMPING_DIST = 2.0;
 	
 	// Collision optimization settings
-	bool VISUALIZE_SPATIAL_GRID = false; // draw grid
-	bool VISUALIZE_PARTICLE_CELL = false; // color particle based on position in optimization grid (instead of the forces acting on it)
-	bool VISUALIZE_CELL_MASS = false; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
-	bool VISUALIZE_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
+	bool VISUALIZE_COLLISION_GRID = false; // draw grid
+	bool VISUALIZE_COLLISION_PARTICLE_CELL = false; // color particle based on position in optimization grid (instead of the forces acting on it)
+	bool VISUALIZE_COLLISION_CELL_MASS = false; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_COLLISION_GRID ON]
+	bool VISUALIZE_COLLISION_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_COLLISION_GRID ON]
 	int COLLISION_CELL_SIZE = 20;
 
 	// Gravity optimization settings
+	bool IS_GRAVITY_QUADTREE = true;
 	bool VISUALIZE_GRAVITY_TREE = false;
-
-	// Quadtree settings
 	double THETA = 0.5;
 
 	// Max threads

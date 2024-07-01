@@ -195,7 +195,7 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
 
     // Draw particles
     // If not set otherwise, draw them the most effective way
-    if (!(settings.VISUALIZE_SPATIAL_GRID || settings.VISUALIZE_PARTICLE_CELL))
+    if (!(settings.VISUALIZE_COLLISION_GRID || settings.VISUALIZE_COLLISION_PARTICLE_CELL))
     {
         for (auto& p : particles)
         {
@@ -219,7 +219,7 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
     else
     {
         // Draw grid
-        if (settings.VISUALIZE_SPATIAL_GRID)
+        if (settings.VISUALIZE_COLLISION_GRID)
         {
             for (int x = 0; x < collision_grid.width; x++)
             {
@@ -229,7 +229,7 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
                     sf::RectangleShape cell(c_size);
 
                     sf::Color fill_col = sf::Color::Transparent;
-                    if (settings.VISUALIZE_CELL_MASS)
+                    if (settings.VISUALIZE_COLLISION_CELL_MASS)
                     {
                         fill_col = map_forces_to_color(collision_grid.get(x, y).total_mass / settings.COLLISION_CELL_SIZE);
                         fill_col.a = 140;
@@ -267,7 +267,7 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
                     sf::CircleShape circle(p.radius - (p.is_singularity ? SINGULARITY_OUTLINE_THICKNESS : 0));
 
                     // Set color based on custom settings
-                    if (settings.VISUALIZE_PARTICLE_CELL)
+                    if (settings.VISUALIZE_COLLISION_PARTICLE_CELL)
                     {
                         circle.setFillColor(col);
                         if (p.is_singularity)
@@ -293,7 +293,7 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
                 }
 
                 // draw center of mass
-                if (settings.VISUALIZE_COM)
+                if (settings.VISUALIZE_COLLISION_COM)
                 {
                     sf::CircleShape com(5, 3);
                     com.setFillColor(sf::Color::Red);

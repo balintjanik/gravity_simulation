@@ -50,12 +50,15 @@ bool Node::is_particle_within_bounds(const Particle& p) const {
 		p.position.y >= y - width / 2.0 && p.position.y <= y + width / 2.0);
 }
 
-void Node::calculate_force(Particle& p, double theta, double& all_force)
+unsigned int Node::calculate_force(Particle& p, double theta, double& all_force)
 {
+	int calculation_count = 0;
+
 	if (is_leaf)
 	{
 		if (particle != nullptr && (particle->position.x != p.position.x || particle->position.y != p.position.y))
 		{
+			calculation_count++;
 
 			// Calculate distance and angle
 			double angle = atan2(p.position.y - com_y, p.position.x - com_x);
@@ -78,6 +81,8 @@ void Node::calculate_force(Particle& p, double theta, double& all_force)
 		double distance = v2f_distance(p.position, sf::Vector2f(com_x, com_y));
 
 		if (width / distance < theta) {
+			calculation_count++;
+
 			// Calculate gravitational force
 			double g = 1;
 			double force = (g * mass) / (pow(distance, 2) + pow(EPSYLON, 2));
@@ -90,11 +95,13 @@ void Node::calculate_force(Particle& p, double theta, double& all_force)
 		else {
 			for (auto& child : children) {
 				if (child != nullptr) {
-					child->calculate_force(p, theta, all_force);
+					calculation_count += child->calculate_force(p, theta, all_force);
 				}
 			}
 		}
 	}
+
+	return calculation_count;
 }
 
 void Node::draw(sf::RenderWindow& window)
@@ -111,6 +118,53 @@ void Node::draw(sf::RenderWindow& window)
 			children[i]->draw(window);
 		}
 	}
+}
+
+unsigned int Node::get_depth()
+{
+	unsigned int max_depth = 0;
+
+	for (int i = 0; i < 4; ++i) {
+		if (children[i] == nullptr)
+			continue;
+
+		max_depth = std::max(max_depth, children[i]->get_depth());
+	}
+
+	return max_depth + 1;
+}
+
+unsigned int Node::get_node_count()
+{
+	unsigned int nodes = 1;
+
+	for (int i = 0; i < 4; ++i) {
+		if (children[i] == nullptr)
+			continue;
+
+		nodes += children[i]->get_node_count();
+	}
+
+	return nodes;
+}
+
+unsigned int Node::get_leaf_count()
+{
+	unsigned int leaves = 0;
+
+	if (is_leaf)
+		leaves = 1;
+	else
+	{
+		for (int i = 0; i < 4; ++i) {
+			if (children[i] == nullptr)
+				continue;
+
+			leaves += children[i]->get_leaf_count();
+		}
+	}
+
+	return leaves;
 }
 
 int Node::get_quadrant(const Particle& p) {

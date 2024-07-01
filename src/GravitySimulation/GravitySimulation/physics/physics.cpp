@@ -13,7 +13,7 @@ void update_gravity_quadtree_region(QuadTree& gravity_tree, int start, int end)
     for (int i = start; i < end; i++) {
         Particle& p = particles[i];
         double all_force = 0.0;
-        gravity_tree.calculate_forces(p, all_force);
+        GRAV_CALC_COUNT += gravity_tree.calculate_forces(p, all_force);
 
         // Update color
         sf::Color updated_color = map_forces_to_color(all_force);
@@ -31,6 +31,11 @@ void update_gravity_quadtree(sf::RenderWindow& window)
     for (const auto& p : particles) {
         gravity_tree.insert(p);
     }
+
+    // Get stats
+    QUADTREE_DEPTH = gravity_tree.get_depth();
+    QUADTREE_NODES = gravity_tree.get_node_count();
+    QUADTREE_LEAVES = gravity_tree.get_leaf_count();
 
     // Draw quadtree if set
     if (settings.VISUALIZE_GRAVITY_TREE)
@@ -57,8 +62,8 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
     for (int i = start; i < end; i++) {
         auto& p_1 = particles[i];
         double all_force = 0.0;
-        int p_1_x = std::floor(p_1.position.x / optim_grid.cell_size);
-        int p_1_y = std::floor(p_1.position.y / optim_grid.cell_size);
+        int p_1_x = floor(p_1.position.x / optim_grid.cell_size);
+        int p_1_y = floor(p_1.position.y / optim_grid.cell_size);
 
         for (int x = 0; x < optim_grid.width; x++) {
             for (int y = 0; y < optim_grid.height; y++) {
@@ -78,8 +83,8 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
                     double force = (g * cell.total_mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
                     // Update velocity
-                    p_1.velocity.x -= force * cos(angle);
-                    p_1.velocity.y -= force * sin(angle);
+                    p_1.velocity.x -= force * cos(angle) * settings.TIMESTEP;
+                    p_1.velocity.y -= force * sin(angle) * settings.TIMESTEP;
                     all_force += force;
                 }
             }
@@ -114,8 +119,8 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
                     double force = (g * p_2.mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
                     // Update velocity
-                    p_1.velocity.x -= force * cos(angle);
-                    p_1.velocity.y -= force * sin(angle);
+                    p_1.velocity.x -= force * cos(angle) * settings.TIMESTEP;
+                    p_1.velocity.y -= force * sin(angle) * settings.TIMESTEP;
                     all_force += force;
                 }
             }
@@ -324,8 +329,10 @@ void update_positions(Grid& collision_grid, sf::RenderWindow& window)
     // Calculate gravitational forces
     if (settings.HAS_GRAVITY)
     {
-        // update_gravity(collision_grid);
-        update_gravity_quadtree(window);
+        if (settings.IS_GRAVITY_QUADTREE)
+            update_gravity_quadtree(window);
+        else
+            update_gravity(collision_grid);
     }
     else // Update default coloring
     {

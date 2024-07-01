@@ -1,6 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <algorithm>
 #include "../physics/particle.h"
 #include "../utils/utils.h"
 
@@ -31,8 +32,11 @@ public:
     }
 
     void insert(Particle p);
-    void calculate_force(Particle& p, double theta, double& force_x); // double& force_x, double& force_y);
+    unsigned int calculate_force(Particle& p, double theta, double& force_x); // double& force_x, double& force_y);
     void draw(sf::RenderWindow& window);
+    unsigned int get_depth();
+    unsigned int get_node_count();
+    unsigned int get_leaf_count();
     
 private:
     bool is_particle_within_bounds(const Particle& p) const;

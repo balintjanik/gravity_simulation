@@ -54,20 +54,13 @@ int main()
                 // Show/hide menu
                 else if (event.key.code == SHOW_MENU_KEY)
                 {
-                    if (SHOW_MENU)
-                    {
-                        SHOW_MENU = false;
-                        FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
-                        GRAV_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
-                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + FONT_SIZE + 2 * MARGIN_BETWEEN);
-                    }
-                    else
-                    {
-                        SHOW_MENU = true;
-                        FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
-                        GRAV_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
-                        COLL_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + FONT_SIZE + 2 * MARGIN_BETWEEN);
-                    }
+                    SHOW_MENU = !SHOW_MENU;
+                    FPS_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, FPS_TXT.getPosition().y);
+                    GRAV_COUNT_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, GRAV_COUNT_TXT.getPosition().y);
+                    QUADTREE_DEPTH_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_DEPTH_TXT.getPosition().y);
+                    QUADTREE_NODES_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_NODES_TXT.getPosition().y);
+                    QUADTREE_LEAVES_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_LEAVES_TXT.getPosition().y);
+                    COLL_COUNT_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, COLL_COUNT_TXT.getPosition().y);
 
                     click_sound.play();
                 }

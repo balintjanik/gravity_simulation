@@ -22,14 +22,29 @@ public:
         root->insert(p);
     }
 
-    void calculate_forces(Particle& p, double& all_force)
+    unsigned int calculate_forces(Particle& p, double& all_force)
     {
-        root->calculate_force(p, theta, all_force);
+        return root->calculate_force(p, theta, all_force);
     }
 
     void draw(sf::RenderWindow& window)
     {
         root->draw(window);
+    }
+
+    unsigned int get_depth()
+    {
+        return root->get_depth();
+    }
+
+    unsigned int get_node_count()
+    {
+        return root->get_node_count();
+    }
+
+    unsigned int get_leaf_count()
+    {
+        return root->get_leaf_count();
     }
 };
 
