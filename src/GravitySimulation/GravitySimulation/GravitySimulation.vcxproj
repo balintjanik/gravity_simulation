@@ -148,6 +148,7 @@ xcopy /y "$(ProjectDir)openal32.dll" "$(TargetDir)"</Command>
     <ClCompile Include="quadtree\node.cpp" />
     <ClCompile Include="sound\sound_manager.cpp" />
     <ClCompile Include="ui\button.cpp" />
+    <ClCompile Include="ui\menu_utils.cpp" />
     <ClCompile Include="ui\simple_button.cpp" />
     <ClCompile Include="ui\textbox.cpp" />
     <ClCompile Include="ui\toggle_button.cpp" />

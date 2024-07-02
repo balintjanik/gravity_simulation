@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-std::string key_to_string(sf::Keyboard::Key key) {
+static std::string key_to_string(sf::Keyboard::Key key) {
     static std::unordered_map<sf::Keyboard::Key, std::string> key_map = {
         {sf::Keyboard::A, "A"},
         {sf::Keyboard::B, "B"},

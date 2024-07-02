@@ -244,6 +244,7 @@ public:
 	{
 		MAX_FORCES = 3 * sqrt(MASS) * ((double)N / 700);
 		TRAIL_RADIUS = (RADIUS / 2 > 1 ? RADIUS / 2 : 1);
+		HAS_DAMPING = HAS_DAMPING && SPEED_TYPE != SpeedType::Galaxy;
 		update_damping_coeff();
 		THREAD_NUM = (THREAD_NUM > MAX_THREAD_NUM ? MAX_THREAD_NUM : THREAD_NUM);
 	}

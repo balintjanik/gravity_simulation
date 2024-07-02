@@ -19,7 +19,6 @@ int main()
 
     // Initialize
     recalc_sizes(screen.width, screen.height);
-    init_ui();
     init_sounds();
     init_music();
     Grid collision_grid(settings.COLLISION_CELL_SIZE);
@@ -38,7 +37,6 @@ int main()
                 sf::View view(sf::FloatRect(0, 0, static_cast<float>(new_size.x), static_cast<float>(new_size.y)));
                 window.setView(view);
                 recalc_sizes(new_size.x, new_size.y);
-                init_ui();
                 reload_sim(collision_grid);
             }
 
@@ -55,12 +53,7 @@ int main()
                 else if (event.key.code == SHOW_MENU_KEY)
                 {
                     SHOW_MENU = !SHOW_MENU;
-                    FPS_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, FPS_TXT.getPosition().y);
-                    GRAV_COUNT_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, GRAV_COUNT_TXT.getPosition().y);
-                    QUADTREE_DEPTH_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_DEPTH_TXT.getPosition().y);
-                    QUADTREE_NODES_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_NODES_TXT.getPosition().y);
-                    QUADTREE_LEAVES_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_LEAVES_TXT.getPosition().y);
-                    COLL_COUNT_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, COLL_COUNT_TXT.getPosition().y);
+                    update_performance_position(SHOW_MENU);
 
                     click_sound.play();
                 }
@@ -92,19 +85,14 @@ int main()
                         SHOW_MENU = false;
                         SHOW_HELP = false;
                         SHOW_PERFORMANCE = false;
-                        FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
-                        GRAV_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
-                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + 2 * TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
                     }
                     else
                     {
                         SHOW_MENU = true;
                         SHOW_HELP = true;
                         SHOW_PERFORMANCE = true;
-                        FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
-                        GRAV_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
-                        COLL_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + 2 * TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
                     }
+                    update_performance_position(SHOW_MENU);
 
                     click_sound.play();
                 }
@@ -163,7 +151,7 @@ int main()
 
         // Draw fps
         if (SHOW_PERFORMANCE)
-            draw_fps(window);
+            draw_performance(window);
 
         // Draw help
         if (SHOW_HELP)
