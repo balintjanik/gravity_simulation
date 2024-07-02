@@ -98,6 +98,8 @@ void TextBox::get_button_status(sf::RenderWindow& window, sf::Event& event)
             {
                 click_sound.play();
                 this->is_pressed = true;
+
+                set_toggle(true);
             }
         }
 

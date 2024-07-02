@@ -912,24 +912,7 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
 {
     // Simulation settings
 
-    if (PARTICLE_NUM_TB.is_pressed)
-    {
-        PARTICLE_NUM_TB.set_toggle(true);
-    }
-    else if (PARTICLE_RADIUS_TB.is_pressed)
-    {
-        PARTICLE_RADIUS_TB.set_toggle(true);
-    }
-    else if (PARTICLE_MASS_TB.is_pressed)
-    {
-        PARTICLE_MASS_TB.set_toggle(true);
-    }
-    else if (SINGULARITY_MASS_TB.is_pressed)
-    {
-        SINGULARITY_MASS_TB.set_toggle(true);
-    }
-
-    else if (PLACEMENT_TYPE_CIRCULAR_BTN.is_pressed)
+    if (PLACEMENT_TYPE_CIRCULAR_BTN.is_pressed)
     {
         PLACEMENT_TYPE_CIRCULAR_BTN.set_toggle(true);
         PLACEMENT_TYPE_FULLSCREEN_BTN.set_toggle(false);
@@ -948,14 +931,6 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         PLACEMENT_RADIUS_TB.get_button_status(window, event);
         SPAWN_MARGIN_TB.is_active = true;
         SPAWN_MARGIN_TB.get_button_status(window, event);
-    }
-    else if (PLACEMENT_RADIUS_TB.is_pressed)
-    {
-        PLACEMENT_RADIUS_TB.set_toggle(true);
-    }
-    else if (SPAWN_MARGIN_TB.is_pressed)
-    {
-        SPAWN_MARGIN_TB.set_toggle(true);
     }
 
     else if (SPEED_TYPE_ANGULAR_BTN.is_pressed)
@@ -1014,14 +989,6 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         DAMPING_COEFF_TB.is_active = current_settings.HAS_DAMPING;
         DAMPING_COEFF_TB.get_button_status(window, event);
     }
-    else if (DAMPING_DIST_TB.is_pressed)
-    {
-        DAMPING_DIST_TB.set_toggle(true);
-    }
-    else if (DAMPING_COEFF_TB.is_pressed)
-    {
-        DAMPING_COEFF_TB.set_toggle(true);
-    }
 
     else if (HAS_COLLISIONS_BTN.is_pressed)
     {
@@ -1035,18 +1002,6 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         COLLISION_IMPULSE_COEFF_TB.is_active = current_settings.HAS_COLLISIONS;
         COLLISION_IMPULSE_COEFF_TB.get_button_status(window, event);
     }
-    else if (COLLISION_THRESHOLD_TB.is_pressed)
-    {
-        COLLISION_THRESHOLD_TB.set_toggle(true);
-    }
-    else if (COLLISION_ITERATIONS_TB.is_pressed)
-    {
-        COLLISION_ITERATIONS_TB.set_toggle(true);
-    }
-    else if (COLLISION_IMPULSE_COEFF_TB.is_pressed)
-    {
-        COLLISION_IMPULSE_COEFF_TB.set_toggle(true);
-    }
 
     else if (RELOAD_BTN.is_pressed)
     {
@@ -1055,12 +1010,6 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
     }
 
     // Display settings
-
-    else if (TIMESTEP_TB.is_pressed)
-        TIMESTEP_TB.set_toggle(true);
-    
-    else if (FPS_LIMIT_TB.is_pressed)
-        FPS_LIMIT_TB.set_toggle(true);
 
     else if (HAS_TRAIL_BTN.is_pressed)
     {
@@ -1080,6 +1029,11 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
         VISUALIZE_COM_BTN.is_active = current_settings.VISUALIZE_COLLISION_GRID;
         VISUALIZE_COM_BTN.get_button_status(window, event);
+
+        // Turn off gravity tree automatically
+        VISUALIZE_GRAVITY_TREE_BTN.set_toggle(false);
+        current_settings.VISUALIZE_GRAVITY_TREE = false;
+        settings.VISUALIZE_GRAVITY_TREE = false;
     }
     else if (VISUALIZE_PARTICLE_CELL_BTN.is_pressed)
     {
@@ -1096,22 +1050,24 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         current_settings.VISUALIZE_COLLISION_COM = !current_settings.VISUALIZE_COLLISION_COM;
         settings.VISUALIZE_COLLISION_COM = current_settings.VISUALIZE_COLLISION_COM;
     }
-
-    else if (COLLISION_CELL_SIZE_TB.is_pressed)
-        COLLISION_CELL_SIZE_TB.set_toggle(true);
     
     else if (VISUALIZE_GRAVITY_TREE_BTN.is_pressed)
     {
         current_settings.VISUALIZE_GRAVITY_TREE = !current_settings.VISUALIZE_GRAVITY_TREE;
         settings.VISUALIZE_GRAVITY_TREE = current_settings.VISUALIZE_GRAVITY_TREE;
-    }
-    else if (QUADTREE_THETA_TB.is_pressed)
-        QUADTREE_THETA_TB.set_toggle(true);
+        
+        // Turn off collision grid automatically
+        current_settings.VISUALIZE_COLLISION_GRID = false;
+        settings.VISUALIZE_COLLISION_GRID = false;
 
-    // Thread number setting
-    else if (THREAD_NUM_TB.is_pressed)
-        THREAD_NUM_TB.set_toggle(true);
-    
+        VISUALIZE_GRID_BTN.set_toggle(false);
+        VISUALIZE_PARTICLE_CELL_BTN.is_active = false;
+        VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
+        VISUALIZE_CELL_MASS_BTN.is_active = false;
+        VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
+        VISUALIZE_COM_BTN.is_active = false;
+        VISUALIZE_COM_BTN.get_button_status(window, event);
+    }
 
     // Audio settings
     else if (SOUND_BTN.is_pressed)
@@ -1124,8 +1080,6 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         SOUND_VOLUME_TB.is_active = current_settings.HAS_SOUND;
         SOUND_VOLUME_TB.get_button_status(window, event);
     }
-    else if (SOUND_VOLUME_TB.is_pressed)
-        SOUND_VOLUME_TB.set_toggle(true);
 
     else if (MUSIC_BTN.is_pressed)
     {
@@ -1137,8 +1091,6 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         MUSIC_VOLUME_TB.is_active = current_settings.HAS_MUSIC;
         MUSIC_VOLUME_TB.get_button_status(window, event);
     }
-    else if (MUSIC_VOLUME_TB.is_pressed)
-        MUSIC_VOLUME_TB.set_toggle(true);
 
     else if (EXIT_BTN.is_pressed)
         window.close();
