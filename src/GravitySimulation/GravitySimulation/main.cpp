@@ -94,7 +94,7 @@ int main()
                         SHOW_PERFORMANCE = false;
                         FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
                         GRAV_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
-                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + 2* TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
+                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + 2 * TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
                     }
                     else
                     {
@@ -114,9 +114,16 @@ int main()
                     add_singularity(collision_grid);
                     blackhole_sound.play();
                 }
+                // Enter textbox
+                else if (event.key.code == sf::Keyboard::Enter)
+                {
+                    untoggle_textboxes(window);
+                }
                 // Exit
                 else if (event.key.code == EXIT_KEY)
+                {
                     window.close();
+                }
             }
 
             if (SHOW_MENU)

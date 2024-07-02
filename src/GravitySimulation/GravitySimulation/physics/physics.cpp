@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void update_gravity_quadtree_region(QuadTree& gravity_tree, int start, int end)
+void update_gravity_quadtree_range(QuadTree& gravity_tree, int start, int end)
 {
     // Calculate forces and update positions and velocities
     for (int i = start; i < end; i++) {
@@ -50,7 +50,7 @@ void update_gravity_quadtree(sf::RenderWindow& window)
         int start = i * part_size;
         int end = (i == num_threads - 1) ? particles.size() : (i + 1) * part_size;
 
-        threads.emplace_back(update_gravity_quadtree_region, ref(gravity_tree), start, end);
+        threads.emplace_back(update_gravity_quadtree_range, ref(gravity_tree), start, end);
     }
 
     for (auto& t : threads) {

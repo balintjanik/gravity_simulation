@@ -93,6 +93,8 @@ static ToggleButton PLACEMENT_TYPE_FULLSCREEN_BTN;
 static ToggleButton PLACEMENT_TYPE_CIRCULAR_BTN;
 static sf::Text PLACEMENT_RADIUS_TXT;
 static TextBox PLACEMENT_RADIUS_TB;
+static sf::Text SPAWN_MARGIN_TXT;
+static TextBox SPAWN_MARGIN_TB;
 
 static sf::Text SPEED_TYPE_TXT;
 static ToggleButton SPEED_TYPE_RANDOM_BTN;

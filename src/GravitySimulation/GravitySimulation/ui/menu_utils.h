@@ -200,6 +200,18 @@ void init_ui()
     PLACEMENT_RADIUS_TB.set_button_label(FONT_SIZE, std::to_string(settings.R));
     PLACEMENT_RADIUS_TB.is_active = settings.PLACEMENT_TYPE == PlacementType::Circular;
     button_counter++;
+
+    SPAWN_MARGIN_TXT.setString("MARGIN");
+    SPAWN_MARGIN_TXT.setFillColor(sf::Color::White);
+    SPAWN_MARGIN_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK);
+    SPAWN_MARGIN_TXT.setFont(FONT);
+    SPAWN_MARGIN_TXT.setCharacterSize(FONT_SIZE);
+    label_counter++;
+
+    SPAWN_MARGIN_TB = TextBox(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.SPAWN_MARGIN, "int");
+    SPAWN_MARGIN_TB.set_button_label(FONT_SIZE, std::to_string(settings.SPAWN_MARGIN));
+    SPAWN_MARGIN_TB.is_active = settings.PLACEMENT_TYPE == PlacementType::Fullscreen;
+    button_counter++;
     block_counter++;
 
     // Speed type settings
@@ -432,14 +444,17 @@ void init_ui()
 
     VISUALIZE_PARTICLE_CELL_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_COLLISION_PARTICLE_CELL);
     VISUALIZE_PARTICLE_CELL_BTN.set_button_label(FONT_SIZE, "VISUALIZE PARTICLES' CELL ON/OFF");
+    VISUALIZE_PARTICLE_CELL_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
     button_counter++;
 
     VISUALIZE_CELL_MASS_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_COLLISION_CELL_MASS);
     VISUALIZE_CELL_MASS_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' MASS ON/OFF");
+    VISUALIZE_CELL_MASS_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
     button_counter++;
 
     VISUALIZE_COM_BTN = ToggleButton(FONT, sf::Vector2f(MENU_WIDTH - MARGIN_LEFT - MARGIN_RIGHT, BTN_HEIGHT), sf::Vector2f(WIDTH - MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + button_counter * (BTN_HEIGHT + MARGIN_BETWEEN) + title_counter * (TITLE_FONT_SIZE + MARGIN_BETWEEN) + label_counter * (FONT_SIZE + MARGIN_BETWEEN) + block_counter * MARGIN_BLOCK), settings.VISUALIZE_COLLISION_COM);
     VISUALIZE_COM_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' CENTER OF MASS ON/OFF");
+    VISUALIZE_COM_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
     button_counter++;
 
     COLLISION_CELL_SIZE_TXT.setString("CELL SIZE");
@@ -453,13 +468,6 @@ void init_ui()
     COLLISION_CELL_SIZE_TB.set_button_label(FONT_SIZE, std::to_string(settings.COLLISION_CELL_SIZE));
     button_counter++;
     block_counter++;
-
-    if (!settings.VISUALIZE_COLLISION_GRID)
-    {
-        VISUALIZE_PARTICLE_CELL_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
-        VISUALIZE_CELL_MASS_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
-        VISUALIZE_COM_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
-    }
 
     // Gravity optimization settings
     GRAVITY_OPTIMIZATION_TXT.setString("GRAVITY OPTIMIZATION");
@@ -594,6 +602,8 @@ void draw_menu(sf::RenderWindow& window)
     PLACEMENT_TYPE_FULLSCREEN_BTN.draw(window);
     window.draw(PLACEMENT_RADIUS_TXT);
     PLACEMENT_RADIUS_TB.draw(window);
+    window.draw(SPAWN_MARGIN_TXT);
+    SPAWN_MARGIN_TB.draw(window);
 
     window.draw(SPEED_TYPE_TXT);
     SPEED_TYPE_ANGULAR_BTN.draw(window);
@@ -721,6 +731,8 @@ void untoggle_textboxes(sf::RenderWindow& window)
 
     PLACEMENT_RADIUS_TB.set_toggle(false);
     current_settings.R = PLACEMENT_RADIUS_TB.value;
+    SPAWN_MARGIN_TB.set_toggle(false);
+    current_settings.SPAWN_MARGIN = SPAWN_MARGIN_TB.value;
 
     COLLISION_THRESHOLD_TB.set_toggle(false);
     current_settings.COLLISION_THRESHOLD = COLLISION_THRESHOLD_TB.value;
@@ -792,6 +804,7 @@ void handle_textbox_input(const sf::Event& event)
     SINGULARITY_MASS_TB.handle_input(event);
 
     PLACEMENT_RADIUS_TB.handle_input(event);
+    SPAWN_MARGIN_TB.handle_input(event);
 
     COLLISION_THRESHOLD_TB.handle_input(event);
     COLLISION_ITERATIONS_TB.handle_input(event);
@@ -829,6 +842,7 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     PLACEMENT_TYPE_CIRCULAR_BTN.get_button_status(window, event);
     PLACEMENT_TYPE_FULLSCREEN_BTN.get_button_status(window, event);
     PLACEMENT_RADIUS_TB.get_button_status(window, event);
+    SPAWN_MARGIN_TB.get_button_status(window, event);
 
     SPEED_TYPE_ANGULAR_BTN.get_button_status(window, event);
     SPEED_TYPE_RANDOM_BTN.get_button_status(window, event);
@@ -878,7 +892,7 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     EXIT_BTN.get_button_status(window, event);
 }
 
-void reload_sim(Grid& optim_grid)
+void reload_sim(Grid& collision_grid)
 {
     // Load new settings
     settings = current_settings;
@@ -891,8 +905,7 @@ void reload_sim(Grid& optim_grid)
     particles = generate_particles(settings.SPAWN_MARGIN, CANVAS_WIDTH - settings.SPAWN_MARGIN, settings.SPAWN_MARGIN, HEIGHT - settings.SPAWN_MARGIN);
 
     // Init optimization grid
-    optim_grid = Grid(settings.COLLISION_CELL_SIZE);
-    init_optim_grid(optim_grid);
+    init_optim_grid(collision_grid);
 }
 
 void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& optim_grid)
@@ -923,6 +936,8 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         current_settings.PLACEMENT_TYPE = PlacementType::Circular;
         PLACEMENT_RADIUS_TB.is_active = true;
         PLACEMENT_RADIUS_TB.get_button_status(window, event);
+        SPAWN_MARGIN_TB.is_active = false;
+        SPAWN_MARGIN_TB.get_button_status(window, event);
     }
     else if (PLACEMENT_TYPE_FULLSCREEN_BTN.is_pressed)
     {
@@ -931,10 +946,16 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         current_settings.PLACEMENT_TYPE = PlacementType::Fullscreen;
         PLACEMENT_RADIUS_TB.is_active = false;
         PLACEMENT_RADIUS_TB.get_button_status(window, event);
+        SPAWN_MARGIN_TB.is_active = true;
+        SPAWN_MARGIN_TB.get_button_status(window, event);
     }
     else if (PLACEMENT_RADIUS_TB.is_pressed)
     {
         PLACEMENT_RADIUS_TB.set_toggle(true);
+    }
+    else if (SPAWN_MARGIN_TB.is_pressed)
+    {
+        SPAWN_MARGIN_TB.set_toggle(true);
     }
 
     else if (SPEED_TYPE_ANGULAR_BTN.is_pressed)
@@ -1078,7 +1099,7 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
 
     else if (COLLISION_CELL_SIZE_TB.is_pressed)
         COLLISION_CELL_SIZE_TB.set_toggle(true);
-
+    
     else if (VISUALIZE_GRAVITY_TREE_BTN.is_pressed)
     {
         current_settings.VISUALIZE_GRAVITY_TREE = !current_settings.VISUALIZE_GRAVITY_TREE;

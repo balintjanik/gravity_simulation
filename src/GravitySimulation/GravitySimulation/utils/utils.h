@@ -23,7 +23,7 @@ std::vector<Particle> generate_particles(double min_x, double max_x, double min_
 
 void add_singularity(Grid& collision_grid);
 
-void init_optim_grid(Grid& collision_grid);
+void init_optim_grid(Grid& grid);
 
 int get_idx_by_id(int id);
 

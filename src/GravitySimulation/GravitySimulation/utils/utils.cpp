@@ -152,11 +152,11 @@ void add_singularity(Grid& collision_grid)
     id_counter++;
 }
 
-void init_optim_grid(Grid& collision_grid)
+void init_optim_grid(Grid& grid)
 {
     for (auto& p : particles)
     {
-        collision_grid.add_particle(p);
+        grid.add_particle(p);
     }
 }
 
