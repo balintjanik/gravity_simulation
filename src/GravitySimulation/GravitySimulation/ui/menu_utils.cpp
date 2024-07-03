@@ -108,8 +108,9 @@ void init_ui()
     // Help text
     HELP_TXT.setString(key_to_string(RELOAD_KEY) + ": RELOAD\t"
         + key_to_string(SINGULARITY_KEY) + ": PLACE BLACK HOLE\t"
-        + key_to_string(SHOW_MENU_KEY) + ": SHOW/HIDE MENU\t"
-        + key_to_string(SHOW_HELP_KEY) + ": SHOW/HIDE HELP");
+        + key_to_string(PAUSE_KEY) + ": PAUSE\t"
+        + key_to_string(FRAMESTEP_KEY) + ": STEP FRAME-BY-FRAME\t"
+        + key_to_string(EXIT_KEY) + ": EXIT");
     HELP_TXT.setFillColor(sf::Color::White);
     HELP_TXT.setFont(FONT);
     HELP_TXT.setCharacterSize(TITLE_FONT_SIZE);
@@ -117,9 +118,10 @@ void init_ui()
     HELP_TXT.setOrigin(help_txt_rect.width / 2.0f, help_txt_rect.height / 2.0f);
     HELP_TXT.setPosition(WIDTH / 2, HEIGHT - FONT_SIZE - MARGIN_BOTTOM);
 
-    HELP2_TXT.setString(key_to_string(SHOW_PERFORMANCE_KEY) + ": SHOW/HIDE PERFORMANCE\t"
-        + key_to_string(SHOW_ALL_KEY) + ": SHOW/HIDE EVERYTHING\t"
-        + key_to_string(EXIT_KEY) + ": EXIT");
+    HELP2_TXT.setString(key_to_string(SHOW_MENU_KEY) + ": SHOW/HIDE MENU\t"
+        + key_to_string(SHOW_HELP_KEY) + ": SHOW/HIDE HELP\t"
+        + key_to_string(SHOW_PERFORMANCE_KEY) + ": SHOW/HIDE PERFORMANCE\t"
+        + key_to_string(SHOW_ALL_KEY) + ": SHOW/HIDE EVERYTHING\t");
     HELP2_TXT.setFillColor(sf::Color::White);
     HELP2_TXT.setFont(FONT);
     HELP2_TXT.setCharacterSize(TITLE_FONT_SIZE);
@@ -496,6 +498,19 @@ void init_ui()
     ANIMATION_SETTINGS_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
+    PAUSE_BTN = SimpleButton(
+        FONT,
+        sf::Vector2f(get_btn_width(2), BTN_HEIGHT),
+        sf::Vector2f(get_x_pos(Side::Right, 0, 2), get_y_pos(button_counter, title_counter, label_counter, block_counter)));
+    PAUSE_BTN.set_button_label(FONT_SIZE, (settings.IS_PLAYING ? "PAUSE" : "PLAY"));
+
+    FRAMESTEP_BTN = SimpleButton(
+        FONT,
+        sf::Vector2f(get_btn_width(2), BTN_HEIGHT),
+        sf::Vector2f(get_x_pos(Side::Right, 1, 2), get_y_pos(button_counter, title_counter, label_counter, block_counter)));
+    FRAMESTEP_BTN.set_button_label(FONT_SIZE, "FRAME STEP");
+    button_counter++;
+
     TIMESTEP_TXT.setString("TIMESTEP");
     TIMESTEP_TXT.setFillColor(sf::Color::White);
     TIMESTEP_TXT.setPosition(get_x_pos(Side::Right, 0, 2), get_y_pos(button_counter, title_counter, label_counter, block_counter));
@@ -561,39 +576,39 @@ void init_ui()
     COLLISION_OPTIMIZATION_TXT.setCharacterSize(TITLE_FONT_SIZE);
     title_counter++;
 
-    VISUALIZE_GRID_BTN = ToggleButton(
+    SHOW_GRID_BTN = ToggleButton(
         FONT,
         sf::Vector2f(get_btn_width(), BTN_HEIGHT),
         sf::Vector2f(get_x_pos(Side::Right), get_y_pos(button_counter, title_counter, label_counter, block_counter)),
         settings.VISUALIZE_COLLISION_GRID);
-    VISUALIZE_GRID_BTN.set_button_label(FONT_SIZE, "VISUALIZE GRID ON/OFF");
+    SHOW_GRID_BTN.set_button_label(FONT_SIZE, "SHOW GRID ON/OFF");
     button_counter++;
 
-    VISUALIZE_PARTICLE_CELL_BTN = ToggleButton(
+    SHOW_PARTICLE_CELL_BTN = ToggleButton(
         FONT,
         sf::Vector2f(get_btn_width(), BTN_HEIGHT),
         sf::Vector2f(get_x_pos(Side::Right), get_y_pos(button_counter, title_counter, label_counter, block_counter)),
         settings.VISUALIZE_COLLISION_PARTICLE_CELL);
-    VISUALIZE_PARTICLE_CELL_BTN.set_button_label(FONT_SIZE, "VISUALIZE PARTICLES' CELL ON/OFF");
-    VISUALIZE_PARTICLE_CELL_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
+    SHOW_PARTICLE_CELL_BTN.set_button_label(FONT_SIZE, "SHOW PARTICLES' CELL ON/OFF");
+    SHOW_PARTICLE_CELL_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
     button_counter++;
 
-    VISUALIZE_CELL_MASS_BTN = ToggleButton(
+    SHOW_CELL_MASS_BTN = ToggleButton(
         FONT,
         sf::Vector2f(get_btn_width(), BTN_HEIGHT),
         sf::Vector2f(get_x_pos(Side::Right), get_y_pos(button_counter, title_counter, label_counter, block_counter)),
         settings.VISUALIZE_COLLISION_CELL_MASS);
-    VISUALIZE_CELL_MASS_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' MASS ON/OFF");
-    VISUALIZE_CELL_MASS_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
+    SHOW_CELL_MASS_BTN.set_button_label(FONT_SIZE, "SHOW CELLS' MASS ON/OFF");
+    SHOW_CELL_MASS_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
     button_counter++;
 
-    VISUALIZE_COM_BTN = ToggleButton(
+    SHOW_COM_BTN = ToggleButton(
         FONT,
         sf::Vector2f(get_btn_width(), BTN_HEIGHT),
         sf::Vector2f(get_x_pos(Side::Right), get_y_pos(button_counter, title_counter, label_counter, block_counter)),
         settings.VISUALIZE_COLLISION_COM);
-    VISUALIZE_COM_BTN.set_button_label(FONT_SIZE, "VISUALIZE CELLS' CENTER OF MASS ON/OFF");
-    VISUALIZE_COM_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
+    SHOW_COM_BTN.set_button_label(FONT_SIZE, "SHOW CELLS' CENTER OF MASS ON/OFF");
+    SHOW_COM_BTN.is_active = settings.VISUALIZE_COLLISION_GRID;
     button_counter++;
 
     COLLISION_CELL_SIZE_TXT.setString("CELL SIZE");
@@ -626,7 +641,7 @@ void init_ui()
         sf::Vector2f(get_btn_width(), BTN_HEIGHT),
         sf::Vector2f(get_x_pos(Side::Right), get_y_pos(button_counter, title_counter, label_counter, block_counter)),
         settings.VISUALIZE_GRAVITY_TREE);
-    VISUALIZE_GRAVITY_TREE_BTN.set_button_label(FONT_SIZE, "VISUALIZE QUADTREE ON/OFF");
+    VISUALIZE_GRAVITY_TREE_BTN.set_button_label(FONT_SIZE, "SHOW QUADTREE ON/OFF");
     button_counter++;
 
     QUADTREE_THETA_TXT.setString("COEFFICIENT (THETA)");
@@ -827,6 +842,8 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(DISPLAY_TITLE);
 
     window.draw(ANIMATION_SETTINGS_TXT);
+    PAUSE_BTN.draw(window);
+    FRAMESTEP_BTN.draw(window);
     window.draw(TIMESTEP_TXT);
     TIMESTEP_TB.draw(window);
     window.draw(FPS_LIMIT_TXT);
@@ -839,10 +856,10 @@ void draw_menu(sf::RenderWindow& window)
     window.draw(OPTIMIZATION_TITLE);
 
     window.draw(COLLISION_OPTIMIZATION_TXT);
-    VISUALIZE_GRID_BTN.draw(window);
-    VISUALIZE_PARTICLE_CELL_BTN.draw(window);
-    VISUALIZE_CELL_MASS_BTN.draw(window);
-    VISUALIZE_COM_BTN.draw(window);
+    SHOW_GRID_BTN.draw(window);
+    SHOW_PARTICLE_CELL_BTN.draw(window);
+    SHOW_CELL_MASS_BTN.draw(window);
+    SHOW_COM_BTN.draw(window);
     window.draw(COLLISION_CELL_SIZE_TXT);
     COLLISION_CELL_SIZE_TB.draw(window);
 
@@ -870,14 +887,97 @@ void draw_menu(sf::RenderWindow& window)
     EXIT_BTN.draw(window);
 }
 
-void update_performance_position(bool show_menu)
+void update_performance_position()
 {
-    FPS_TXT.setPosition((show_menu ? MENU_WIDTH : 0) + MARGIN_LEFT, FPS_TXT.getPosition().y);
-    GRAV_COUNT_TXT.setPosition((show_menu ? MENU_WIDTH : 0) + MARGIN_LEFT, GRAV_COUNT_TXT.getPosition().y);
-    QUADTREE_DEPTH_TXT.setPosition((show_menu ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_DEPTH_TXT.getPosition().y);
-    QUADTREE_NODES_TXT.setPosition((show_menu ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_NODES_TXT.getPosition().y);
-    QUADTREE_LEAVES_TXT.setPosition((show_menu ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_LEAVES_TXT.getPosition().y);
-    COLL_COUNT_TXT.setPosition((show_menu ? MENU_WIDTH : 0) + MARGIN_LEFT, COLL_COUNT_TXT.getPosition().y);
+    FPS_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, FPS_TXT.getPosition().y);
+    GRAV_COUNT_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, GRAV_COUNT_TXT.getPosition().y);
+    QUADTREE_DEPTH_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_DEPTH_TXT.getPosition().y);
+    QUADTREE_NODES_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_NODES_TXT.getPosition().y);
+    QUADTREE_LEAVES_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, QUADTREE_LEAVES_TXT.getPosition().y);
+    COLL_COUNT_TXT.setPosition((SHOW_MENU ? MENU_WIDTH : 0) + MARGIN_LEFT, COLL_COUNT_TXT.getPosition().y);
+}
+
+void handle_hotkeys(sf::RenderWindow& window, const sf::Event& event, Grid& collision_grid)
+{
+    // Reload simulation
+    if (event.key.code == RELOAD_KEY)
+    {
+        reload_sim(collision_grid);
+        click_sound.play();
+    }
+    // Show/hide menu
+    else if (event.key.code == SHOW_MENU_KEY)
+    {
+        SHOW_MENU = !SHOW_MENU;
+        update_performance_position();
+
+        click_sound.play();
+    }
+    // Show/hide help
+    else if (event.key.code == SHOW_HELP_KEY)
+    {
+        if (SHOW_HELP)
+            SHOW_HELP = false;
+        else
+            SHOW_HELP = true;
+
+        click_sound.play();
+    }
+    // Show/hide FPS
+    else if (event.key.code == SHOW_PERFORMANCE_KEY)
+    {
+        if (SHOW_PERFORMANCE)
+            SHOW_PERFORMANCE = false;
+        else
+            SHOW_PERFORMANCE = true;
+
+        click_sound.play();
+    }
+    // Show/hide everything
+    else if (event.key.code == SHOW_ALL_KEY)
+    {
+        if (SHOW_MENU || SHOW_HELP || SHOW_PERFORMANCE)
+        {
+            SHOW_MENU = false;
+            SHOW_HELP = false;
+            SHOW_PERFORMANCE = false;
+        }
+        else
+        {
+            SHOW_MENU = true;
+            SHOW_HELP = true;
+            SHOW_PERFORMANCE = true;
+        }
+        update_performance_position();
+
+        click_sound.play();
+    }
+    // Add singularity
+    else if (event.key.code == SINGULARITY_KEY)
+    {
+        add_singularity(collision_grid);
+        blackhole_sound.play();
+    }
+    // Enter textbox
+    else if (event.key.code == sf::Keyboard::Enter)
+    {
+        untoggle_textboxes(window);
+    }
+    // Pause
+    else if (event.key.code == PAUSE_KEY)
+    {
+        handle_pause();
+    }
+    // Framestep
+    else if (event.key.code == FRAMESTEP_KEY)
+    {
+        handle_framestep();
+    }
+    // Exit
+    else if (event.key.code == EXIT_KEY)
+    {
+        handle_exit(window);
+    }
 }
 
 void draw_performance(sf::RenderWindow& window)
@@ -1054,16 +1154,18 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     RELOAD_BTN.get_button_status(window, event);
 
     // Display settings
+    PAUSE_BTN.get_button_status(window, event);
+    FRAMESTEP_BTN.get_button_status(window, event);
     TIMESTEP_TB.get_button_status(window, event);
     FPS_LIMIT_TB.get_button_status(window, event);
 
     HAS_TRAIL_BTN.get_button_status(window, event);
 
     // Optimization settings
-    VISUALIZE_GRID_BTN.get_button_status(window, event);
-    VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
-    VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
-    VISUALIZE_COM_BTN.get_button_status(window, event);
+    SHOW_GRID_BTN.get_button_status(window, event);
+    SHOW_PARTICLE_CELL_BTN.get_button_status(window, event);
+    SHOW_CELL_MASS_BTN.get_button_status(window, event);
+    SHOW_COM_BTN.get_button_status(window, event);
     COLLISION_CELL_SIZE_TB.get_button_status(window, event);
 
     VISUALIZE_GRAVITY_TREE_BTN.get_button_status(window, event);
@@ -1095,6 +1197,24 @@ void reload_sim(Grid& collision_grid)
 
     // Init optimization grid
     init_optim_grid(collision_grid);
+}
+
+void handle_pause()
+{
+    current_settings.IS_PLAYING = !current_settings.IS_PLAYING;
+    settings.IS_PLAYING = current_settings.IS_PLAYING;
+
+    PAUSE_BTN.set_button_label(FONT_SIZE, (settings.IS_PLAYING ? "PAUSE" : "PLAY"));
+}
+
+void handle_framestep()
+{
+    settings.IS_FRAMESTEP = true;
+}
+
+void handle_exit(sf::RenderWindow& window)
+{
+    window.close();
 }
 
 void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& optim_grid)
@@ -1198,7 +1318,14 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
     }
 
     // Display settings
-
+    else if (PAUSE_BTN.is_pressed)
+    {
+        handle_pause();
+    }
+    else if (FRAMESTEP_BTN.is_pressed)
+    {
+        handle_framestep();
+    }
     else if (HAS_TRAIL_BTN.is_pressed)
     {
         current_settings.HAS_TRAIL = !current_settings.HAS_TRAIL;
@@ -1206,34 +1333,34 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
     }
 
     // Optimization settings
-    else if (VISUALIZE_GRID_BTN.is_pressed)
+    else if (SHOW_GRID_BTN.is_pressed)
     {
         current_settings.VISUALIZE_COLLISION_GRID = !current_settings.VISUALIZE_COLLISION_GRID;
         settings.VISUALIZE_COLLISION_GRID = current_settings.VISUALIZE_COLLISION_GRID;
 
-        VISUALIZE_PARTICLE_CELL_BTN.is_active = current_settings.VISUALIZE_COLLISION_GRID;
-        VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
-        VISUALIZE_CELL_MASS_BTN.is_active = current_settings.VISUALIZE_COLLISION_GRID;
-        VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
-        VISUALIZE_COM_BTN.is_active = current_settings.VISUALIZE_COLLISION_GRID;
-        VISUALIZE_COM_BTN.get_button_status(window, event);
+        SHOW_PARTICLE_CELL_BTN.is_active = current_settings.VISUALIZE_COLLISION_GRID;
+        SHOW_PARTICLE_CELL_BTN.get_button_status(window, event);
+        SHOW_CELL_MASS_BTN.is_active = current_settings.VISUALIZE_COLLISION_GRID;
+        SHOW_CELL_MASS_BTN.get_button_status(window, event);
+        SHOW_COM_BTN.is_active = current_settings.VISUALIZE_COLLISION_GRID;
+        SHOW_COM_BTN.get_button_status(window, event);
 
         // Turn off gravity tree automatically
         VISUALIZE_GRAVITY_TREE_BTN.set_toggle(false);
         current_settings.VISUALIZE_GRAVITY_TREE = false;
         settings.VISUALIZE_GRAVITY_TREE = false;
     }
-    else if (VISUALIZE_PARTICLE_CELL_BTN.is_pressed)
+    else if (SHOW_PARTICLE_CELL_BTN.is_pressed)
     {
         current_settings.VISUALIZE_COLLISION_PARTICLE_CELL = !current_settings.VISUALIZE_COLLISION_PARTICLE_CELL;
         settings.VISUALIZE_COLLISION_PARTICLE_CELL = current_settings.VISUALIZE_COLLISION_PARTICLE_CELL;
     }
-    else if (VISUALIZE_CELL_MASS_BTN.is_pressed)
+    else if (SHOW_CELL_MASS_BTN.is_pressed)
     {
         current_settings.VISUALIZE_COLLISION_CELL_MASS = !current_settings.VISUALIZE_COLLISION_CELL_MASS;
         settings.VISUALIZE_COLLISION_CELL_MASS = current_settings.VISUALIZE_COLLISION_CELL_MASS;
     }
-    else if (VISUALIZE_COM_BTN.is_pressed)
+    else if (SHOW_COM_BTN.is_pressed)
     {
         current_settings.VISUALIZE_COLLISION_COM = !current_settings.VISUALIZE_COLLISION_COM;
         settings.VISUALIZE_COLLISION_COM = current_settings.VISUALIZE_COLLISION_COM;
@@ -1248,13 +1375,13 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
         current_settings.VISUALIZE_COLLISION_GRID = false;
         settings.VISUALIZE_COLLISION_GRID = false;
 
-        VISUALIZE_GRID_BTN.set_toggle(false);
-        VISUALIZE_PARTICLE_CELL_BTN.is_active = false;
-        VISUALIZE_PARTICLE_CELL_BTN.get_button_status(window, event);
-        VISUALIZE_CELL_MASS_BTN.is_active = false;
-        VISUALIZE_CELL_MASS_BTN.get_button_status(window, event);
-        VISUALIZE_COM_BTN.is_active = false;
-        VISUALIZE_COM_BTN.get_button_status(window, event);
+        SHOW_GRID_BTN.set_toggle(false);
+        SHOW_PARTICLE_CELL_BTN.is_active = false;
+        SHOW_PARTICLE_CELL_BTN.get_button_status(window, event);
+        SHOW_CELL_MASS_BTN.is_active = false;
+        SHOW_CELL_MASS_BTN.get_button_status(window, event);
+        SHOW_COM_BTN.is_active = false;
+        SHOW_COM_BTN.get_button_status(window, event);
     }
 
     // Audio settings
@@ -1281,5 +1408,5 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
     }
 
     else if (EXIT_BTN.is_pressed)
-        window.close();
+        handle_exit(window);
 }

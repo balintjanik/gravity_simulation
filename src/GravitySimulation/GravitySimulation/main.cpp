@@ -40,78 +40,10 @@ int main()
                 reload_sim(collision_grid);
             }
 
-            // Show/hide UI elements
+            // Handle hotkeys
             if (event.type == sf::Event::KeyPressed)
             {
-                // Reload simulation
-                if (event.key.code == RELOAD_KEY)
-                {
-                    reload_sim(collision_grid);
-                    click_sound.play();
-                }
-                // Show/hide menu
-                else if (event.key.code == SHOW_MENU_KEY)
-                {
-                    SHOW_MENU = !SHOW_MENU;
-                    update_performance_position(SHOW_MENU);
-
-                    click_sound.play();
-                }
-                // Show/hide help
-                else if (event.key.code == SHOW_HELP_KEY)
-                {
-                    if (SHOW_HELP)
-                        SHOW_HELP = false;
-                    else
-                        SHOW_HELP = true;
-
-                    click_sound.play();
-                }
-                // Show/hide FPS
-                else if (event.key.code == SHOW_PERFORMANCE_KEY)
-                {
-                    if (SHOW_PERFORMANCE)
-                        SHOW_PERFORMANCE = false;
-                    else
-                        SHOW_PERFORMANCE = true;
-
-                    click_sound.play();
-                }
-                // Show/hide everything
-                else if (event.key.code == SHOW_ALL_KEY)
-                {
-                    if (SHOW_MENU || SHOW_HELP || SHOW_PERFORMANCE)
-                    {
-                        SHOW_MENU = false;
-                        SHOW_HELP = false;
-                        SHOW_PERFORMANCE = false;
-                    }
-                    else
-                    {
-                        SHOW_MENU = true;
-                        SHOW_HELP = true;
-                        SHOW_PERFORMANCE = true;
-                    }
-                    update_performance_position(SHOW_MENU);
-
-                    click_sound.play();
-                }
-                // Add singularity
-                else if (event.key.code == SINGULARITY_KEY)
-                {
-                    add_singularity(collision_grid);
-                    blackhole_sound.play();
-                }
-                // Enter textbox
-                else if (event.key.code == sf::Keyboard::Enter)
-                {
-                    untoggle_textboxes(window);
-                }
-                // Exit
-                else if (event.key.code == EXIT_KEY)
-                {
-                    window.close();
-                }
+                handle_hotkeys(window, event, collision_grid);
             }
 
             if (SHOW_MENU)
@@ -139,8 +71,13 @@ int main()
         // Display
         window.clear();
 
-        // Update positions
-        update_positions(collision_grid, window);
+        if (settings.IS_PLAYING || settings.IS_FRAMESTEP)
+        {
+            settings.IS_FRAMESTEP = false;
+
+            // Update positions
+            update_positions(collision_grid, window);
+        }
 
         // Draw particles
         draw_particles(window, collision_grid);

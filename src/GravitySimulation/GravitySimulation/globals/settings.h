@@ -26,18 +26,22 @@ static sf::Keyboard::Key RELOAD_KEY = sf::Keyboard::R;
 
 static sf::Keyboard::Key SINGULARITY_KEY = sf::Keyboard::B;
 
-static bool SHOW_MENU = true;
+extern bool SHOW_MENU;
 static sf::Keyboard::Key SHOW_MENU_KEY = sf::Keyboard::M;
 
-static bool SHOW_HELP = true;
+extern bool SHOW_HELP;
 static sf::Keyboard::Key SHOW_HELP_KEY = sf::Keyboard::H;
 
-static bool SHOW_PERFORMANCE = true;
+extern bool SHOW_PERFORMANCE;
 static sf::Keyboard::Key SHOW_PERFORMANCE_KEY = sf::Keyboard::P;
 
 static sf::Keyboard::Key SHOW_ALL_KEY = sf::Keyboard::A;
 
 static sf::Keyboard::Key EXIT_KEY = sf::Keyboard::Escape;
+
+static sf::Keyboard::Key PAUSE_KEY = sf::Keyboard::Space;
+
+static sf::Keyboard::Key FRAMESTEP_KEY = sf::Keyboard::Right;
 
 // Help settings
 static sf::Text HELP_TXT;
@@ -131,6 +135,8 @@ static SimpleButton RELOAD_BTN;
 static sf::Text DISPLAY_TITLE;
 
 static sf::Text ANIMATION_SETTINGS_TXT;
+static SimpleButton PAUSE_BTN;
+static SimpleButton FRAMESTEP_BTN;
 static sf::Text TIMESTEP_TXT;
 static TextBox TIMESTEP_TB;
 static unsigned int DEFAULT_FPS_LIMIT = 30;
@@ -142,10 +148,10 @@ static ToggleButton HAS_TRAIL_BTN;
 
 static sf::Text OPTIMIZATION_TITLE;
 static sf::Text COLLISION_OPTIMIZATION_TXT;
-static ToggleButton VISUALIZE_GRID_BTN;
-static ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
-static ToggleButton VISUALIZE_CELL_MASS_BTN;
-static ToggleButton VISUALIZE_COM_BTN;
+static ToggleButton SHOW_GRID_BTN;
+static ToggleButton SHOW_PARTICLE_CELL_BTN;
+static ToggleButton SHOW_CELL_MASS_BTN;
+static ToggleButton SHOW_COM_BTN;
 static sf::Text COLLISION_CELL_SIZE_TXT;
 static TextBox COLLISION_CELL_SIZE_TB;
 
@@ -170,6 +176,10 @@ static SimpleButton EXIT_BTN;
 
 class Settings {
 public:
+	// Play/pause
+	bool IS_PLAYING = true;
+	bool IS_FRAMESTEP = false;
+
 	// Timestep (speed of animation)
 	double TIMESTEP = 0.5;
 	

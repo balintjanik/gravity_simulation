@@ -23,7 +23,9 @@ bool check_reload_required();
 
 void draw_menu(sf::RenderWindow& window);
 
-void update_performance_position(bool show_menu);
+void update_performance_position();
+
+void handle_hotkeys(sf::RenderWindow& window, const sf::Event& event, Grid& collision_grid);
 
 void draw_performance(sf::RenderWindow& window);
 
@@ -36,6 +38,12 @@ void handle_textbox_input(const sf::Event& event);
 void update_button_statuses(sf::RenderWindow& window, sf::Event& event);
 
 void reload_sim(Grid& collision_grid);
+
+void handle_pause();
+
+void handle_framestep();
+
+void handle_exit(sf::RenderWindow& window);
 
 void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& optim_grid);
 
