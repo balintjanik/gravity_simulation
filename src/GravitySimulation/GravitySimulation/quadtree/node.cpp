@@ -56,7 +56,7 @@ unsigned int Node::calculate_force(Particle& p, double theta, double& all_force)
 
 	if (is_leaf)
 	{
-		if (particle != nullptr && (particle->position.x != p.position.x || particle->position.y != p.position.y))
+		if (particle != nullptr && (particle->id != p.id))
 		{
 			calculation_count++;
 

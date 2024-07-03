@@ -9,6 +9,7 @@
 #include "physics/physics.h"
 #include "grid/grid.h"
 #include "ui/menu_utils.h"
+#include "ui/cursors.h"
 #include "sound/sound_manager.h"
 
 int main()
@@ -21,6 +22,7 @@ int main()
     recalc_sizes(screen.width, screen.height);
     init_sounds();
     init_music();
+    init_cursors();
     Grid collision_grid(settings.COLLISION_CELL_SIZE);
     reload_sim(collision_grid);
 
@@ -54,15 +56,21 @@ int main()
             // Handle moving
             if (event.type == sf::Event::MouseButtonPressed)
             {
-                start_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-                is_moving = true;
+                sf::Vector2f cursor_pos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                if (!SHOW_MENU || (cursor_pos.x > MENU_WIDTH && cursor_pos.x < WIDTH - MENU_WIDTH))
+                {
+                    start_position = cursor_pos;
+                    is_moving = true;
+                    window.setMouseCursor(grabber_cursor);
+                }
             }
             else if (event.type == sf::Event::MouseButtonReleased)
             {
                 is_moving = false;
+                window.setMouseCursor(default_cursor);
             }
 
-            if (SHOW_MENU)
+            if (SHOW_MENU && !is_moving)
             {
                 // Untoggle textboxes on any click
                 if (event.type == sf::Event::MouseButtonPressed)
