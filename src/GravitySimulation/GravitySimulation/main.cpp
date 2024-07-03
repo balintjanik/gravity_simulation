@@ -24,6 +24,11 @@ int main()
     Grid collision_grid(settings.COLLISION_CELL_SIZE);
     reload_sim(collision_grid);
 
+    // Grab move
+    sf::Vector2f start_position;
+    sf::Vector2f end_position;
+    bool is_moving = false;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -46,6 +51,17 @@ int main()
                 handle_hotkeys(window, event, collision_grid);
             }
 
+            // Handle moving
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                start_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                is_moving = true;
+            }
+            else if (event.type == sf::Event::MouseButtonReleased)
+            {
+                is_moving = false;
+            }
+
             if (SHOW_MENU)
             {
                 // Untoggle textboxes on any click
@@ -65,6 +81,14 @@ int main()
             }
         }
 
+        // Handle moving
+        if (is_moving)
+        {
+            end_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+            handle_move(start_position, end_position);
+            start_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        }
+
         // Update fps
         update_fps();
 
@@ -81,6 +105,9 @@ int main()
 
         // Draw particles
         draw_particles(window, collision_grid);
+
+        // Draw borders
+        draw_borders(window);
 
         // Draw menu
         if (SHOW_MENU)

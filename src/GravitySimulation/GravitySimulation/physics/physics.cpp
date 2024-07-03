@@ -25,7 +25,7 @@ void update_gravity_quadtree_range(QuadTree& gravity_tree, int start, int end)
 void update_gravity_quadtree(sf::RenderWindow& window)
 {
     // Create the tree
-    QuadTree gravity_tree(WIDTH / 2, HEIGHT / 2, WIDTH, settings.THETA);
+    QuadTree gravity_tree(WIDTH / 2, HEIGHT / 2, 2 * WIDTH, settings.THETA);
 
     // Insert all particles into the tree
     for (const auto& p : particles) {

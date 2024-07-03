@@ -106,9 +106,9 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 vy = generate_random_double(-15.0, 15.0);
                 break;
             case SpeedType::Angular:
-                ang_to_cent = atan2(y - HEIGHT / 2, x - CANVAS_WIDTH / 2);
+                ang_to_cent = atan2(y - HEIGHT / 2, x - WIDTH / 2);
                 angle = ang_to_cent + 90;
-                distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(CANVAS_WIDTH / 2, HEIGHT / 2));
+                distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(WIDTH / 2, HEIGHT / 2));
                 speed = map_value(distance, 0.0, settings.R, 0.0, settings.MASS*2.0);
                 rand_x = generate_random_double(0.7, 1.4);
                 rand_y = generate_random_double(0.7, 1.4);
@@ -174,6 +174,22 @@ int get_idx_by_id(int id)
     return -1;
 }
 
+void handle_move(sf::Vector2f start_position, sf::Vector2f end_position)
+{
+    delta_move = end_position - start_position;
+    map_offset += delta_move;
+
+    if (map_offset.x < -final_limit.x)
+        map_offset.x = -final_limit.x;
+    else if (map_offset.x > final_limit.x)
+        map_offset.x = final_limit.x;
+
+    if (map_offset.y < -final_limit.y)
+        map_offset.y = -final_limit.y;
+    else if (map_offset.y > final_limit.y)
+        map_offset.y = final_limit.y;
+}
+
 void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
 {
     // Draw trails first to avoid trails covering particles
@@ -187,7 +203,7 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
                 sf::CircleShape circle(settings.TRAIL_RADIUS);
                 current_trail_color.a = ((255 * i) / settings.TRAIL_SIZE);
                 circle.setFillColor(current_trail_color);
-                circle.setPosition(p.trail[i].x - settings.TRAIL_RADIUS, p.trail[i].y - settings.TRAIL_RADIUS);
+                circle.setPosition(p.trail[i].x - settings.TRAIL_RADIUS + map_offset.x, p.trail[i].y - settings.TRAIL_RADIUS + map_offset.y);
                 window.draw(circle);
             }
         }
@@ -210,7 +226,7 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
             }
 
             // setPosition sets the coordinates of top left corner
-            circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
+            circle.setPosition(p.position.x - p.radius + map_offset.x, p.position.y - p.radius + map_offset.y);
 
             window.draw(circle);
         }
@@ -238,7 +254,7 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
 
                     cell.setOutlineColor(sf::Color(20, 20, 20));
                     cell.setOutlineThickness(0.5f);
-                    cell.setPosition(x * settings.COLLISION_CELL_SIZE - collision_grid.overflow_x / 2, y * settings.COLLISION_CELL_SIZE - collision_grid.overflow_y / 2);
+                    cell.setPosition(x * settings.COLLISION_CELL_SIZE - collision_grid.overflow_x / 2 + map_offset.x, y * settings.COLLISION_CELL_SIZE - collision_grid.overflow_y / 2 + map_offset.y);
                     window.draw(cell);
                 }
             }
@@ -288,7 +304,7 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
                         }
                     }
 
-                    circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
+                    circle.setPosition(p.position.x - p.radius + map_offset.x, p.position.y - p.radius + map_offset.y);
                     window.draw(circle);
                 }
 
@@ -303,15 +319,36 @@ void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
                         int to_center = settings.COLLISION_CELL_SIZE / 2;
                         int correct_overflow_x = collision_grid.overflow_x / 2;
                         int correct_overflow_y = collision_grid.overflow_y / 2;
-                        com.setPosition(x * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_x, y * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_y);
+                        com.setPosition(x * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_x + map_offset.x, y * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_y + map_offset.y);
                     }
                     else
                     {
-                        com.setPosition(com_pos.x - 5, com_pos.y - 5);
+                        com.setPosition(com_pos.x - 5 + map_offset.x, com_pos.y - 5 + map_offset.y);
                     }
                     window.draw(com);
                 }
             }
         }
     }
+}
+
+void draw_borders(sf::RenderWindow& window)
+{
+    // Draw quadtree border (final limit)
+    int final_border_width = 8;
+    sf::RectangleShape final_border(sf::Vector2f(2 * WIDTH - 2 * final_border_width, 2 * WIDTH - 2 * final_border_width));
+    final_border.setPosition(- WIDTH / 2 + map_offset.x + final_border_width, HEIGHT / 2 - WIDTH + map_offset.y + final_border_width);
+    final_border.setFillColor(sf::Color::Transparent);
+    final_border.setOutlineThickness(final_border_width);
+    final_border.setOutlineColor(sf::Color::Red);
+    window.draw(final_border);
+
+    // Draw grid border
+    int grid_border_width = 4;
+    sf::RectangleShape grid_border(sf::Vector2f(WIDTH, HEIGHT));
+    grid_border.setPosition(0 + map_offset.x, 0 + map_offset.y);
+    grid_border.setFillColor(sf::Color::Transparent);
+    grid_border.setOutlineThickness(grid_border_width);
+    grid_border.setOutlineColor(sf::Color::White);
+    window.draw(grid_border);
 }

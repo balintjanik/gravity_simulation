@@ -43,6 +43,11 @@ static sf::Keyboard::Key PAUSE_KEY = sf::Keyboard::Space;
 
 static sf::Keyboard::Key FRAMESTEP_KEY = sf::Keyboard::Right;
 
+// Moving
+extern sf::Vector2f delta_move;
+extern sf::Vector2f map_offset;
+extern sf::Vector2f final_limit;
+
 // Help settings
 static sf::Text HELP_TXT;
 static sf::Text HELP2_TXT;
@@ -236,7 +241,7 @@ public:
 	double THETA = 0.5;
 
 	// Max threads
-	unsigned int THREAD_NUM = 4; // TODO: textbox for this
+	unsigned int THREAD_NUM = 4;
 
 	// Singularity mass
 	double SINGULARITY_MASS = 10000;

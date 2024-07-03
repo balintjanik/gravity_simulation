@@ -1,4 +1,5 @@
 #include "menu_utils.h"
+#include "../grid/grid.h"
 
 void update_fps()
 {
@@ -33,6 +34,8 @@ void recalc_sizes(int width, int height)
     MARGIN_RIGHT = BTN_HEIGHT / 2;
     MARGIN_BETWEEN = (MARGIN_LEFT / 2 < 10 ? 10 : MARGIN_LEFT / 2);
     MARGIN_BLOCK = 3 * BTN_HEIGHT / 4;
+
+    final_limit = sf::Vector2f(WIDTH / 2, WIDTH - HEIGHT / 2);
 }
 
 int get_x_pos(Side side, int order = 0, int all = 1)
@@ -1196,7 +1199,11 @@ void reload_sim(Grid& collision_grid)
     particles = generate_particles(settings.SPAWN_MARGIN, CANVAS_WIDTH - settings.SPAWN_MARGIN, settings.SPAWN_MARGIN, HEIGHT - settings.SPAWN_MARGIN);
 
     // Init optimization grid
+    collision_grid = Grid(settings.COLLISION_CELL_SIZE);
     init_optim_grid(collision_grid);
+
+    // Reset delta
+    map_offset = sf::Vector2f(0, 0);
 }
 
 void handle_pause()

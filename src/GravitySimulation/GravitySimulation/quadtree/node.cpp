@@ -107,10 +107,10 @@ unsigned int Node::calculate_force(Particle& p, double theta, double& all_force)
 void Node::draw(sf::RenderWindow& window)
 {
 	sf::RectangleShape cell(sf::Vector2f(width, width));
-	cell.setPosition(x - width / 2.0, y - width / 2.0);
+	cell.setPosition(x - width / 2.0 + map_offset.x, y - width / 2.0 + map_offset.y);
 	cell.setFillColor(sf::Color::Transparent);
 	cell.setOutlineThickness(1);
-	cell.setOutlineColor(sf::Color(40, 40, 40));
+	cell.setOutlineColor(sf::Color(20, 20, 20));
 	window.draw(cell);
 
 	for (int i = 0; i < 4; ++i) {

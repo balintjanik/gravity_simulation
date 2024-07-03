@@ -25,9 +25,9 @@ public:
     double overflow_x, overflow_y;
 
     Grid(double cell_size)
-        : width(CANVAS_WIDTH / cell_size), height(HEIGHT / cell_size), cell_size(cell_size)
+        : width(WIDTH / cell_size), height(HEIGHT / cell_size), cell_size(cell_size)
     {
-        overflow_x = std::fmod(CANVAS_WIDTH, cell_size);
+        overflow_x = std::fmod(WIDTH, cell_size);
         overflow_y = std::fmod(HEIGHT, cell_size);
         if (overflow_x != 0)
             width++;
