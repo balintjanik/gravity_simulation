@@ -39,7 +39,7 @@ void update_gravity_quadtree(sf::RenderWindow& window)
 
     // Draw quadtree if set
     if (settings.VISUALIZE_GRAVITY_TREE)
-        gravity_tree.draw(window);
+        draw_quadtree(window, gravity_tree);
 
     // Calculate gravitational forces parallelly on multiple threads
     const int num_threads = settings.THREAD_NUM;

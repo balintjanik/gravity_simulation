@@ -62,12 +62,27 @@ int main()
                     start_position = cursor_pos;
                     is_moving = true;
                     window.setMouseCursor(grabber_cursor);
+                    untoggle_textboxes(window);
                 }
             }
             else if (event.type == sf::Event::MouseButtonReleased)
             {
                 is_moving = false;
                 window.setMouseCursor(default_cursor);
+            }
+
+            // Handle zoom
+            if (event.type == sf::Event::MouseWheelScrolled)
+            {
+                if (event.mouseWheelScroll.delta < 0)
+                    zoom *= 0.9;
+                else
+                    zoom *= 1.1;
+
+                if (zoom < 0.5)
+                    zoom = 0.5;
+
+                handle_move(sf::Vector2f(0,0), sf::Vector2f(0, 0));
             }
 
             if (SHOW_MENU && !is_moving)

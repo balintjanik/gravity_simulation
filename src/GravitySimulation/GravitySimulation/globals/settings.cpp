@@ -11,6 +11,7 @@ bool SHOW_PERFORMANCE = true;
 sf::Vector2f delta_move(0, 0);
 sf::Vector2f map_offset(0, 0);
 sf::Vector2f final_limit(0, 0);
+double zoom = 1.0;
 
 unsigned int GRAV_CALC_COUNT = 0;
 unsigned int QUADTREE_DEPTH = 0;

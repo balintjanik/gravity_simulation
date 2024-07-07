@@ -43,10 +43,12 @@ static sf::Keyboard::Key PAUSE_KEY = sf::Keyboard::Space;
 
 static sf::Keyboard::Key FRAMESTEP_KEY = sf::Keyboard::Right;
 
-// Moving
+// Moving and zooming
 extern sf::Vector2f delta_move;
 extern sf::Vector2f map_offset;
 extern sf::Vector2f final_limit;
+
+extern double zoom;
 
 // Help settings
 static sf::Text HELP_TXT;
@@ -147,6 +149,8 @@ static TextBox TIMESTEP_TB;
 static unsigned int DEFAULT_FPS_LIMIT = 30;
 static sf::Text FPS_LIMIT_TXT;
 static TextBox FPS_LIMIT_TB;
+
+static SimpleButton RESET_CAM_BTN;
 
 static sf::Text TRAIL_TXT;
 static ToggleButton HAS_TRAIL_BTN;

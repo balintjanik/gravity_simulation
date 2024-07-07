@@ -9,6 +9,7 @@
 #include "../globals/settings.h"
 
 class Grid;
+class QuadTree;
 
 sf::Color hsv_to_rgb(double H, double S, double V);
 
@@ -33,5 +34,7 @@ void handle_move(sf::Vector2f start_position, sf::Vector2f end_position);
 void draw_particles(sf::RenderWindow& window, Grid& collision_grid);
 
 void draw_borders(sf::RenderWindow& window);
+
+void draw_quadtree(sf::RenderWindow& window, QuadTree& tree);
 
 #endif

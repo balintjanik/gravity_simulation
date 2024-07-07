@@ -39,6 +39,8 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event);
 
 void reload_sim(Grid& collision_grid);
 
+void reset_cam();
+
 void handle_pause();
 
 void handle_framestep();

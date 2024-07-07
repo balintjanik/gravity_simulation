@@ -35,7 +35,7 @@ void recalc_sizes(int width, int height)
     MARGIN_BETWEEN = (MARGIN_LEFT / 2 < 10 ? 10 : MARGIN_LEFT / 2);
     MARGIN_BLOCK = 3 * BTN_HEIGHT / 4;
 
-    final_limit = sf::Vector2f(WIDTH / 2, WIDTH - HEIGHT / 2);
+    final_limit = sf::Vector2f(WIDTH, WIDTH);
 }
 
 int get_x_pos(Side side, int order = 0, int all = 1)
@@ -543,6 +543,13 @@ void init_ui()
         "int");
     FPS_LIMIT_TB.set_button_label(FONT_SIZE, std::to_string(settings.FPS_LIMIT));
     button_counter++;
+
+    RESET_CAM_BTN = SimpleButton(
+        FONT,
+        sf::Vector2f(get_btn_width(), BTN_HEIGHT),
+        sf::Vector2f(get_x_pos(Side::Right), get_y_pos(button_counter, title_counter, label_counter, block_counter)));
+    RESET_CAM_BTN.set_button_label(FONT_SIZE, "RESET CAMERA");
+    button_counter++;
     block_counter++;
 
     // Trail settings
@@ -851,6 +858,8 @@ void draw_menu(sf::RenderWindow& window)
     TIMESTEP_TB.draw(window);
     window.draw(FPS_LIMIT_TXT);
     FPS_LIMIT_TB.draw(window);
+
+    RESET_CAM_BTN.draw(window);
 
     window.draw(TRAIL_TXT);
     HAS_TRAIL_BTN.draw(window);
@@ -1161,6 +1170,7 @@ void update_button_statuses(sf::RenderWindow& window, sf::Event& event)
     FRAMESTEP_BTN.get_button_status(window, event);
     TIMESTEP_TB.get_button_status(window, event);
     FPS_LIMIT_TB.get_button_status(window, event);
+    RESET_CAM_BTN.get_button_status(window, event);
 
     HAS_TRAIL_BTN.get_button_status(window, event);
 
@@ -1202,8 +1212,14 @@ void reload_sim(Grid& collision_grid)
     collision_grid = Grid(settings.COLLISION_CELL_SIZE);
     init_optim_grid(collision_grid);
 
-    // Reset delta
+    // Reset cam
+    reset_cam();
+}
+
+void reset_cam()
+{
     map_offset = sf::Vector2f(0, 0);
+    zoom = 1.0;
 }
 
 void handle_pause()
@@ -1332,6 +1348,10 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
     else if (FRAMESTEP_BTN.is_pressed)
     {
         handle_framestep();
+    }
+    else if (RESET_CAM_BTN.is_pressed)
+    {
+        reset_cam();
     }
     else if (HAS_TRAIL_BTN.is_pressed)
     {
