@@ -66,7 +66,7 @@ unsigned int Node::calculate_force(Particle& p, double theta, double& all_force)
 
 			// Calculate gravitational force
 			double g = 1;
-			double force = (g * mass) / (pow(distance, 2) + pow(EPSYLON, 2));
+			double force = (g * mass) / (distance * distance + EPSYLON * EPSYLON);
 
 			// Update velocity
 			p.velocity.x -= force * cos(angle) * settings.TIMESTEP;
@@ -85,7 +85,7 @@ unsigned int Node::calculate_force(Particle& p, double theta, double& all_force)
 
 			// Calculate gravitational force
 			double g = 1;
-			double force = (g * mass) / (pow(distance, 2) + pow(EPSYLON, 2));
+			double force = (g * mass) / (distance * distance + EPSYLON * EPSYLON);
 
 			// Update velocity
 			p.velocity.x -= force * cos(angle) * settings.TIMESTEP;

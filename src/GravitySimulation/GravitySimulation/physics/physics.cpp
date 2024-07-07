@@ -302,11 +302,14 @@ void update_positions(Grid& collision_grid, sf::RenderWindow& window)
     COLL_CALC_COUNT = 0;
 
     // Update center of mass
-    for (int i = 0; i < collision_grid.width; i++)
+    if (settings.HAS_COLLISIONS)
     {
-        for (int j = 0; j < collision_grid.height; j++)
+        for (int i = 0; i < collision_grid.width; i++)
         {
-            collision_grid.update_cell_mass_and_com(j * collision_grid.width + i);
+            for (int j = 0; j < collision_grid.height; j++)
+            {
+                collision_grid.update_cell_mass_and_com(j * collision_grid.width + i);
+            }
         }
     }
 
@@ -379,8 +382,12 @@ void update_positions(Grid& collision_grid, sf::RenderWindow& window)
                 p.velocity.y = -p.velocity.y;
             }
         }
+    }
 
-        // Reassign to new cell in optimization grid if necessary
-        collision_grid.update_particle_cell(p);
+    // Reassign to new cell in optimization grid if necessary
+    if (settings.HAS_COLLISIONS)
+    {
+        for (auto& p : particles)
+            collision_grid.update_particle_cell(p);
     }
 }

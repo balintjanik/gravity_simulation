@@ -1240,7 +1240,7 @@ void handle_exit(sf::RenderWindow& window)
     window.close();
 }
 
-void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& optim_grid)
+void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& collision_grid)
 {
     // Simulation settings
 
@@ -1325,6 +1325,12 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
     {
         current_settings.HAS_COLLISIONS = !current_settings.HAS_COLLISIONS;
         settings.HAS_COLLISIONS = current_settings.HAS_COLLISIONS;
+        
+        if (settings.HAS_COLLISIONS)
+        {
+            collision_grid = Grid(settings.COLLISION_CELL_SIZE);
+            init_optim_grid(collision_grid);
+        }
 
         COLLISION_THRESHOLD_TB.is_active = current_settings.HAS_COLLISIONS;
         COLLISION_THRESHOLD_TB.get_button_status(window, event);
@@ -1336,7 +1342,7 @@ void handle_button_clicks(sf::RenderWindow& window, sf::Event& event, Grid& opti
 
     else if (RELOAD_BTN.is_pressed)
     {
-        reload_sim(optim_grid);
+        reload_sim(collision_grid);
         update_button_statuses(window, event);
     }
 
