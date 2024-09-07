@@ -2,6 +2,10 @@
 
 int Grid::get_cell_index(double x, double y) const
 {
+    if (x < 0 || y < 0
+        || x > WIDTH || y > HEIGHT)
+        return -1;
+
     int cell_x = std::floor((x + overflow_x / 2) / cell_size);
     int cell_y = std::floor((y + overflow_y / 2) / cell_size);
     return cell_y * width + cell_x;
@@ -10,7 +14,7 @@ int Grid::get_cell_index(double x, double y) const
 void Grid::add_particle(const Particle& particle)
 {
     int cell_index = get_cell_index(particle.position.x, particle.position.y);
-    if (cell_index < cells.size())
+    if (cell_index < cells.size() && cell_index >= 0)
     {
         cells[cell_index].particle_indices.insert(particle.id);
         update_cell_mass_and_com(cell_index);
@@ -20,7 +24,7 @@ void Grid::add_particle(const Particle& particle)
 void Grid::remove_particle(const Particle& particle)
 {
     int cell_index = get_cell_index(particle.position.x, particle.position.y);
-    if (cell_index < cells.size())
+    if (cell_index < cells.size() && cell_index >= 0)
     {
         cells[cell_index].particle_indices.erase(particle.id);
         update_cell_mass_and_com(cell_index);
@@ -33,12 +37,12 @@ void Grid::update_particle_cell(Particle& particle)
     int new_cell_index = get_cell_index(particle.position.x, particle.position.y);
 
     if (old_cell_index != new_cell_index) {
-        if (old_cell_index < cells.size())
+        if (old_cell_index < cells.size() && old_cell_index >= 0)
         {
             cells[old_cell_index].particle_indices.erase(particle.id);
             update_cell_mass_and_com(old_cell_index);
         }
-        if (new_cell_index < cells.size())
+        if (new_cell_index < cells.size() && new_cell_index >= 0)
         {
             cells[new_cell_index].particle_indices.insert(particle.id);
             update_cell_mass_and_com(new_cell_index);

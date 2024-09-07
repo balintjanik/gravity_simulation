@@ -26,18 +26,29 @@ static sf::Keyboard::Key RELOAD_KEY = sf::Keyboard::R;
 
 static sf::Keyboard::Key SINGULARITY_KEY = sf::Keyboard::B;
 
-static bool SHOW_MENU = true;
+extern bool SHOW_MENU;
 static sf::Keyboard::Key SHOW_MENU_KEY = sf::Keyboard::M;
 
-static bool SHOW_HELP = true;
+extern bool SHOW_HELP;
 static sf::Keyboard::Key SHOW_HELP_KEY = sf::Keyboard::H;
 
-static bool SHOW_PERFORMANCE = true;
+extern bool SHOW_PERFORMANCE;
 static sf::Keyboard::Key SHOW_PERFORMANCE_KEY = sf::Keyboard::P;
 
 static sf::Keyboard::Key SHOW_ALL_KEY = sf::Keyboard::A;
 
 static sf::Keyboard::Key EXIT_KEY = sf::Keyboard::Escape;
+
+static sf::Keyboard::Key PAUSE_KEY = sf::Keyboard::Space;
+
+static sf::Keyboard::Key FRAMESTEP_KEY = sf::Keyboard::Right;
+
+// Moving and zooming
+extern sf::Vector2f delta_move;
+extern sf::Vector2f map_offset;
+extern sf::Vector2f final_limit;
+
+extern double zoom;
 
 // Help settings
 static sf::Text HELP_TXT;
@@ -52,6 +63,12 @@ static sf::Text FPS_TXT;
 // Performance
 extern unsigned int GRAV_CALC_COUNT;
 static sf::Text GRAV_COUNT_TXT;
+extern unsigned int QUADTREE_DEPTH;
+static sf::Text QUADTREE_DEPTH_TXT;
+extern unsigned int QUADTREE_NODES;
+static sf::Text QUADTREE_NODES_TXT;
+extern unsigned int QUADTREE_LEAVES;
+static sf::Text QUADTREE_LEAVES_TXT;
 extern unsigned int COLL_CALC_COUNT;
 static sf::Text COLL_COUNT_TXT;
 
@@ -68,7 +85,7 @@ static int MARGIN_BLOCK = 20;
 static int BTN_HEIGHT = 30;
 
 // Left menu
-static sf::Text LEFT_TITLE;
+static sf::Text SIMULATION_TITLE;
 
 static sf::Text PARTICLE_NUM_TXT;
 static TextBox PARTICLE_NUM_TB;
@@ -79,11 +96,16 @@ static TextBox PARTICLE_RADIUS_TB;
 static sf::Text PARTICLE_MASS_TXT;
 static TextBox PARTICLE_MASS_TB;
 
+static sf::Text SINGULARITY_MASS_TXT;
+static TextBox SINGULARITY_MASS_TB;
+
 static sf::Text PLACEMENT_TYPE_TXT;
 static ToggleButton PLACEMENT_TYPE_FULLSCREEN_BTN;
 static ToggleButton PLACEMENT_TYPE_CIRCULAR_BTN;
 static sf::Text PLACEMENT_RADIUS_TXT;
 static TextBox PLACEMENT_RADIUS_TB;
+static sf::Text SPAWN_MARGIN_TXT;
+static TextBox SPAWN_MARGIN_TB;
 
 static sf::Text SPEED_TYPE_TXT;
 static ToggleButton SPEED_TYPE_RANDOM_BTN;
@@ -113,31 +135,43 @@ static TextBox COLLISION_ITERATIONS_TB;
 static sf::Text COLLISION_IMPULSE_COEFF_TXT;
 static TextBox COLLISION_IMPULSE_COEFF_TB;
 
-static sf::Text GRID_TXT;
-static sf::Text COLLISION_CELL_SIZE_TXT;
-static TextBox COLLISION_CELL_SIZE_TB;
-
 static sf::Text RELOAD_REQUIRED_TXT;
 static SimpleButton RELOAD_BTN;
 
 // Right menu
-static sf::Text RIGHT_TITLE;
+static sf::Text DISPLAY_TITLE;
 
 static sf::Text ANIMATION_SETTINGS_TXT;
+static SimpleButton PAUSE_BTN;
+static SimpleButton FRAMESTEP_BTN;
 static sf::Text TIMESTEP_TXT;
 static TextBox TIMESTEP_TB;
 static unsigned int DEFAULT_FPS_LIMIT = 30;
 static sf::Text FPS_LIMIT_TXT;
 static TextBox FPS_LIMIT_TB;
 
+static SimpleButton RESET_CAM_BTN;
+
 static sf::Text TRAIL_TXT;
 static ToggleButton HAS_TRAIL_BTN;
 
-static sf::Text GRID_VIS_TXT;
-static ToggleButton VISUALIZE_GRID_BTN;
-static ToggleButton VISUALIZE_PARTICLE_CELL_BTN;
-static ToggleButton VISUALIZE_CELL_MASS_BTN;
-static ToggleButton VISUALIZE_COM_BTN;
+static sf::Text OPTIMIZATION_TITLE;
+static sf::Text COLLISION_OPTIMIZATION_TXT;
+static ToggleButton SHOW_GRID_BTN;
+static ToggleButton SHOW_PARTICLE_CELL_BTN;
+static ToggleButton SHOW_CELL_MASS_BTN;
+static ToggleButton SHOW_COM_BTN;
+static sf::Text COLLISION_CELL_SIZE_TXT;
+static TextBox COLLISION_CELL_SIZE_TB;
+
+static sf::Text GRAVITY_OPTIMIZATION_TXT;
+static ToggleButton VISUALIZE_GRAVITY_TREE_BTN;
+static sf::Text QUADTREE_THETA_TXT;
+static TextBox QUADTREE_THETA_TB;
+
+static sf::Text MULTITHREADING_TXT;
+static sf::Text THREAD_NUM_TXT;
+static TextBox THREAD_NUM_TB;
 
 static sf::Text AUDIO_TITLE;
 static sf::Text SOUND_TXT;
@@ -151,8 +185,12 @@ static SimpleButton EXIT_BTN;
 
 class Settings {
 public:
+	// Play/pause
+	bool IS_PLAYING = true;
+	bool IS_FRAMESTEP = false;
+
 	// Timestep (speed of animation)
-	double TIMESTEP = 0.1;
+	double TIMESTEP = 0.5;
 	
 	// Setup type
 	PlacementType PLACEMENT_TYPE = PlacementType::Circular;
@@ -195,17 +233,22 @@ public:
 	double DAMPING_DIST = 2.0;
 	
 	// Collision optimization settings
-	bool VISUALIZE_SPATIAL_GRID = false; // draw grid
-	bool VISUALIZE_PARTICLE_CELL = false; // color particle based on position in optimization grid (instead of the forces acting on it)
-	bool VISUALIZE_CELL_MASS = false; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
-	bool VISUALIZE_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_SPATIAL_GRID ON]
+	bool VISUALIZE_COLLISION_GRID = false; // draw grid
+	bool VISUALIZE_COLLISION_PARTICLE_CELL = false; // color particle based on position in optimization grid (instead of the forces acting on it)
+	bool VISUALIZE_COLLISION_CELL_MASS = false; // color cells based on their mass [ONLY WORKS WITH VISUALIZE_COLLISION_GRID ON]
+	bool VISUALIZE_COLLISION_COM = false; // visualize center of mass of cells [ONLY WORKS WITH VISUALIZE_COLLISION_GRID ON]
 	int COLLISION_CELL_SIZE = 20;
 
+	// Gravity optimization settings
+	bool IS_GRAVITY_QUADTREE = true;
+	bool VISUALIZE_GRAVITY_TREE = false;
+	double THETA = 0.5;
+
 	// Max threads
-	unsigned int THREAD_NUM = 4; // TODO: textbox for this
+	unsigned int THREAD_NUM = 4;
 
 	// Singularity mass
-	double SINGULARITY_MASS = 10000; // TODO: textbox for this
+	double SINGULARITY_MASS = 10000;
 
 	// FPS limit
 	int FPS_LIMIT = DEFAULT_FPS_LIMIT;
@@ -220,8 +263,14 @@ public:
 	{
 		MAX_FORCES = 3 * sqrt(MASS) * ((double)N / 700);
 		TRAIL_RADIUS = (RADIUS / 2 > 1 ? RADIUS / 2 : 1);
-		DAMPING_COEFF = MASS * TIMESTEP / 5;
+		HAS_DAMPING = HAS_DAMPING && SPEED_TYPE != SpeedType::Galaxy;
+		update_damping_coeff();
 		THREAD_NUM = (THREAD_NUM > MAX_THREAD_NUM ? MAX_THREAD_NUM : THREAD_NUM);
+	}
+
+	void update_damping_coeff()
+	{
+		DAMPING_COEFF = MASS * TIMESTEP / 20;
 	}
 };
 

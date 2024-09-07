@@ -31,6 +31,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../sound/sound_manager.h"
+#include "cursors.h"
 
 const sf::Color defult_color = sf::Color(0, 100, 200);
 const sf::Color default_toggle = sf::Color::White;

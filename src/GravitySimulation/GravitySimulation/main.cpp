@@ -9,6 +9,7 @@
 #include "physics/physics.h"
 #include "grid/grid.h"
 #include "ui/menu_utils.h"
+#include "ui/cursors.h"
 #include "sound/sound_manager.h"
 
 int main()
@@ -19,10 +20,16 @@ int main()
 
     // Initialize
     recalc_sizes(screen.width, screen.height);
-    init_ui();
     init_sounds();
     init_music();
-    reload_sim();
+    init_cursors();
+    Grid collision_grid(settings.COLLISION_CELL_SIZE);
+    reload_sim(collision_grid);
+
+    // Grab move
+    sf::Vector2f start_position;
+    sf::Vector2f end_position;
+    bool is_moving = false;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -37,95 +44,48 @@ int main()
                 sf::View view(sf::FloatRect(0, 0, static_cast<float>(new_size.x), static_cast<float>(new_size.y)));
                 window.setView(view);
                 recalc_sizes(new_size.x, new_size.y);
-                init_ui();
-                reload_sim();
+                reload_sim(collision_grid);
             }
 
-            // Show/hide UI elements
+            // Handle hotkeys
             if (event.type == sf::Event::KeyPressed)
             {
-                // Reload simulation
-                if (event.key.code == RELOAD_KEY)
-                {
-                    reload_sim();
-                    click_sound.play();
-                }
-                // Show/hide menu
-                else if (event.key.code == SHOW_MENU_KEY)
-                {
-                    if (SHOW_MENU)
-                    {
-                        SHOW_MENU = false;
-                        FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
-                        GRAV_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
-                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + FONT_SIZE + 2 * MARGIN_BETWEEN);
-                    }
-                    else
-                    {
-                        SHOW_MENU = true;
-                        FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
-                        GRAV_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
-                        COLL_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + FONT_SIZE + 2 * MARGIN_BETWEEN);
-                    }
-
-                    click_sound.play();
-                }
-                // Show/hide help
-                else if (event.key.code == SHOW_HELP_KEY)
-                {
-                    if (SHOW_HELP)
-                        SHOW_HELP = false;
-                    else
-                        SHOW_HELP = true;
-
-                    click_sound.play();
-                }
-                // Show/hide FPS
-                else if (event.key.code == SHOW_PERFORMANCE_KEY)
-                {
-                    if (SHOW_PERFORMANCE)
-                        SHOW_PERFORMANCE = false;
-                    else
-                        SHOW_PERFORMANCE = true;
-
-                    click_sound.play();
-                }
-                // Show/hide everything
-                else if (event.key.code == SHOW_ALL_KEY)
-                {
-                    if (SHOW_MENU || SHOW_HELP || SHOW_PERFORMANCE)
-                    {
-                        SHOW_MENU = false;
-                        SHOW_HELP = false;
-                        SHOW_PERFORMANCE = false;
-                        FPS_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP);
-                        GRAV_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
-                        COLL_COUNT_TXT.setPosition(MARGIN_LEFT, MARGIN_TOP + 2* TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
-                    }
-                    else
-                    {
-                        SHOW_MENU = true;
-                        SHOW_HELP = true;
-                        SHOW_PERFORMANCE = true;
-                        FPS_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP);
-                        GRAV_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + TITLE_FONT_SIZE + MARGIN_BETWEEN);
-                        COLL_COUNT_TXT.setPosition(MENU_WIDTH + MARGIN_LEFT, MARGIN_TOP + 2 * TITLE_FONT_SIZE + 2 * MARGIN_BETWEEN);
-                    }
-
-                    click_sound.play();
-                }
-                // Add singularity
-                else if (event.key.code == SINGULARITY_KEY)
-                {
-                    add_singularity(optim_grid);
-                    blackhole_sound.play();
-                }
-                // Exit
-                else if (event.key.code == EXIT_KEY)
-                    window.close();
+                handle_hotkeys(window, event, collision_grid);
             }
 
-            if (SHOW_MENU)
+            // Handle moving
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                sf::Vector2f cursor_pos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                if (!SHOW_MENU || (cursor_pos.x > MENU_WIDTH && cursor_pos.x < WIDTH - MENU_WIDTH))
+                {
+                    start_position = cursor_pos;
+                    is_moving = true;
+                    window.setMouseCursor(grabber_cursor);
+                    untoggle_textboxes(window);
+                }
+            }
+            else if (event.type == sf::Event::MouseButtonReleased)
+            {
+                is_moving = false;
+                window.setMouseCursor(default_cursor);
+            }
+
+            // Handle zoom
+            if (event.type == sf::Event::MouseWheelScrolled)
+            {
+                if (event.mouseWheelScroll.delta < 0)
+                    zoom *= 0.9;
+                else
+                    zoom *= 1.1;
+
+                if (zoom < 0.5)
+                    zoom = 0.5;
+
+                handle_move(sf::Vector2f(0,0), sf::Vector2f(0, 0));
+            }
+
+            if (SHOW_MENU && !is_moving)
             {
                 // Untoggle textboxes on any click
                 if (event.type == sf::Event::MouseButtonPressed)
@@ -140,21 +100,37 @@ int main()
 
                 // Handle button clicks
                 if (event.type == sf::Event::MouseButtonPressed)
-                    handle_button_clicks(window, event);
+                    handle_button_clicks(window, event, collision_grid);
             }
+        }
+
+        // Handle moving
+        if (is_moving)
+        {
+            end_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+            handle_move(start_position, end_position);
+            start_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
         }
 
         // Update fps
         update_fps();
 
-        // Update positions
-        update_positions(optim_grid);
-
         // Display
         window.clear();
 
+        if (settings.IS_PLAYING || settings.IS_FRAMESTEP)
+        {
+            settings.IS_FRAMESTEP = false;
+
+            // Update positions
+            update_positions(collision_grid, window);
+        }
+
         // Draw particles
-        draw_particles(window);
+        draw_particles(window, collision_grid);
+
+        // Draw borders
+        draw_borders(window);
 
         // Draw menu
         if (SHOW_MENU)
@@ -162,7 +138,7 @@ int main()
 
         // Draw fps
         if (SHOW_PERFORMANCE)
-            draw_fps(window);
+            draw_performance(window);
 
         // Draw help
         if (SHOW_HELP)

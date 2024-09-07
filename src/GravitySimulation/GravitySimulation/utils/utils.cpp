@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "../grid/grid.h"
+#include "../quadtree/quadtree.h"
 
 using namespace std;
 
@@ -106,10 +107,10 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 vy = generate_random_double(-15.0, 15.0);
                 break;
             case SpeedType::Angular:
-                ang_to_cent = atan2(y - HEIGHT / 2, x - CANVAS_WIDTH / 2);
+                ang_to_cent = atan2(y - HEIGHT / 2, x - WIDTH / 2);
                 angle = ang_to_cent + 90;
-                distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(CANVAS_WIDTH / 2, HEIGHT / 2));
-                speed = map_value(distance, 0.0, settings.R, 0.0, settings.MASS*8.0);
+                distance = v2f_distance(sf::Vector2f(x, y), sf::Vector2f(WIDTH / 2, HEIGHT / 2));
+                speed = map_value(distance, 0.0, settings.R, 0.0, settings.MASS*2.0);
                 rand_x = generate_random_double(0.7, 1.4);
                 rand_y = generate_random_double(0.7, 1.4);
                 vx = speed * cos(angle) * rand_x;
@@ -117,10 +118,10 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
                 break;
             case SpeedType::Galaxy:
                 distance = v2f_distance(initial_position, sin_pos);
-                speed = 3 * sqrt(settings.SINGULARITY_MASS / distance);
+                speed = sqrt(settings.SINGULARITY_MASS / distance);
                 angle = atan2(y - sin_pos.y, x - sin_pos.x) + PI / 2;
-                rand_x = generate_random_double(0.9, 1.1);
-                rand_y = generate_random_double(0.9, 1.1);
+                rand_x = 1;
+                rand_y = 1;
                 vx = sin_vel.x;
                 vy = sin_vel.y;
                 vx += speed * cos(angle) * rand_x;
@@ -143,20 +144,20 @@ vector<Particle> generate_particles(double min_x, double max_x, double min_y, do
     return particles;
 }
 
-void add_singularity(Grid& optim_grid)
+void add_singularity(Grid& collision_grid)
 {
     Particle singularity = Particle(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y), sf::Vector2f(0, 0), SINGULARITY_COLOR, SINGULARITY_RADIUS, settings.SINGULARITY_MASS, true);
     particles.push_back(singularity);
-    optim_grid.add_particle(particles.back());
+    collision_grid.add_particle(particles.back());
     
     id_counter++;
 }
 
-void init_optim_grid(Grid& optim_grid)
+void init_optim_grid(Grid& grid)
 {
     for (auto& p : particles)
     {
-        optim_grid.add_particle(p);
+        grid.add_particle(p);
     }
 }
 
@@ -174,7 +175,26 @@ int get_idx_by_id(int id)
     return -1;
 }
 
-void draw_particles(sf::RenderWindow& window)
+void handle_move(sf::Vector2f start_position, sf::Vector2f end_position)
+{
+    delta_move = end_position - start_position;
+    map_offset += delta_move / zoom;
+
+    float visible_width = WIDTH / zoom;
+    float visible_height = HEIGHT / zoom;
+
+    if (map_offset.x < -(final_limit.x - visible_width / 2))
+        map_offset.x = -(final_limit.x - visible_width / 2);
+    else if (map_offset.x > final_limit.x - visible_width / 2)
+        map_offset.x = final_limit.x - visible_width / 2;
+
+    if (map_offset.y < -(final_limit.y - visible_height / 2))
+        map_offset.y = -(final_limit.y - visible_height / 2);
+    else if (map_offset.y > final_limit.y - visible_height / 2)
+        map_offset.y = final_limit.y - visible_height / 2;
+}
+
+void draw_particles(sf::RenderWindow& window, Grid& collision_grid)
 {
     // Draw trails first to avoid trails covering particles
     if (settings.HAS_TRAIL)
@@ -184,10 +204,10 @@ void draw_particles(sf::RenderWindow& window)
             sf::Color current_trail_color = settings.TRAIL_COLOR;
             for (int i = 0; i < p.trail.size(); i++)
             {
-                sf::CircleShape circle(settings.TRAIL_RADIUS);
+                sf::CircleShape circle(zoom * settings.TRAIL_RADIUS);
                 current_trail_color.a = ((255 * i) / settings.TRAIL_SIZE);
                 circle.setFillColor(current_trail_color);
-                circle.setPosition(p.trail[i].x - settings.TRAIL_RADIUS, p.trail[i].y - settings.TRAIL_RADIUS);
+                circle.setPosition(zoom * (p.trail[i].x - settings.TRAIL_RADIUS + map_offset.x - WIDTH / 2) + WIDTH / 2, zoom * (p.trail[i].y - settings.TRAIL_RADIUS + map_offset.y - HEIGHT / 2) + HEIGHT / 2);
                 window.draw(circle);
             }
         }
@@ -195,22 +215,22 @@ void draw_particles(sf::RenderWindow& window)
 
     // Draw particles
     // If not set otherwise, draw them the most effective way
-    if (!(settings.VISUALIZE_SPATIAL_GRID || settings.VISUALIZE_PARTICLE_CELL))
+    if (!(settings.VISUALIZE_COLLISION_GRID || settings.VISUALIZE_COLLISION_PARTICLE_CELL))
     {
         for (auto& p : particles)
         {
-            sf::CircleShape circle(p.radius - (p.is_singularity ? SINGULARITY_OUTLINE_THICKNESS : 0));
+            sf::CircleShape circle(zoom * (p.radius - (p.is_singularity ? SINGULARITY_OUTLINE_THICKNESS : 0)));
             circle.setFillColor(p.color);
 
             if (p.is_singularity)
             {
                 circle.setFillColor(sf::Color::Black);
-                circle.setOutlineThickness(SINGULARITY_OUTLINE_THICKNESS);
+                circle.setOutlineThickness(zoom * SINGULARITY_OUTLINE_THICKNESS);
                 circle.setOutlineColor(p.color);
             }
 
             // setPosition sets the coordinates of top left corner
-            circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
+            circle.setPosition(zoom * (p.position.x - p.radius + map_offset.x - WIDTH / 2) + WIDTH / 2, zoom * (p.position.y - p.radius + map_offset.y - HEIGHT / 2) + HEIGHT / 2);
 
             window.draw(circle);
         }
@@ -219,26 +239,26 @@ void draw_particles(sf::RenderWindow& window)
     else
     {
         // Draw grid
-        if (settings.VISUALIZE_SPATIAL_GRID)
+        if (settings.VISUALIZE_COLLISION_GRID)
         {
-            for (int x = 0; x < optim_grid.width; x++)
+            for (int x = 0; x < collision_grid.width; x++)
             {
-                for (int y = 0; y < optim_grid.height; y++)
+                for (int y = 0; y < collision_grid.height; y++)
                 {
                     sf::Vector2f c_size(settings.COLLISION_CELL_SIZE, settings.COLLISION_CELL_SIZE);
-                    sf::RectangleShape cell(c_size);
+                    sf::RectangleShape cell(zoom * c_size);
 
                     sf::Color fill_col = sf::Color::Transparent;
-                    if (settings.VISUALIZE_CELL_MASS)
+                    if (settings.VISUALIZE_COLLISION_CELL_MASS)
                     {
-                        fill_col = map_forces_to_color(optim_grid.get(x, y).total_mass / settings.COLLISION_CELL_SIZE);
+                        fill_col = map_forces_to_color(collision_grid.get(x, y).total_mass / settings.COLLISION_CELL_SIZE);
                         fill_col.a = 140;
                     }
                     cell.setFillColor(fill_col);
 
                     cell.setOutlineColor(sf::Color(20, 20, 20));
-                    cell.setOutlineThickness(0.5f);
-                    cell.setPosition(x * settings.COLLISION_CELL_SIZE - optim_grid.overflow_x / 2, y * settings.COLLISION_CELL_SIZE - optim_grid.overflow_y / 2);
+                    cell.setOutlineThickness(zoom * 0.5f);
+                    cell.setPosition(zoom * (x * settings.COLLISION_CELL_SIZE - collision_grid.overflow_x / 2 + map_offset.x - WIDTH / 2) + WIDTH / 2, zoom * (y * settings.COLLISION_CELL_SIZE - collision_grid.overflow_y / 2 + map_offset.y - HEIGHT / 2) + HEIGHT / 2);
                     window.draw(cell);
                 }
             }
@@ -246,16 +266,16 @@ void draw_particles(sf::RenderWindow& window)
 
         // Draw particles of cells
         int idx;
-        for (int x = 0; x < optim_grid.width; x++)
+        for (int x = 0; x < collision_grid.width; x++)
         {
-            for (int y = 0; y < optim_grid.height; y++)
+            for (int y = 0; y < collision_grid.height; y++)
             {
                 // Calculate color based on grid position
                 sf::Color col = sf::Color::Green;
                 if ((y % 2 == 0 && x % 2 == 1) || (y % 2 == 1 && x % 2 == 0))
                     col = sf::Color::Magenta;
 
-                auto& current_cell = optim_grid.get(x, y);
+                auto& current_cell = collision_grid.get(x, y);
                 for (auto it1 = current_cell.particle_indices.begin(); it1 != current_cell.particle_indices.end(); ++it1)
                 {
                     idx = get_idx_by_id(*it1);
@@ -264,16 +284,16 @@ void draw_particles(sf::RenderWindow& window)
 
                     Particle& p = particles[idx];
 
-                    sf::CircleShape circle(p.radius - (p.is_singularity ? SINGULARITY_OUTLINE_THICKNESS : 0));
+                    sf::CircleShape circle(zoom * (p.radius - (p.is_singularity ? SINGULARITY_OUTLINE_THICKNESS : 0)));
 
                     // Set color based on custom settings
-                    if (settings.VISUALIZE_PARTICLE_CELL)
+                    if (settings.VISUALIZE_COLLISION_PARTICLE_CELL)
                     {
                         circle.setFillColor(col);
                         if (p.is_singularity)
                         {
                             circle.setFillColor(sf::Color::Black);
-                            circle.setOutlineThickness(3);
+                            circle.setOutlineThickness(zoom * 3);
                             circle.setOutlineColor(col);
                         }
                     }
@@ -283,35 +303,61 @@ void draw_particles(sf::RenderWindow& window)
                         if (p.is_singularity)
                         {
                             circle.setFillColor(sf::Color::Black);
-                            circle.setOutlineThickness(SINGULARITY_OUTLINE_THICKNESS);
+                            circle.setOutlineThickness(zoom * SINGULARITY_OUTLINE_THICKNESS);
                             circle.setOutlineColor(p.color);
                         }
                     }
 
-                    circle.setPosition(p.position.x - p.radius, p.position.y - p.radius);
+                    circle.setPosition(zoom * (p.position.x - p.radius + map_offset.x - WIDTH / 2) + WIDTH / 2, zoom * (p.position.y - p.radius + map_offset.y - HEIGHT / 2) + HEIGHT / 2);
                     window.draw(circle);
                 }
 
                 // draw center of mass
-                if (settings.VISUALIZE_COM)
+                if (settings.VISUALIZE_COLLISION_COM)
                 {
-                    sf::CircleShape com(5, 3);
+                    sf::CircleShape com(zoom * 5, 3);
                     com.setFillColor(sf::Color::Red);
-                    sf::Vector2f com_pos = optim_grid.get(x, y).center_of_mass;
+                    sf::Vector2f com_pos = collision_grid.get(x, y).center_of_mass;
                     if (com_pos.x == 0 && com_pos.y == 0)
                     {
                         int to_center = settings.COLLISION_CELL_SIZE / 2;
-                        int correct_overflow_x = optim_grid.overflow_x / 2;
-                        int correct_overflow_y = optim_grid.overflow_y / 2;
-                        com.setPosition(x * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_x, y * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_y);
+                        int correct_overflow_x = collision_grid.overflow_x / 2;
+                        int correct_overflow_y = collision_grid.overflow_y / 2;
+                        com.setPosition(zoom * (x * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_x + map_offset.x - WIDTH / 2) + WIDTH / 2, zoom * (y * settings.COLLISION_CELL_SIZE + to_center - 5 - correct_overflow_y + map_offset.y - HEIGHT / 2) + HEIGHT / 2);
                     }
                     else
                     {
-                        com.setPosition(com_pos.x - 5, com_pos.y - 5);
+                        com.setPosition(zoom * (com_pos.x - 5 + map_offset.x - WIDTH / 2) + WIDTH / 2, zoom * (com_pos.y - 5 + map_offset.y - HEIGHT / 2) + HEIGHT / 2);
                     }
                     window.draw(com);
                 }
             }
         }
     }
+}
+
+void draw_borders(sf::RenderWindow& window)
+{
+    // Draw quadtree border (final limit)
+    int final_border_width = 8;
+    sf::RectangleShape final_border(zoom * sf::Vector2f(2 * WIDTH - 2 * final_border_width, 2 * WIDTH - 2 * final_border_width));
+    final_border.setPosition(zoom * (- WIDTH / 2 + map_offset.x + final_border_width - WIDTH / 2) + WIDTH / 2, zoom * (HEIGHT / 2 - WIDTH + map_offset.y + final_border_width - HEIGHT / 2) + HEIGHT / 2);
+    final_border.setFillColor(sf::Color::Transparent);
+    final_border.setOutlineThickness(zoom * final_border_width);
+    final_border.setOutlineColor(sf::Color::Red);
+    window.draw(final_border);
+
+    // Draw grid border
+    int grid_border_width = 4;
+    sf::RectangleShape grid_border(zoom * sf::Vector2f(WIDTH, HEIGHT));
+    grid_border.setPosition(zoom * (0 + map_offset.x - WIDTH / 2) + WIDTH / 2, zoom * (0 + map_offset.y - HEIGHT / 2) + HEIGHT / 2);
+    grid_border.setFillColor(sf::Color::Transparent);
+    grid_border.setOutlineThickness(zoom * grid_border_width);
+    grid_border.setOutlineColor(sf::Color::White);
+    window.draw(grid_border);
+}
+
+void draw_quadtree(sf::RenderWindow& window, QuadTree& tree)
+{
+    tree.draw(window);
 }

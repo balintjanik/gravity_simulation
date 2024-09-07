@@ -3,14 +3,67 @@
 #include "../globals/globals.h"
 #include "physics.h"
 
+#include <iostream>
+
 using namespace std;
+
+void update_gravity_quadtree_range(QuadTree& gravity_tree, int start, int end)
+{
+    // Calculate forces and update positions and velocities
+    for (int i = start; i < end; i++) {
+        Particle& p = particles[i];
+        double all_force = 0.0;
+        GRAV_CALC_COUNT += gravity_tree.calculate_forces(p, all_force);
+
+        // Update color
+        sf::Color updated_color = map_forces_to_color(all_force);
+        if (!p.is_singularity)
+            p.color = updated_color;
+    }
+}
+
+void update_gravity_quadtree(sf::RenderWindow& window)
+{
+    // Create the tree
+    QuadTree gravity_tree(WIDTH / 2, HEIGHT / 2, 2 * WIDTH, settings.THETA);
+
+    // Insert all particles into the tree
+    for (const auto& p : particles) {
+        gravity_tree.insert(p);
+    }
+
+    // Get stats
+    QUADTREE_DEPTH = gravity_tree.get_depth();
+    QUADTREE_NODES = gravity_tree.get_node_count();
+    QUADTREE_LEAVES = gravity_tree.get_leaf_count();
+
+    // Draw quadtree if set
+    if (settings.VISUALIZE_GRAVITY_TREE)
+        draw_quadtree(window, gravity_tree);
+
+    // Calculate gravitational forces parallelly on multiple threads
+    const int num_threads = settings.THREAD_NUM;
+    vector<thread> threads;
+    int part_size = particles.size() / num_threads;
+
+    for (int i = 0; i < num_threads; i++) {
+        int start = i * part_size;
+        int end = (i == num_threads - 1) ? particles.size() : (i + 1) * part_size;
+
+        threads.emplace_back(update_gravity_quadtree_range, ref(gravity_tree), start, end);
+    }
+
+    for (auto& t : threads) {
+        t.join();
+    }
+}
 
 void update_gravity_range(Grid& optim_grid, int start, int end) {
     for (int i = start; i < end; i++) {
         auto& p_1 = particles[i];
         double all_force = 0.0;
-        int p_1_x = std::floor(p_1.position.x / optim_grid.cell_size);
-        int p_1_y = std::floor(p_1.position.y / optim_grid.cell_size);
+        int p_1_x = floor(p_1.position.x / optim_grid.cell_size);
+        int p_1_y = floor(p_1.position.y / optim_grid.cell_size);
 
         for (int x = 0; x < optim_grid.width; x++) {
             for (int y = 0; y < optim_grid.height; y++) {
@@ -30,8 +83,8 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
                     double force = (g * cell.total_mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
                     // Update velocity
-                    p_1.velocity.x -= force * cos(angle);
-                    p_1.velocity.y -= force * sin(angle);
+                    p_1.velocity.x -= force * cos(angle) * settings.TIMESTEP;
+                    p_1.velocity.y -= force * sin(angle) * settings.TIMESTEP;
                     all_force += force;
                 }
             }
@@ -66,8 +119,8 @@ void update_gravity_range(Grid& optim_grid, int start, int end) {
                     double force = (g * p_2.mass) / (pow(distance, 2) + pow(EPSYLON, 2));
 
                     // Update velocity
-                    p_1.velocity.x -= force * cos(angle);
-                    p_1.velocity.y -= force * sin(angle);
+                    p_1.velocity.x -= force * cos(angle) * settings.TIMESTEP;
+                    p_1.velocity.y -= force * sin(angle) * settings.TIMESTEP;
                     all_force += force;
                 }
             }
@@ -132,47 +185,44 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
             // Check collision
             if (distance < min_distance)
             {
-                if (settings.HAS_COLLISIONS)
+                double displacement_x = (dx / distance) * (min_distance - distance) / 2.0;
+                double displacement_y = (dy / distance) * (min_distance - distance) / 2.0;
+
+                // Update position directly to avoid overlaps
+                if (p_1.is_singularity)
                 {
-                    double displacement_x = (dx / distance) * (min_distance - distance) / 2.0;
-                    double displacement_y = (dy / distance) * (min_distance - distance) / 2.0;
-
-                    // Update position directly to avoid overlaps
-                    if (p_1.is_singularity)
-                    {
-                        p_2.position.x += 2 * displacement_x;
-                        p_2.position.y += 2 * displacement_y;
-                    }
-                    else if (p_2.is_singularity)
-                    {
-                        p_1.position.x -= 2 * displacement_x;
-                        p_1.position.y -= 2 * displacement_y;
-                    }
-                    else
-                    {
-                        p_1.position.x -= displacement_x;
-                        p_1.position.y -= displacement_y;
-                        p_2.position.x += displacement_x;
-                        p_2.position.y += displacement_y;
-                    }
-
-                    // Calculate relative velocity
-                    double relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
-                    double relative_velocity_y = p_2.velocity.y - p_1.velocity.y;
-
-                    // Calculate normal vector
-                    double normal_x = dx / distance;
-                    double normal_y = dy / distance;
-
-                    // Calculate impulse (change in velocity)
-                    double impulse = settings.COLLISION_IMPULSE_COEFF * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
-
-                    // Update velocities based on impulse (conservation of momentum)
-                    p_1.velocity.x += impulse * normal_x * p_2.mass;
-                    p_1.velocity.y += impulse * normal_y * p_2.mass;
-                    p_2.velocity.x -= impulse * normal_x * p_1.mass;
-                    p_2.velocity.y -= impulse * normal_y * p_1.mass;
+                    p_2.position.x += 2 * displacement_x;
+                    p_2.position.y += 2 * displacement_y;
                 }
+                else if (p_2.is_singularity)
+                {
+                    p_1.position.x -= 2 * displacement_x;
+                    p_1.position.y -= 2 * displacement_y;
+                }
+                else
+                {
+                    p_1.position.x -= displacement_x;
+                    p_1.position.y -= displacement_y;
+                    p_2.position.x += displacement_x;
+                    p_2.position.y += displacement_y;
+                }
+
+                // Calculate relative velocity
+                double relative_velocity_x = p_2.velocity.x - p_1.velocity.x;
+                double relative_velocity_y = p_2.velocity.y - p_1.velocity.y;
+
+                // Calculate normal vector
+                double normal_x = dx / distance;
+                double normal_y = dy / distance;
+
+                // Calculate impulse (change in velocity)
+                double impulse = settings.COLLISION_IMPULSE_COEFF * (relative_velocity_x * normal_x + relative_velocity_y * normal_y) / (p_1.mass + p_2.mass);
+
+                // Update velocities based on impulse (conservation of momentum)
+                p_1.velocity.x += impulse * normal_x * p_2.mass;
+                p_1.velocity.y += impulse * normal_y * p_2.mass;
+                p_2.velocity.x -= impulse * normal_x * p_1.mass;
+                p_2.velocity.y -= impulse * normal_y * p_1.mass;
 
                 // Update color based on collision if gravity is off and collision is on
                 if (settings.HAS_COLLISIONS && !settings.HAS_GRAVITY)
@@ -193,22 +243,29 @@ void check_cells_collision(Cell& cell_1, Cell& cell_2)
     }
 }
 
-void update_collisions_range(Grid& optim_grid, int start_col, int stride)
+void update_collisions_range(Grid& collision_grid, int start_col, int stride)
 {
-    for (int x = start_col; x < optim_grid.width; x+=stride)
+    for (int x = start_col; x < collision_grid.width; x+=stride)
     {
-        for (int y = 0; y < optim_grid.height; y++)
+        for (int y = 0; y < collision_grid.height; y++)
         {
-            auto& current_cell = optim_grid.get(x, y);
+            auto& current_cell = collision_grid.get(x, y);
+            if (current_cell.particle_indices.empty())
+                continue;
+
             for (int dx = -1; dx <= 1; dx++)
             {
                 for (int dy = -1; dy <= 1; dy++)
                 {
-                    if (x + dx < 0 || x + dx >= optim_grid.width
-                        || y + dy < 0 || y + dy >= optim_grid.height)
+                    if (x + dx < 0 || x + dx >= collision_grid.width
+                        || y + dy < 0 || y + dy >= collision_grid.height)
                         continue;
 
-                    auto& other_cell = optim_grid.get(x + dx, y + dy);
+                    auto& other_cell = collision_grid.get(x + dx, y + dy);
+
+                    if (other_cell.particle_indices.empty())
+                        continue;
+
                     check_cells_collision(current_cell, other_cell);
                 }
             }
@@ -216,12 +273,12 @@ void update_collisions_range(Grid& optim_grid, int start_col, int stride)
     }
 }
 
-void update_collisions(Grid& optim_grid) {
+void update_collisions(Grid& collision_grid) {
     const int num_threads = settings.THREAD_NUM;
     vector<thread> threads;
 
     for (int i = 0; i < num_threads; i++) {
-        threads.emplace_back(update_collisions_range, ref(optim_grid), i, num_threads);
+        threads.emplace_back(update_collisions_range, ref(collision_grid), i, num_threads);
     }
 
     for (auto& t : threads) {
@@ -239,17 +296,20 @@ void update_trails()
     }
 }
 
-void update_positions(Grid& optim_grid)
+void update_positions(Grid& collision_grid, sf::RenderWindow& window)
 {
     GRAV_CALC_COUNT = 0;
     COLL_CALC_COUNT = 0;
 
     // Update center of mass
-    for (int i = 0; i < optim_grid.width; i++)
+    if (settings.HAS_COLLISIONS)
     {
-        for (int j = 0; j < optim_grid.height; j++)
+        for (int i = 0; i < collision_grid.width; i++)
         {
-            optim_grid.update_cell_mass_and_com(j * optim_grid.width + i);
+            for (int j = 0; j < collision_grid.height; j++)
+            {
+                collision_grid.update_cell_mass_and_com(j * collision_grid.width + i);
+            }
         }
     }
 
@@ -260,15 +320,23 @@ void update_positions(Grid& optim_grid)
     }
 
     // Calculate collisions
-    for (int i = 0; i < settings.COLLISION_ITERATIONS; i++)
+    if (settings.HAS_COLLISIONS)
     {
-        update_collisions(optim_grid);
+        for (int i = 0; i < settings.COLLISION_ITERATIONS; i++)
+        {
+            update_collisions(collision_grid);
+        }
     }
 
 
     // Calculate gravitational forces
     if (settings.HAS_GRAVITY)
-        update_gravity(optim_grid);
+    {
+        if (settings.IS_GRAVITY_QUADTREE)
+            update_gravity_quadtree(window);
+        else
+            update_gravity(collision_grid);
+    }
     else // Update default coloring
     {
         for (auto& p : particles)
@@ -314,8 +382,12 @@ void update_positions(Grid& optim_grid)
                 p.velocity.y = -p.velocity.y;
             }
         }
+    }
 
-        // Reassign to new cell in optimization grid if necessary
-        optim_grid.update_particle_cell(p);
+    // Reassign to new cell in optimization grid if necessary
+    if (settings.HAS_COLLISIONS)
+    {
+        for (auto& p : particles)
+            collision_grid.update_particle_cell(p);
     }
 }

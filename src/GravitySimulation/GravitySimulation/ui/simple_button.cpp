@@ -52,6 +52,7 @@ void SimpleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
     this->mouse_pos_view = window.mapPixelToCoords(this->mouse_pos_window);
 
     bool play_sound = !this->is_hover;
+    bool change_cursor = this->is_hover;
     this->is_hover = false;
     this->is_pressed = false;
 
@@ -64,6 +65,11 @@ void SimpleButton::get_button_status(sf::RenderWindow& window, sf::Event& event)
             if (play_sound)
                 hover_sound.play();
             this->is_hover = true;
+            window.setMouseCursor(pointer_cursor);
+        }
+        else if (change_cursor)
+        {
+            window.setMouseCursor(default_cursor);
         }
 
         if (button.getGlobalBounds().contains(this->mouse_pos_view))
